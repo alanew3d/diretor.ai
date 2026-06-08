@@ -1,5 +1,5 @@
 # diretor.ai — Deploy Completo
-# Mesmo padrão do hollywoodstudio.ai (GitHub + Vercel)
+# Deploy via GitHub + Vercel
 
 ## Tempo total: ~90 minutos
 
@@ -72,14 +72,15 @@ Opção B — Terminal:
 4. Build & Output Settings: deixar tudo em branco
 5. Environment Variables — adicionar uma a uma:
 
-   ANTHROPIC_API_KEY     = sk-ant-api03-SUA_CHAVE
-   SUPABASE_URL          = https://SEUPROJETO.supabase.co
-   SUPABASE_SERVICE_KEY  = eyJhbGci... (service_role — nunca compartilhar)
-   STRIPE_SECRET_KEY     = sk_live_... (ou sk_test_ para testes)
-   STRIPE_WEBHOOK_SECRET = whsec_... (preencher após passo 6)
-   MP_ACCESS_TOKEN       = APP_USR-...
-   RESEND_API_KEY        = re_...
-   ADMIN_EMAIL           = seu@email.com
+   ANTHROPIC_API_KEY         = coloque_sua_chave_anthropic_aqui
+   OPENAI_API_KEY            = coloque_sua_chave_openai_aqui
+   AI_PROVIDER               = anthropic
+   ANTHROPIC_MODEL           = claude-3-5-sonnet-latest
+   OPENAI_MODEL              = gpt-4.1
+   STRIPE_SECRET_KEY         = coloque_sua_chave_stripe_aqui
+   STRIPE_WEBHOOK_SECRET     = coloque_seu_webhook_secret_aqui
+   MERCADOPAGO_ACCESS_TOKEN  = coloque_seu_token_mercadopago_aqui
+   ADMIN_PASSWORD            = troque_esta_senha
 
 6. Deploy → aguardar ~2 min
 
