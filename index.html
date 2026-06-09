@@ -60,8 +60,8 @@
 <style>
 :root{--gold:#c8a84b;--gold2:#e2c06e;--gold3:#8d7430;--bg:#07070a;--bg2:#0c0c12;--bg3:#12121b;--bg4:#191925;--card:rgba(255,255,255,.045);--card2:rgba(255,255,255,.07);--line:rgba(255,255,255,.1);--line2:rgba(200,168,75,.28);--text:#f6efe4;--muted:#c8c0b2;--dim:#8d8577;--dark:#050506;--ok:#3db87a;--warn:#e0a840;--bad:#e05a5a;--blue:#4a90d9;--purple:#9b7bd4;--shadow:0 24px 90px rgba(0,0,0,.48);--font:"Outfit",sans-serif;--display:"Playfair Display",serif;--mono:"JetBrains Mono",monospace}
 [data-theme="light"]{--bg:#f7f2e8;--bg2:#efe6d6;--bg3:#fffaf0;--bg4:#ebe0cc;--card:rgba(0,0,0,.035);--card2:rgba(0,0,0,.06);--line:rgba(0,0,0,.11);--line2:rgba(141,116,48,.32);--text:#14100a;--muted:#443a2a;--dim:#776b5b;--dark:#fffaf0;--shadow:0 24px 80px rgba(70,50,20,.16)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(circle at 20% 0,rgba(200,168,75,.12),transparent 32%),radial-gradient(circle at 80% 10%,rgba(74,144,217,.07),transparent 28%),var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;min-height:100vh}
+*{box-sizing:border-box}html{scroll-behavior:smooth;max-width:100%;overflow-x:hidden}
+body{margin:0;max-width:100%;overflow-x:hidden;background:radial-gradient(circle at 20% 0,rgba(200,168,75,.12),transparent 32%),radial-gradient(circle at 80% 10%,rgba(74,144,217,.07),transparent 28%),var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;min-height:100vh}
 button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:44px 44px;z-index:-1}
 
@@ -114,7 +114,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;ba
 .cta-final{text-align:center;padding:100px 0;background:radial-gradient(circle at 50%,rgba(200,168,75,.08),transparent 60%)}
 
 /* PLANS */
-.plans{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.plan{border:1px solid var(--line);border-radius:22px;background:var(--card);padding:22px;position:relative}.plan.featured{border-color:var(--line2);background:linear-gradient(180deg,rgba(200,168,75,.1),rgba(255,255,255,.03))}.plan h3{font-family:var(--display);font-size:24px;margin:0 0 4px}.plan-desc{font-size:13px;color:var(--dim);margin:0 0 14px}.price{font-family:var(--display);font-size:42px;margin:12px 0;line-height:1}.price sup{font-size:16px;color:var(--dim);vertical-align:top;margin-top:6px}.price small{font-size:14px;color:var(--dim)}.plan ul{padding-left:18px;color:var(--muted);font-size:14px;margin:0 0 18px}.plan li{margin-bottom:4px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;width:100%;max-width:100%}.plan{border:1px solid var(--line);border-radius:22px;background:var(--card);padding:22px;position:relative;min-width:0;width:100%;box-sizing:border-box}.plan.featured{border-color:var(--line2);background:linear-gradient(180deg,rgba(200,168,75,.1),rgba(255,255,255,.03))}.plan h3{font-family:var(--display);font-size:24px;margin:0 0 4px}.plan-desc{font-size:13px;color:var(--dim);margin:0 0 14px;word-break:break-word}.price{font-family:var(--display);font-size:42px;margin:12px 0;line-height:1}.price sup{font-size:16px;color:var(--dim);vertical-align:top;margin-top:6px}.price small{font-size:14px;color:var(--dim)}.plan ul{padding-left:18px;color:var(--muted);font-size:14px;margin:0 0 18px;word-break:break-word}.plan li{margin-bottom:4px}
 
 /* EXECUTIVE CARD */
 .executive-card{border:1px solid var(--line2);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border-radius:28px;padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden}.executive-card:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 30% 0,rgba(200,168,75,.2),transparent 40%);pointer-events:none}
@@ -227,8 +227,9 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;ba
 .divider{height:1px;background:var(--line);margin:24px 0}
 
 /* RESPONSIVE */
-@media(max-width:1080px){.hero,.app-shell,.advisor-grid,.admin-layout{grid-template-columns:1fr}.side{position:relative;top:auto;height:auto}.how-grid{grid-template-columns:repeat(3,1fr)}.plans,.modules-grid,.problem-grid{grid-template-columns:repeat(2,1fr)}.topbar{height:auto;min-height:66px;align-items:flex-start;padding:14px 16px;gap:10px;flex-direction:column}.nav{width:100%}.container{width:min(100% - 28px,1180px)}}
-@media(max-width:640px){.how-grid,.plans,.grid.two,.grid.three,.metrics,.result-grid,.scenario-tabs,.modules-grid,.problem-grid,.agents-grid,.materials-grid,.territory-categories,.game-board{grid-template-columns:1fr}.hero{padding:48px 0;grid-template-columns:1fr}.decision-core-wrap{display:none}.panel{padding:16px}.title{font-size:24px}.tag{display:none}.navbtn{padding:7px 10px;font-size:11px}.section{padding:60px 0}.section-title{font-size:30px}}
+@media(max-width:1080px){.hero,.app-shell,.advisor-grid,.admin-layout{grid-template-columns:1fr}.side{position:relative;top:auto;height:auto}.how-grid{grid-template-columns:repeat(3,1fr)}.modules-grid,.problem-grid{grid-template-columns:repeat(2,1fr)}.topbar{height:auto;min-height:66px;align-items:flex-start;padding:14px 16px;gap:10px;flex-direction:column}.nav{width:100%}.container{width:min(100% - 28px,1180px)}}
+@media(max-width:768px){.plans{grid-template-columns:1fr!important;display:grid!important;overflow-x:visible!important}.plan{width:100%!important;max-width:100%!important;min-width:0!important}}
+@media(max-width:640px){.how-grid,.plans,.grid.two,.grid.three,.metrics,.result-grid,.scenario-tabs,.modules-grid,.problem-grid,.agents-grid,.materials-grid,.territory-categories,.game-board{grid-template-columns:1fr!important}.hero{padding:48px 0;grid-template-columns:1fr}.decision-core-wrap{display:none}.panel{padding:16px}.title{font-size:24px}.tag{display:none}.navbtn{padding:7px 10px;font-size:11px}.section{padding:60px 0}.section-title{font-size:30px}}
 </style>
 </head>
 <body>
@@ -818,7 +819,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;ba
       <h2 class="title">Escolha o nível de decisão estratégica</h2>
       <p class="subtitle" style="margin:0 auto">Seu primeiro diagnóstico é gratuito. Sem cartão de crédito. Botões usam links configurados no Admin.</p>
     </div>
-    <div class="plans" id="plansGrid" style="grid-template-columns:repeat(4,1fr)"></div>
+    <div class="plans" id="plansGrid"></div>
     <div class="disclaimer" style="max-width:800px;margin:24px auto 0">Esta análise é estratégica e estimativa. Não constitui consultoria jurídica, fiscal, contábil ou financeira regulamentada. Para decisões críticas nesses domínios, contrate profissionais habilitados.</div>
   </div>
 </section>
