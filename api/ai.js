@@ -7,6 +7,31 @@ export default async function handler(req, res) {
 
   const { task, message, data, provider } = req.body || {};
 
+  if (task === 'enhance-prompt') {
+    const { decision } = req.body || {};
+    const result = await runAI({
+      provider,
+      system: 'Você é um especialista em decisão estratégica. Reescreva a decisão do usuário de forma mais clara, completa e estratégica, expandindo o contexto sem alterar a intenção original. Seja conciso e direto.',
+      prompt: `Reescreva esta decisão de forma mais clara e estratégica, mantendo a intenção original:\n\n"${decision || ''}"`,
+      schemaHint: 'Retorne somente JSON com: {"enhanced": "texto reescrito da decisão, em 2-4 frases, sem aspas externas"}',
+      fallback: { enhanced: decision || '' },
+    });
+    return json(res, 200, result);
+  }
+
+  if (task === 'quick-analysis') {
+    const { decision, mentors } = req.body || {};
+    const mentorNames = (mentors || []).map(m => m.name).join(', ');
+    const result = await runAI({
+      provider,
+      system: 'Você é o diretor.ai, sistema de decisão estratégica. Gere análise objetiva e prática para empresários. Seja direto e orientado a ação. Responda em português brasileiro.',
+      prompt: `Decisão: ${decision || ''}\n\nPerspectivas selecionadas: ${mentorNames || 'não especificadas'}\n\nGere análise estratégica completa.`,
+      schemaHint: 'Retorne somente JSON com: summary, diagnosis, paths (array de 3 strings), risks (array de 4 strings), recommendation, nextStep. Opcionalmente: perspectives (array de objetos {name, response}).',
+      fallback: null,
+    });
+    return json(res, 200, result);
+  }
+
   if (task === 'test') {
     const result = await runAI({
       provider,
