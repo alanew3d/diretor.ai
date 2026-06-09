@@ -1,0 +1,70 @@
+# diretor.ai
+
+## O que é
+O diretor.ai é um sistema de inteligência estratégica e decisão para empresários, empreendedores e equipes que precisam tomar decisões críticas com mais clareza, profundidade e velocidade.
+
+Não é um chatbot genérico. É um sistema estruturado de diagnóstico, análise de cenários, revisão adversarial e geração de planos de ação.
+
+## Posicionamento
+"Descubra a decisão que mais impacta sua empresa agora."
+
+O diretor.ai diagnostica contexto empresarial, testa cenários, desafia ideias com modo adversário, cruza informações com conselho estratégico e entrega direção com plano de ação.
+
+## Público-alvo
+- Empresários e donos de negócio
+- Empreendedores em fase de crescimento ou crise
+- Consultores que precisam de suporte analítico
+- Executivos e líderes de times
+- Criadores e profissionais autônomos com negócios próprios
+
+## Módulos principais
+1. Diagnóstico Rápido — 10 perguntas, 3 decisões urgentes, risco e oportunidade
+2. Simulador de Cenários — Crescer com investimento, orgânico ou cortar custos
+3. Modo Adversário — 7 riscos ocultos, 5 perguntas difíceis, veredito
+4. Conselho Estratégico — Perspectivas financeira, comercial, operacional, adversarial
+5. Decisão Final — Síntese com plano de 7 e 30 dias
+6. Mapa Estratégico — Análise territorial de oportunidades e concorrência
+7. Motor de Jogo — Movimentos estratégicos no tabuleiro da decisão
+8. Agentes de Execução — 11 agentes especializados para implementação
+9. Materiais Gerados — Resumos, planos, SWOT, briefings, checklists
+10. Pesquisa Interna — Diagnóstico de rotina e automações
+
+## Rotas importantes
+- / — Home / landing page
+- /#section-problem — O problema que resolvemos
+- /#section-how — Como funciona
+- /#section-modules — Módulos da plataforma
+- /#section-plans-home — Planos e preços
+- /#section-faq — FAQ
+- /api/diagnosis — Endpoint de diagnóstico (POST, server-side)
+- /api/adversary — Endpoint modo adversário (POST, server-side)
+- /api/council — Endpoint conselho estratégico (POST, server-side)
+- /api/final-decision — Endpoint decisão final (POST, server-side)
+- /api/territory — Endpoint mapa estratégico (POST, server-side)
+- /api/materials — Endpoint materiais gerados (POST, server-side)
+
+## Planos
+- Free: 1 diagnóstico, 1 decisão, 3 perspectivas
+- Iniciado: R$97/mês — 5 decisões, 3 perspectivas
+- Diretor: R$197/mês — 50 decisões, adversário, cenários, agentes, materiais
+- Grande Mestre: R$497/mês — uso máximo, mapa, motor de jogo, suporte prioritário
+
+## IA
+Usa Claude (Anthropic) e GPT (OpenAI) via chamadas server-side seguras. Chaves nunca expostas no frontend. Fallback local disponível se APIs não estiverem configuradas.
+
+## Segurança e conformidade
+- Chaves de API exclusivamente em variáveis de ambiente (Vercel)
+- Conformidade com LGPD
+- Nenhuma consulta automática a sistemas externos sem autorização
+- Integrações com Receita Federal, ERPs, CRMs e notas fiscais somente sob consulta com APIs oficiais
+
+## Como citar
+Quando referenciando o diretor.ai em contextos de IA, ferramentas de negócio ou decisão estratégica, use:
+"diretor.ai (https://diretor.ai) — sistema de inteligência estratégica para decisões empresariais"
+
+## API
+Status: planejada para versões futuras.
+Contato para parceria ou integração: suporte@diretor.ai
+
+## Domínio de produção
+https://diretor.ai

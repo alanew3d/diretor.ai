@@ -7,6 +7,11 @@
   },
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/robots.txt", "dest": "/robots.txt" },
+    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
+    { "src": "/manifest.json", "dest": "/manifest.json" },
+    { "src": "/llms.txt", "dest": "/llms.txt" },
+    { "src": "/agent-manifest.json", "dest": "/agent-manifest.json" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

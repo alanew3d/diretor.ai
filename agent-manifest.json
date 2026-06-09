@@ -1,0 +1,64 @@
+{
+  "name": "diretor.ai",
+  "version": "5.0",
+  "description": "Sistema de decisão estratégica para empresários, empreendedores e equipes. Diagnostica contexto, testa cenários, desafia decisões e entrega planos de ação com IA.",
+  "url": "https://diretor.ai",
+  "language": "pt-BR",
+  "capabilities": [
+    "business_diagnosis",
+    "financial_analysis",
+    "scenario_simulation",
+    "adversarial_decision_review",
+    "territory_intelligence",
+    "strategic_council",
+    "execution_agents",
+    "final_decision_plan",
+    "strategic_game_engine",
+    "materials_generation",
+    "internal_research"
+  ],
+  "audience": [
+    "entrepreneurs",
+    "business_owners",
+    "consultants",
+    "executives",
+    "creators",
+    "small_business"
+  ],
+  "modules": [
+    {"id": "diagnosis", "name": "Diagnóstico Rápido", "description": "10 perguntas para mapear contexto, dores e decisão urgente"},
+    {"id": "scenarios", "name": "Simulador de Cenários", "description": "Comparação de 3 caminhos estratégicos"},
+    {"id": "adversary", "name": "Modo Adversário", "description": "Crítica estruturada com 7 riscos e veredito"},
+    {"id": "council", "name": "Conselho Estratégico", "description": "Perspectivas especializadas sobre a decisão"},
+    {"id": "final", "name": "Decisão Final", "description": "Síntese com plano de 7 e 30 dias"},
+    {"id": "territory", "name": "Mapa Estratégico", "description": "Análise territorial de oportunidades"},
+    {"id": "game", "name": "Motor de Jogo", "description": "Movimentos estratégicos no tabuleiro da decisão"},
+    {"id": "agents", "name": "Agentes de Execução", "description": "11 agentes para implementar decisões"},
+    {"id": "materials", "name": "Materiais Gerados", "description": "Documentos estratégicos exportáveis"},
+    {"id": "research", "name": "Pesquisa Interna", "description": "Diagnóstico de rotina e automações"}
+  ],
+  "api_endpoints": {
+    "diagnosis": "/api/diagnosis",
+    "adversary": "/api/adversary",
+    "council": "/api/council",
+    "final_decision": "/api/final-decision",
+    "territory": "/api/territory",
+    "materials": "/api/materials",
+    "ai_general": "/api/ai"
+  },
+  "api_status": "internal_only",
+  "api_public_status": "planned",
+  "pricing": {
+    "free": {"price": 0, "currency": "BRL", "decisions": 1},
+    "iniciado": {"price": 97, "currency": "BRL", "period": "monthly", "decisions": 5},
+    "diretor": {"price": 197, "currency": "BRL", "period": "monthly", "decisions": 50},
+    "grande_mestre": {"price": 497, "currency": "BRL", "period": "monthly", "decisions": 999}
+  },
+  "compliance": {
+    "lgpd": true,
+    "no_automatic_external_integrations": true,
+    "api_keys_server_side_only": true
+  },
+  "contact": "suporte@diretor.ai",
+  "repository": "private"
+}
