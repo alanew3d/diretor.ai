@@ -165,6 +165,24 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
 .mentor-card h4{font-size:13px;font-weight:700;margin:0 0 2px}.mentor-card small{font-size:11px;color:var(--dim)}
 .lock-badge{position:absolute;top:8px;right:8px;font-size:11px;color:var(--dim)}.mentor-count{font-size:13px;color:var(--dim)}
 
+/* TEAM AGENTS */
+.agents-modal-card{width:min(900px,100%);max-height:94vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line2);background:var(--bg3);border-radius:24px;box-shadow:var(--shadow)}
+.agents-grid-modal{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.team-agent-card{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:16px;transition:.15s;cursor:pointer;position:relative}
+.team-agent-card:hover{border-color:var(--line2);transform:translateY(-2px)}
+.team-agent-card .ta-ico{font-size:24px;margin-bottom:8px}
+.team-agent-card .ta-team{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase}
+.team-agent-card h4{font-size:14px;font-weight:700;margin:4px 0 5px}
+.team-agent-card p{font-size:12px;color:var(--dim);margin:0;line-height:1.45}
+.ta-deliverables{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.ta-deliverables li{font-size:12px;color:var(--muted);margin-bottom:3px}
+.agents-banner{border:1px solid var(--line2);background:linear-gradient(135deg,rgba(200,168,75,.12),rgba(74,144,217,.06));border-radius:18px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:14px}
+.agents-banner-text{flex:1;min-width:220px}
+.agents-banner-text b{font-size:15px}
+.agents-banner-text small{color:var(--dim);display:block;margin-top:2px;line-height:1.45}
+@media(max-width:768px){.agents-grid-modal{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.agents-grid-modal{grid-template-columns:1fr}}
+
 /* SHARED */
 .btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:11px 16px;font-weight:700;display:inline-flex;align-items:center;gap:8px;text-decoration:none;cursor:pointer;transition:.18s}.btn:hover{background:var(--card2);border-color:var(--line2)}
 .btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080808;border-color:transparent}.btn.gold:hover{transform:translateY(-1px)}
@@ -289,6 +307,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
       <button class="module-link" onclick="showPage('app','scenarios')">Cenários</button>
       <button class="module-link" onclick="showPage('app','adversary')">Modo Adversário</button>
       <button class="module-link" onclick="showPage('app','final')">Decisão Final</button>
+      <button class="module-link" onclick="openTeamAgentsModal()" style="border-color:var(--line2);color:var(--gold)">🤖 Agentes de Equipe</button>
     </div>
 
     <p class="simple-promise"><strong>Digite uma decisão. Receba direção.</strong><br>Análise estratégica · Conselho de mentores · Mapa territorial</p>
@@ -315,6 +334,13 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
           <button class="btn terr" onclick="openTerritoryModal()">🌐 Análise territorial</button>
           <button class="btn ghost" onclick="showPage('plans')">Ver planos</button>
         </div>
+        <div class="agents-banner" style="margin-top:18px;text-align:left">
+          <div class="agents-banner-text">
+            <b>🤖 Leve esta decisão para a execução com Agentes de Equipe</b>
+            <small>No Grande Mestre, cada equipe da empresa recebe um agente de IA com entregáveis semanais: comercial, marketing, financeiro, operações, RH, atendimento e mais 6.</small>
+          </div>
+          <button class="btn gold small" onclick="openTeamAgentsModal()">Conhecer agentes</button>
+        </div>
       </div>
     </div>
   </div>
@@ -333,6 +359,14 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
       <div class="mapping-feature"><div class="mapping-ico">🎭</div><h3>Cenários</h3><p>Compare 3 caminhos: crescer com investimento, orgânico ou cortar custos.</p></div>
       <div class="mapping-feature"><div class="mapping-ico">📊</div><h3>Análise Financeira</h3><p>Margem, CAC, LTV, runway, payback e projeções de crescimento.</p></div>
       <div class="mapping-feature"><div class="mapping-ico">📋</div><h3>Materiais Gerados</h3><p>Resumo executivo, plano de ação, SWOT, roadmap e briefings exportáveis.</p></div>
+      <div class="mapping-feature" onclick="openTeamAgentsModal()" style="border-color:var(--line2);cursor:pointer"><div class="mapping-ico">🤖</div><h3>Agentes para Equipes <span class="badge gold" style="font-size:8px">Grande Mestre</span></h3><p>12 agentes de IA incorporados em cada equipe: vendas, marketing, financeiro, operações, RH e mais.</p></div>
+    </div>
+    <div class="agents-banner">
+      <div class="agents-banner-text">
+        <b>🤖 Agentes de IA para todas as equipes da empresa</b>
+        <small>No plano Grande Mestre, cada equipe ganha um agente especializado com entregáveis semanais prontos: scripts comerciais, calendário de marketing, fluxo de caixa, checklists operacionais, onboarding de RH e mais.</small>
+      </div>
+      <button class="btn gold small" onclick="openTeamAgentsModal()">Conhecer os 12 agentes</button>
     </div>
     <div class="mapping-cta">
       <h2 style="font-family:var(--display);font-size:28px;margin:0 0 10px">Pronto para decidir melhor?</h2>
@@ -542,7 +576,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
     </div>
     <div class="territory-modal-body">
       <div class="terr-free-note">
-        Esta análise gratuita mostra uma prévia do que o diretor.ai pode transformar em documentação estratégica completa. Limite: <span id="terrUsageDisplay">0/2</span> análises grátis usadas.
+        Análise gratuita com <b style="color:var(--gold)">roteiro de exploração real no Google Maps</b>: concorrentes, líderes da região, parceiros e polos de demanda — com buscas prontas para abrir e investigar. Limite: <span id="terrUsageDisplay">0/2</span> análises grátis usadas.
       </div>
 
       <!-- TWO-COLUMN LAYOUT -->
@@ -696,6 +730,30 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
   </div>
 </div>
 
+<!-- TEAM AGENTS MODAL -->
+<div class="modal" id="teamAgentsModal">
+  <div class="agents-modal-card">
+    <div class="mentor-modal-header">
+      <div>
+        <h2 class="title" style="margin:0 0 3px">🤖 Agentes de IA para todas as equipes <span class="badge gold" style="font-size:9px;vertical-align:middle">Grande Mestre</span></h2>
+        <p style="font-size:13px;color:var(--dim);margin:0">12 agentes especializados prontos para incorporar em cada equipe da sua empresa: vendas, marketing, financeiro, operações, RH, atendimento e mais.</p>
+      </div>
+      <button class="mentor-modal-close" onclick="closeTeamAgentsModal()">×</button>
+    </div>
+    <div class="mentor-modal-body">
+      <div id="teamAgentsGrid" class="agents-grid-modal"></div>
+      <div id="teamAgentDetail"></div>
+    </div>
+    <div class="mentor-modal-footer">
+      <span class="mentor-count" id="teamAgentsPlanNote">Disponível no plano Grande Mestre</span>
+      <div class="cta-row">
+        <button class="btn gold small" onclick="closeTeamAgentsModal();showPage('plans')">Ver planos</button>
+        <button class="btn ghost small" onclick="closeTeamAgentsModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- UPGRADE MODAL -->
 <div class="modal" id="upgradeModal">
   <div class="modal-card">
@@ -717,17 +775,33 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
 const STORAGE={users:'dai4_users',current:'dai4_current',payments:'dai4_payments',texts:'dai4_texts',ai:'dai4_ai',state:'dai4_state',admin:'dai4_admin',mentors:'dai4_mentors',terrUsed:'dai4_terr_used',terrLimits:'dai4_terr_limits',mapsAdmin:'dai4_maps_admin'};
 
 const PLAN_LIMITS={
-  free:{name:'Free',decisions:1,diagnosis:1,perspectives:3,adversary:false,scenarios:false,final:true,territoryAnalyses:2},
-  iniciado:{name:'Iniciado',decisions:5,diagnosis:99,perspectives:3,adversary:false,scenarios:false,final:true,territoryAnalyses:10},
-  diretor:{name:'Diretor',decisions:50,diagnosis:99,perspectives:5,adversary:true,scenarios:true,final:true,territoryAnalyses:50},
-  grande_mestre:{name:'Grande Mestre',decisions:999,perspectives:8,diagnosis:99,adversary:true,scenarios:true,final:true,territoryAnalyses:999}
+  free:{name:'Free',decisions:1,diagnosis:1,perspectives:3,adversary:false,scenarios:false,final:true,territoryAnalyses:2,teamAgents:false},
+  iniciado:{name:'Iniciado',decisions:5,diagnosis:99,perspectives:3,adversary:false,scenarios:false,final:true,territoryAnalyses:10,teamAgents:false},
+  diretor:{name:'Diretor',decisions:50,diagnosis:99,perspectives:5,adversary:true,scenarios:true,final:true,territoryAnalyses:50,teamAgents:false},
+  grande_mestre:{name:'Grande Mestre',decisions:999,perspectives:8,diagnosis:99,adversary:true,scenarios:true,final:true,territoryAnalyses:999,teamAgents:true}
 };
 
 const PLAN_COPY=[
-  {id:'free',name:'Free',label:'Grátis',desc:'Para experimentar.',features:['1 diagnóstico','1 decisão','3 perspectivas','2 análises territoriais grátis'],featured:false},
+  {id:'free',name:'Free',label:'Grátis',desc:'Para experimentar.',features:['1 diagnóstico','1 decisão','3 perspectivas','2 análises territoriais grátis','Exploração via Google Maps'],featured:false},
   {id:'iniciado',name:'Iniciado',price:'97',label:'97',desc:'Para decisões mensais.',features:['5 decisões/mês','3 perspectivas','Diagnóstico completo','10 análises territoriais/mês'],featured:false},
   {id:'diretor',name:'Diretor',price:'197',label:'197',desc:'Para quem decide com frequência.',features:['50 decisões/mês','5 perspectivas','Adversário e cenários','Conselho completo','50 análises territoriais/mês'],featured:true},
-  {id:'grande_mestre',name:'Grande Mestre',price:'497',label:'497',desc:'Para empresas e consultores.',features:['Uso máximo','8 perspectivas','Tudo liberado','Análises territoriais ilimitadas','Suporte prioritário'],featured:false}
+  {id:'grande_mestre',name:'Grande Mestre',price:'497',label:'497',desc:'Para empresas e equipes inteiras.',features:['Uso máximo','8 perspectivas','Tudo liberado','Análises territoriais ilimitadas','🤖 Agentes de IA para todas as equipes','Suporte prioritário'],featured:false,highlight:'agentes'}
+];
+
+/* ===== TEAM AGENTS (Grande Mestre) ===== */
+const TEAM_AGENTS=[
+  {id:'commercial',ico:'💼',team:'Comercial',name:'Agente Comercial',desc:'Scripts de abordagem, funil de conversão, respostas a objeções e follow-ups prontos para o time de vendas.',deliverables:['Script de prospecção personalizado','Sequência de follow-up de 5 toques','Matriz de objeções e respostas','Metas semanais com critérios claros']},
+  {id:'marketing',ico:'📣',team:'Marketing',name:'Agente de Marketing',desc:'Calendário de conteúdo, campanhas locais, copy para anúncios e posicionamento da marca.',deliverables:['Calendário de conteúdo 30 dias','Copy para 10 anúncios','Estratégia de mídia local','Briefing de campanha pronto']},
+  {id:'financial',ico:'💰',team:'Financeiro',name:'Agente Financeiro',desc:'Análise de margem, runway, fluxo de caixa, precificação e alertas de risco para o time financeiro.',deliverables:['Modelo de fluxo de caixa semanal','Análise de margem por produto','Alerta de runway crítico','Cenários de corte e investimento']},
+  {id:'operational',ico:'⚙️',team:'Operações',name:'Agente Operacional',desc:'Mapeamento de gargalos, checklists de processo, rotinas padronizadas e automações sugeridas.',deliverables:['Checklist operacional diário','Mapa de gargalos com prioridade','SOP de processos críticos','Plano de automação por etapa']},
+  {id:'hr',ico:'👥',team:'Pessoas / RH',name:'Agente de Pessoas',desc:'Roteiros de 1:1, onboarding estruturado, perfis de contratação e rituais de cultura para o time de gente.',deliverables:['Roteiro de entrevista por perfil','Plano de onboarding 30 dias','Pauta de 1:1 quinzenal','Pesquisa de clima pronta']},
+  {id:'support',ico:'🤝',team:'Atendimento',name:'Agente de Atendimento',desc:'Respostas padronizadas, fluxos de resolução, recuperação de clientes insatisfeitos e métricas de satisfação.',deliverables:['Playbook de respostas WhatsApp','Fluxo de resolução de reclamação','Script de recuperação de cliente','Métricas NPS/CSAT para acompanhar']},
+  {id:'product',ico:'📦',team:'Produto',name:'Agente de Produto',desc:'Priorização de roadmap, validação de funcionalidades, pesquisa com usuários e análise de feedback.',deliverables:['Matriz de priorização RICE','Roteiro de entrevista com usuário','Análise de feedback estruturada','Roadmap trimestral sugerido']},
+  {id:'territorial',ico:'🌐',team:'Expansão',name:'Agente Territorial',desc:'Análise de regiões, rotas comerciais, oportunidades de expansão e monitoramento de concorrência local.',deliverables:['Relatório territorial por região','Rota comercial otimizada','Monitor de concorrência mensal','Plano de entrada em nova região']},
+  {id:'communication',ico:'💬',team:'Comunicação',name:'Agente de Comunicação',desc:'Mensagens internas, comunicados, apresentações para sócios e alinhamento entre equipes.',deliverables:['Comunicado interno pronto','Apresentação executiva','Pauta de reunião semanal','Resumo para stakeholders']},
+  {id:'crisis',ico:'🚨',team:'Gestão de Crise',name:'Agente de Crise',desc:'Protocolo de ação imediata para caixa crítico, perda de cliente-chave ou risco reputacional.',deliverables:['Protocolo de crise em 5 passos','Plano de comunicação de crise','Priorização de pagamentos','Checklist de contenção 48h']},
+  {id:'research',ico:'🔍',team:'Inteligência',name:'Agente de Pesquisa',desc:'Coleta estruturada de dados de mercado, concorrência, clientes e tendências do setor.',deliverables:['Dossiê de concorrência','Pesquisa de mercado estruturada','Monitor de tendências do setor','Mapa de oportunidades']},
+  {id:'routine',ico:'📅',team:'Gestão',name:'Agente de Rotina',desc:'Calendário de gestão, rituais semanais, pautas de reunião e acompanhamento de metas para líderes.',deliverables:['Agenda de rituais de gestão','Dashboard semanal de metas','Pauta de reunião de resultado','Checklist do líder']}
 ];
 
 const DEFAULT_PAYMENTS={mpIniciado:'',mpDiretor:'',mpGrandeMestre:'',stripeIniciado:'',stripeDiretor:'',stripeGrandeMestre:'',whatsapp:'https://wa.me/5500000000000',pix:'',activationMessage:'Envie comprovante e email para ativação.'};
@@ -898,7 +972,7 @@ function renderAccountPage(){
 /* ===== PLANS ===== */
 function renderPlans(){
   const g=$('plansGrid');if(!g)return;
-  g.innerHTML=PLAN_COPY.map(p=>`<div class="plan ${p.featured?'featured':''}">${p.featured?'<span class="badge gold" style="margin-bottom:8px">Recomendado</span><br>':''}<h3>${p.name}</h3><p class="plan-desc">${p.desc}</p><div class="price">${!p.price?'<small style="font-size:22px;font-family:var(--font)">Grátis</small>':`<sup>R$</sup>${p.label}<small>/mês</small>`}</div><ul>${p.features.map(f=>`<li>${f}</li>`).join('')}</ul><button class="btn ${p.featured?'gold':''}" style="width:100%" onclick="payPlan('${p.id}')">${p.id==='free'?'Começar grátis':'Assinar '+p.name}</button></div>`).join('');
+  g.innerHTML=PLAN_COPY.map(p=>`<div class="plan ${p.featured?'featured':''}">${p.featured?'<span class="badge gold" style="margin-bottom:8px">Recomendado</span><br>':''}<h3>${p.name}</h3><p class="plan-desc">${p.desc}</p><div class="price">${!p.price?'<small style="font-size:22px;font-family:var(--font)">Grátis</small>':`<sup>R$</sup>${p.label}<small>/mês</small>`}</div><ul>${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>${p.highlight==='agentes'?`<button class="btn small" style="width:100%;margin-bottom:8px;border-color:var(--line2);color:var(--gold)" onclick="openTeamAgentsModal()">🤖 Conhecer os 12 agentes de equipe</button>`:''}<button class="btn ${p.featured?'gold':''}" style="width:100%" onclick="payPlan('${p.id}')">${p.id==='free'?'Começar grátis':'Assinar '+p.name}</button></div>`).join('');
 }
 function payPlan(id){if(id==='free'){if(!currentUser)showPage('register');else{showToast('Você já tem conta.');showPage('app','diagnosis')}return}const map={iniciado:['mpIniciado','stripeIniciado'],diretor:['mpDiretor','stripeDiretor'],grande_mestre:['mpGrandeMestre','stripeGrandeMestre']};const [mp,st]=(map[id]||[]);const link=payments[mp]||payments[st];if(link){window.open(link,'_blank');return}if(payments.pix){navigator.clipboard?.writeText(payments.pix);showToast('Pix copiado.');return}openWhatsApp('Quero assinar o plano '+id+' do diretor.ai.')}
 function openWhatsApp(msg='Quero falar sobre o diretor.ai.'){const url=payments.whatsapp||texts.whatsapp||DEFAULT_PAYMENTS.whatsapp;window.open(url+(url.includes('?')?'&':'?')+'text='+encodeURIComponent(msg),'_blank')}
@@ -1044,22 +1118,66 @@ function buildTerritoryPrompt(data){
   return `Análise territorial para ${data.businessType} em ${data.region}, raio de ${data.radius}km. Objetivo: ${data.objective}.`;
 }
 
+/* ===== GOOGLE MAPS EXPLORATION (free — public URLs, no API key) ===== */
+function openGoogleMapsSearch(query,region){
+  const q=encodeURIComponent(`${query} em ${region}`);
+  window.open(`https://www.google.com/maps/search/${q}`,'_blank','noopener');
+}
+function buildExplorationRoutes(biz,region){
+  const bizL=(biz||'').toLowerCase();
+  const routes=[
+    {label:`🔍 Concorrentes: "${biz}"`,query:biz,desc:'Veja quantos existem, avaliações, fotos e horários'},
+    {label:'⭐ Líderes da região (4,5+ estrelas)',query:`${biz} melhor avaliado`,desc:'Estude quem domina: o que fazem bem e o que os clientes elogiam'}
+  ];
+  if(/clínica|estética|saúde|dentista|fisio|terapia/.test(bizL)){
+    routes.push({label:'🤝 Parceiros: academias e salões',query:'academia salão de beleza',desc:'Negócios complementares para parcerias de indicação'});
+    routes.push({label:'🏢 Polos de demanda: condomínios e empresas',query:'condomínio residencial empresa',desc:'Onde está concentrado o público com poder de compra'});
+  }else if(/restaurante|café|pizzaria|lanch|food|padaria|bar/.test(bizL)){
+    routes.push({label:'🏢 Fluxo: escritórios e coworkings',query:'escritório coworking',desc:'Demanda de almoço corporativo e delivery'});
+    routes.push({label:'🤝 Vizinhos estratégicos',query:'academia faculdade hospital',desc:'Geradores de fluxo constante perto do ponto'});
+  }else if(/loja|varejo|pet|moda|farmácia/.test(bizL)){
+    routes.push({label:'🏬 Âncoras de fluxo: mercados e shoppings',query:'supermercado shopping',desc:'Pontos que puxam movimento para a região'});
+    routes.push({label:'🤝 Lojas complementares',query:'comércio local',desc:'Vizinhança comercial que atrai o mesmo público'});
+  }else{
+    routes.push({label:'🤝 Negócios complementares',query:`serviços próximos a ${biz}`,desc:'Possíveis parceiros de indicação na região'});
+    routes.push({label:'🏢 Centros comerciais e empresariais',query:'centro empresarial comércio',desc:'Onde o público-alvo circula e trabalha'});
+  }
+  routes.push({label:'📍 Visão geral da região',query:region,desc:'Explore o bairro: vias, acessos, estacionamento e entorno'});
+  return routes;
+}
+function renderExplorationRoutes(biz,region){
+  const routes=buildExplorationRoutes(biz,region);
+  return`<div class="terr-section"><div class="terr-section-label">🌐 Explore agora no Google Maps — grátis</div>
+    <p class="terr-section-body" style="margin-bottom:10px">Roteiro de exploração real: cada botão abre o Google Maps com a busca pronta para a sua região. Use junto com a análise abaixo.</p>
+    <div style="display:grid;gap:7px">${routes.map(rt=>`
+      <button class="btn small" style="justify-content:flex-start;text-align:left;width:100%" onclick="openGoogleMapsSearch('${escapeHtml(rt.query).replace(/'/g,"\\'")}','${escapeHtml(region).replace(/'/g,"\\'")}')">
+        <span style="flex:1;min-width:0"><b style="font-size:13px">${escapeHtml(rt.label)}</b><br><small style="color:var(--dim);font-weight:400">${escapeHtml(rt.desc)}</small></span>
+        <span style="color:var(--gold)">↗</span>
+      </button>`).join('')}
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--dim);line-height:1.5">💡 <b>Checklist de campo:</b> conte os concorrentes · anote notas e nº de avaliações · veja fotos dos 3 líderes · leia as reclamações (lacunas!) · observe horários de pico no Google.</div>
+  </div>`;
+}
+
 function renderTerritoryResult(r,data){
   const s=v=>`<p class="terr-section-body">${escapeHtml(v||'')}</p>`;
-  const mapNote=data?.selectedByMap?`<div class="terr-data-note" style="border-color:rgba(200,168,75,.25);background:rgba(200,168,75,.05)">🌐 Você marcou uma região visualmente no mapa. Nesta versão inicial, a posição é usada como referência visual da análise. Na versão com Google Maps/Places, essa seleção poderá ser cruzada com estabelecimentos reais, concorrentes e oportunidades comerciais.</div>`:'';
+  const mapNote=data?.selectedByMap?`<div class="terr-data-note" style="border-color:rgba(200,168,75,.25);background:rgba(200,168,75,.05)">🌐 Você marcou uma região visualmente no mapa. Na versão com Google Places, essa seleção será cruzada com estabelecimentos reais automaticamente.</div>`:'';
   return`<div class="territory-result-wrap">
     ${mapNote}
+    ${renderExplorationRoutes(data?.businessType||'',data?.region||'')}
     <div class="terr-section"><div class="terr-section-label">1. Resumo da região</div>${s(r.summary)}</div>
     <div class="terr-section"><div class="terr-section-label">2. Concorrência provável</div>${s(r.competitors)}</div>
     <div class="terr-section"><div class="terr-section-label">3. Lacunas possíveis</div>${s(r.gaps)}</div>
     <div class="terr-section"><div class="terr-section-label">4. Potenciais clientes</div>${s(r.potentialClients)}</div>
     <div class="terr-section"><div class="terr-section-label">5. Parceiros comerciais</div>${s(r.partners)}</div>
     <div class="terr-section"><div class="terr-section-label">6. Oportunidades iniciais</div>${s(r.opportunities)}</div>
-    <div class="terr-section"><div class="terr-section-label">7. Próximo passo recomendado</div>${s(r.nextStep)}</div>
-    <div class="terr-data-note">Prévia estratégica — a versão de produção poderá cruzar estes dados com Google Maps, estabelecimentos reais, avaliações e oportunidades comerciais via Google Places API.</div>
+    ${r.fieldChecklist?`<div class="terr-section"><div class="terr-section-label">7. O que validar em campo</div>${s(r.fieldChecklist)}</div>`:''}
+    ${r.digitalSignals?`<div class="terr-section"><div class="terr-section-label">8. Sinais digitais para monitorar</div>${s(r.digitalSignals)}</div>`:''}
+    <div class="terr-section"><div class="terr-section-label">${r.fieldChecklist?'9':'7'}. Próximo passo recomendado</div>${s(r.nextStep)}</div>
+    <div class="terr-data-note">Prévia estratégica — nos planos avançados, estes dados são cruzados automaticamente com Google Places: contagem real de concorrentes, avaliações, horários de pico e densidade comercial da região.</div>
     <div class="terr-upsell">
       <h3>Transforme esta análise em documentação estratégica completa</h3>
-      <p>Nos planos pagos, estes dados territoriais podem ser cruzados com análise de concorrência real, mapa de oportunidades, conselho de mentores, plano de ação e relatório exportável.</p>
+      <p>Nos planos pagos: concorrência real via Google Places, mapa de oportunidades, conselho de mentores, plano de ação, agentes de execução para sua equipe e relatório exportável.</p>
       <div class="cta-row" style="justify-content:center">
         <button class="btn gold" onclick="useTerritoryWithDecision();closeTerritoryModal()">Gerar documentação completa</button>
         <button class="btn" onclick="useTerritoryWithDecision();closeTerritoryModal();setTimeout(()=>openMentorModal(),200)">Adicionar conselho de mentores</button>
@@ -1118,6 +1236,8 @@ function localTerritoryAnalysis(d){
     summary:`Análise inicial para ${biz} em ${region}, raio de ${radius}km. Objetivo: ${obj}. Análise baseada em padrões estratégicos setoriais.`,
     competitors,gaps,potentialClients,partners,opportunities,
     risks:`Principais riscos em ${region} para ${biz}: escolher ponto sem validação presencial, subestimar concorrência estabelecida, superestimar demanda sem pesquisa primária e entrar em mercado saturado sem diferenciação clara.`,
+    fieldChecklist:`Use o roteiro do Google Maps acima e valide em campo: (1) conte os concorrentes diretos no raio de ${radius}km; (2) anote a nota média e o número de avaliações dos 3 líderes; (3) leia as 10 reclamações mais recentes deles — cada reclamação repetida é uma lacuna sua para explorar; (4) observe os horários de pico no painel do Google; (5) verifique estacionamento, acesso e fluxo de pedestres em 2 horários diferentes.`,
+    digitalSignals:`Monitore semanalmente: novas avaliações dos concorrentes no Google Maps, novos estabelecimentos do segmento abrindo na região, variação de preço dos líderes e perguntas frequentes no perfil deles (indicam demanda não atendida). Configure um alerta no Google para "${biz} ${region}".`,
     nextStep,_simulated:true
   };
 }
@@ -1394,7 +1514,7 @@ async function finishDiagnosis(){
 }
 function renderDiagnosisResult(){
   const r=appState.diagnosis.result;if(!r||!$('diagnosisBox'))return;
-  $('diagnosisBox').innerHTML=`<div class="result-grid"><div class="result-card full"><span class="badge gold">Diagnóstico</span><h3 style="font-family:var(--display);font-size:20px;margin:10px 0 6px">${escapeHtml(r.mainDiagnosis||'')}</h3><p>${escapeHtml(r.summary||'')}</p></div><div class="result-card"><h4>3 decisões urgentes</h4><ol>${(r.urgentDecisions||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol></div><div class="result-card"><h4>Risco principal</h4><p>${escapeHtml(r.dangerousRisk||'')}</p></div><div class="result-card"><h4>Oportunidade</h4><p>${escapeHtml(r.clearOpportunity||'')}</p></div><div class="result-card"><h4>Próximo passo</h4><p>${escapeHtml(r.nextStep||'')}</p></div></div><div class="cta-row" style="margin-top:12px"><button class="btn gold" onclick="diagToCouncil()">Levar ao Conselho</button><button class="btn" onclick="setModule('adversary');if($('adversaryDecision'))$('adversaryDecision').value=appState.diagnosis.answers.currentDecision||''">Atacar decisão</button></div>`;
+  $('diagnosisBox').innerHTML=`<div class="result-grid"><div class="result-card full"><span class="badge gold">Diagnóstico</span><h3 style="font-family:var(--display);font-size:20px;margin:10px 0 6px">${escapeHtml(r.mainDiagnosis||'')}</h3><p>${escapeHtml(r.summary||'')}</p></div><div class="result-card"><h4>3 decisões urgentes</h4><ol>${(r.urgentDecisions||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol></div><div class="result-card"><h4>Risco principal</h4><p>${escapeHtml(r.dangerousRisk||'')}</p></div><div class="result-card"><h4>Oportunidade</h4><p>${escapeHtml(r.clearOpportunity||'')}</p></div><div class="result-card"><h4>Próximo passo</h4><p>${escapeHtml(r.nextStep||'')}</p></div></div><div class="cta-row" style="margin-top:12px"><button class="btn gold" onclick="diagToCouncil()">Levar ao Conselho</button><button class="btn" onclick="setModule('adversary');if($('adversaryDecision'))$('adversaryDecision').value=appState.diagnosis.answers.currentDecision||''">Atacar decisão</button><button class="btn terr" onclick="openTerritoryModal()">🌐 Mapear território</button></div>`;
 }
 function diagToCouncil(){setModule('council');if($('councilQuestion'))$('councilQuestion').value=`Diagnóstico: ${appState.diagnosis.result?.mainDiagnosis||''}\nDecisão: ${appState.diagnosis.answers.currentDecision||''}`}
 function localDiagnosis(a){const p=a.problem||'crescimento',r=a.runway||'';const cash=p==='caixa'||r.includes('Menos')||r.includes('1 a 3');return{mainDiagnosis:cash?'Proteger caixa é a prioridade antes de qualquer crescimento.':'Transformar a decisão adiada em ação mensurável é o passo mais crítico.',summary:`Pressão em ${p}. Prioridade: reduzir incerteza e executar teste em 7 dias.`,urgentDecisions:['Definir a decisão que não pode continuar adiada','Escolher métrica de sucesso para 7 dias','Pausar o que consome caixa sem gerar aprendizado'],dangerousRisk:cash?'Crescer sem conhecer margem e runway real.':'Confundir planejamento com progresso.',clearOpportunity:'Simplificar oferta e canal para testar com clientes reais.',nextStep:'Em 48h: documente números, escolha hipótese e defina critério de sucesso.'}}
@@ -1423,7 +1543,7 @@ async function runCouncil(){
 }
 
 /* ===== FINAL ===== */
-async function runFinalDecision(){if($('finalResult'))$('finalResult').innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span></div>';let r=await aiCall('/api/final-decision',{diagnosis:appState.diagnosis,scenario:appState.scenario,adversary:appState.adversary,council:appState.council});if(!r)r={recommendation:'Executar versão menor e mensurável com limite de caixa.',why:'Reduz incerteza sem apostar em premissas não provadas.',risks:['Caixa','Foco','Canal'],next7:['Hipótese','Métrica','Teste'],next30:['Revisar','Ajustar','Escalar'],metrics:['Margem','CAC','Conversão'],avoid:['Contratar antes','Complexidade'],plan:['Dia 1: premissas','Dias 2-5: teste','Dia 7: decisão','Dia 30: escalar']};appState.final=r;saveState();const LABELS={recommendation:'1. Recomendação',why:'2. Por que agora',risks:'3. Riscos',next7:'4. Plano 7 dias',next30:'5. Plano 30 dias',metrics:'6. Métricas',avoid:'7. O que evitar',plan:'8. Plano de ação'};if($('finalResult'))$('finalResult').innerHTML=`<div class="result-grid">${Object.keys(LABELS).map(k=>`<div class="result-card ${k==='recommendation'||k==='plan'?'full':''}"><h4>${LABELS[k]}</h4>${Array.isArray(r[k])?`<ul>${r[k].map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>`:`<p>${escapeHtml(r[k]||'')}</p>`}</div>`).join('')}</div>`}
+async function runFinalDecision(){if($('finalResult'))$('finalResult').innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span></div>';let r=await aiCall('/api/final-decision',{diagnosis:appState.diagnosis,scenario:appState.scenario,adversary:appState.adversary,council:appState.council});if(!r)r={recommendation:'Executar versão menor e mensurável com limite de caixa.',why:'Reduz incerteza sem apostar em premissas não provadas.',risks:['Caixa','Foco','Canal'],next7:['Hipótese','Métrica','Teste'],next30:['Revisar','Ajustar','Escalar'],metrics:['Margem','CAC','Conversão'],avoid:['Contratar antes','Complexidade'],plan:['Dia 1: premissas','Dias 2-5: teste','Dia 7: decisão','Dia 30: escalar']};appState.final=r;saveState();const LABELS={recommendation:'1. Recomendação',why:'2. Por que agora',risks:'3. Riscos',next7:'4. Plano 7 dias',next30:'5. Plano 30 dias',metrics:'6. Métricas',avoid:'7. O que evitar',plan:'8. Plano de ação'};if($('finalResult'))$('finalResult').innerHTML=`<div class="result-grid">${Object.keys(LABELS).map(k=>`<div class="result-card ${k==='recommendation'||k==='plan'?'full':''}"><h4>${LABELS[k]}</h4>${Array.isArray(r[k])?`<ul>${r[k].map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>`:`<p>${escapeHtml(r[k]||'')}</p>`}</div>`).join('')}</div><div class="agents-banner" style="margin-top:14px"><div class="agents-banner-text"><b>🤖 Quem executa este plano?</b><small>No Grande Mestre, cada equipe recebe um agente de IA com os entregáveis deste plano já distribuídos: comercial, marketing, financeiro, operações e mais.</small></div><button class="btn gold small" onclick="openTeamAgentsModal()">Distribuir para as equipes</button></div>`}
 
 /* ===== ADMIN ===== */
 function adminLogin(){const p=$('adminPassword')?.value;if(p==='admin2026'||p===localStorage.getItem('dai4_admin_password')){store(STORAGE.admin,{ok:true});showPage('admin');renderUsersAdmin();showToast('Admin liberado.')}else showToast('Credenciais incorretas. Demo: admin2026')}
@@ -1439,6 +1559,71 @@ function saveTextsAdmin(){texts={...texts,whatsapp:$('textWhatsapp').value,email
 function renderUsersAdmin(){const el=$('usersAdmin');if(!el)return;if(!users.length){el.innerHTML='<p style="color:var(--dim)">Nenhum usuário local.</p>';return}el.innerHTML=users.map((u,i)=>`<div class="account-card"><b>${escapeHtml(u.name)}</b> — ${escapeHtml(u.email)}<br><small>${u.plan||'free'} · ${u.decisionsUsed||0} decisões · ${u.territoryUsed||0} territoriais</small><div class="cta-row" style="margin-top:8px"><select class="select" style="max-width:200px" onchange="promoteUser(${i},this.value)"><option value="free">Free</option><option value="iniciado">Iniciado</option><option value="diretor">Diretor</option><option value="grande_mestre">Grande Mestre</option></select><button class="btn small" onclick="resetUser(${i})">Zerar uso</button></div></div>`).join('')}
 function promoteUser(i,plan){users[i].plan=plan;users[i].decisionsUsed=0;users[i].territoryUsed=0;store(STORAGE.users,users);if(currentUser?.email===users[i].email){currentUser.plan=plan;currentUser.decisionsUsed=0;currentUser.territoryUsed=0;saveCurrentUser();updateAuth()}renderUsersAdmin();showToast('Plano atualizado.')}
 function resetUser(i){users[i].decisionsUsed=0;users[i].diagnosisUsed=0;users[i].territoryUsed=0;store(STORAGE.users,users);if(currentUser?.email===users[i].email){currentUser.decisionsUsed=0;currentUser.diagnosisUsed=0;currentUser.territoryUsed=0;saveCurrentUser();updateUsage()}renderUsersAdmin();showToast('Uso zerado.')}
+
+/* ===== TEAM AGENTS (Grande Mestre) ===== */
+function openTeamAgentsModal(){
+  renderTeamAgentsGrid();
+  const note=$('teamAgentsPlanNote');
+  if(note)note.textContent=getPlan().teamAgents?'✓ Incluído no seu plano Grande Mestre':'Disponível no plano Grande Mestre — R$497/mês';
+  if($('teamAgentDetail'))$('teamAgentDetail').innerHTML='';
+  $('teamAgentsModal').classList.add('open');
+}
+function closeTeamAgentsModal(){$('teamAgentsModal').classList.remove('open')}
+function renderTeamAgentsGrid(){
+  const el=$('teamAgentsGrid');if(!el)return;
+  el.innerHTML=TEAM_AGENTS.map(a=>`
+    <div class="team-agent-card" onclick="showTeamAgentDetail('${a.id}')">
+      <div class="ta-ico">${a.ico}</div>
+      <div class="ta-team">${escapeHtml(a.team)}</div>
+      <h4>${escapeHtml(a.name)}</h4>
+      <p>${escapeHtml(a.desc)}</p>
+    </div>`).join('');
+}
+function showTeamAgentDetail(id){
+  const a=TEAM_AGENTS.find(x=>x.id===id);if(!a)return;
+  const el=$('teamAgentDetail');if(!el)return;
+  const unlocked=getPlan().teamAgents;
+  el.innerHTML=`<div class="account-card" style="margin-top:14px;border-color:var(--line2)">
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <span style="font-size:30px">${a.ico}</span>
+      <div style="flex:1;min-width:0">
+        <div class="ta-team">${escapeHtml(a.team)}</div>
+        <h3 style="font-family:var(--display);font-size:20px;margin:2px 0 6px">${escapeHtml(a.name)}</h3>
+        <p style="font-size:13px;color:var(--muted);margin:0 0 10px">${escapeHtml(a.desc)}</p>
+        <div class="ta-deliverables"><b style="font-size:12px;color:var(--gold)">O que este agente entrega para a equipe:</b>
+          <ul style="padding-left:18px;margin:6px 0 0">${a.deliverables.map(d=>`<li>${escapeHtml(d)}</li>`).join('')}</ul>
+        </div>
+        <div class="cta-row" style="margin-top:12px">
+          ${unlocked
+            ?`<button class="btn gold small" onclick="activateTeamAgent('${a.id}')">Acionar agente</button>`
+            :`<button class="btn gold small" onclick="closeTeamAgentsModal();showPage('plans')">Desbloquear no Grande Mestre</button>`}
+          <button class="btn ghost small" onclick="openWhatsApp('Quero saber mais sobre o ${escapeHtml(a.name)} do diretor.ai para minha equipe de ${escapeHtml(a.team)}.')">Falar com suporte</button>
+        </div>
+      </div>
+    </div>
+    <div id="teamAgentOutput" style="margin-top:12px"></div>
+  </div>`;
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+async function activateTeamAgent(id){
+  if(!getPlan().teamAgents){showUpgrade('Agentes de Equipe fazem parte do plano Grande Mestre.');return}
+  const a=TEAM_AGENTS.find(x=>x.id===id);if(!a)return;
+  const out=$('teamAgentOutput');
+  if(out)out.innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span> Gerando entregáveis do agente...</div>';
+  let r=await aiCall('/api/ai',{task:'agent',agentId:id,agentName:a.name,diagnosis:appState.diagnosis.result,final:appState.final});
+  if(!r)r=localTeamAgentOutput(a);
+  if(out)out.innerHTML=`
+    ${r.action?`<div class="result-card" style="margin-bottom:8px"><h4>Orientação do agente</h4><p>${escapeHtml(r.action)}</p></div>`:''}
+    ${r.steps?`<div class="result-card" style="margin-bottom:8px"><h4>Passo a passo para a equipe</h4><ol style="padding-left:18px;margin:6px 0 0">${r.steps.map(x=>`<li style="font-size:13px;color:var(--muted);margin-bottom:3px">${escapeHtml(x)}</li>`).join('')}</ol></div>`:''}
+    ${r.copyable?`<div class="result-card"><h4>Material copiável para a equipe</h4><pre style="background:rgba(0,0,0,.2);padding:12px;border-radius:8px;font-family:var(--mono);font-size:12px;white-space:pre-wrap;color:var(--muted);margin:6px 0">${escapeHtml(r.copyable)}</pre><button class="btn small" onclick='navigator.clipboard.writeText(${JSON.stringify(r.copyable||"")});showToast("Copiado! Cole no canal da equipe.")'>📋 Copiar para a equipe</button></div>`:''}`;
+}
+function localTeamAgentOutput(a){
+  return{
+    action:`O ${a.name} estrutura o trabalho da equipe de ${a.team} em ciclos semanais: cada entregável tem responsável, prazo e critério de pronto. Comece pelo item de maior impacto imediato e revise os resultados toda sexta-feira.`,
+    steps:['Compartilhar este material no canal da equipe','Definir um responsável por entregável','Executar o primeiro item em até 48h','Revisar resultados na sexta e ajustar','Repetir o ciclo na semana seguinte'],
+    copyable:`[${a.name} — diretor.ai]\nEquipe: ${a.team}\n\nEntregáveis desta semana:\n${a.deliverables.map((d,i)=>`${i+1}. ${d} — responsável: [nome] — prazo: [data]`).join('\n')}\n\nCritério de pronto: [o que prova que foi concluído]\nRevisão: sexta-feira às [hora]`
+  };
+}
 
 /* ===== MODALS ===== */
 function showUpgrade(msg){if($('upgradeTitle'))$('upgradeTitle').textContent=msg?.split('\n')[0]||'Recurso bloqueado.';if($('upgradeText'))$('upgradeText').textContent=msg?.split('\n').slice(1).join(' ')||'';if($('upgradeModal'))$('upgradeModal').classList.add('open')}
