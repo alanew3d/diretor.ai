@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>diretor.ai — Qual decisão você precisa tomar?</title>
+<meta name="description" content="Digite sua decisão e receba clareza estratégica com análise de cenários, riscos, alternativas e próximos passos.">
+<meta name="theme-color" content="#C8A84B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ===== TOKENS ===== */
+:root{
+  --gold:#c8a84b;--gold2:#e2c06e;--gold3:#8d7430;
+  --bg:#07070a;--bg2:#0c0c12;--bg3:#12121b;--bg4:#191925;
+  --card:rgba(255,255,255,.045);--card2:rgba(255,255,255,.07);
+  --line:rgba(255,255,255,.1);--line2:rgba(200,168,75,.28);
+  --text:#f6efe4;--muted:#c8c0b2;--dim:#8d8577;
+  --ok:#3db87a;--warn:#e0a840;--bad:#e05a5a;--blue:#4a90d9;--purple:#9b7bd4;
+  --shadow:0 24px 90px rgba(0,0,0,.48);
+  --font:"Outfit",sans-serif;--display:"Playfair Display",serif;--mono:"JetBrains Mono",monospace
+}
+[data-theme="light"]{
+  --bg:#f7f2e8;--bg2:#efe6d6;--bg3:#fffaf0;--bg4:#ebe0cc;
+  --card:rgba(0,0,0,.035);--card2:rgba(0,0,0,.06);
+  --line:rgba(0,0,0,.11);--line2:rgba(141,116,48,.32);
+  --text:#14100a;--muted:#443a2a;--dim:#776b5b;
+  --shadow:0 24px 80px rgba(70,50,20,.16)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;max-width:100%;overflow-x:hidden}
+body{margin:0;max-width:100%;overflow-x:hidden;background:radial-gradient(circle at 22% 0,rgba(200,168,75,.12),transparent 34%),radial-gradient(circle at 78% 12%,rgba(74,144,217,.07),transparent 28%),var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:44px 44px;z-index:-1}
+
+/* ===== TOPBAR ===== */
+.topbar{position:sticky;top:0;z-index:50;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:rgba(7,7,10,.88);backdrop-filter:blur(20px)}
+[data-theme="light"] .topbar{background:rgba(247,242,232,.9)}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo{font-family:var(--display);font-weight:900;font-size:25px;letter-spacing:-.04em}.logo span{color:var(--gold)}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);border-left:1px solid var(--line);padding-left:10px}
+.nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.navbtn{border:1px solid transparent;background:transparent;color:var(--dim);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;transition:.15s}
+.navbtn:hover,.navbtn.active{border-color:var(--line2);background:rgba(200,168,75,.1);color:var(--gold)}
+.navbtn.primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#070707;border-color:transparent}
+.navbtn.primary:hover{transform:translateY(-1px)}
+.user-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:var(--card);font-size:12px;cursor:pointer}
+.avatar{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(200,168,75,.14);color:var(--gold);font-weight:800;font-family:var(--display);font-size:12px}
+
+/* ===== PAGES ===== */
+.page{display:none}.page.active{display:block}
+.container{width:min(1180px,calc(100% - 40px));margin:0 auto}
+
+/* ===== SIMPLE HOME ===== */
+.simple-home{min-height:calc(100vh - 64px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px 60px}
+.simple-eyebrow{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line2);background:rgba(200,168,75,.08);color:var(--gold);border-radius:999px;padding:6px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;margin-bottom:28px}
+.simple-headline{font-family:var(--display);font-size:clamp(34px,5.5vw,68px);text-align:center;margin:0 0 14px;letter-spacing:-.05em;line-height:.98;max-width:820px}
+.simple-sub{font-size:clamp(15px,1.8vw,18px);color:var(--muted);text-align:center;max-width:600px;margin:0 0 40px;line-height:1.6}
+.decision-box{width:100%;max-width:780px;position:relative}
+.decision-input{width:100%;background:rgba(255,255,255,.048);border:1px solid var(--line);border-radius:22px;padding:22px 24px;font-size:17px;color:var(--text);resize:none;min-height:130px;outline:none;transition:border-color .2s,box-shadow .2s;line-height:1.65}
+[data-theme="light"] .decision-input{background:rgba(0,0,0,.04)}
+.decision-input:focus{border-color:var(--line2);box-shadow:0 0 0 4px rgba(200,168,75,.08),0 8px 48px rgba(0,0,0,.28)}
+.decision-input::placeholder{color:var(--dim)}
+.selected-mentor-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;min-height:0}
+.decision-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;justify-content:flex-start}
+.btn-big{padding:15px 26px;font-size:16px;font-weight:700;border-radius:14px;border:1px solid transparent;display:inline-flex;align-items:center;gap:8px;cursor:pointer;transition:.18s}
+.btn-big.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080808}
+.btn-big.ghost{background:transparent;border-color:var(--line);color:var(--text)}.btn-big.ghost:hover{border-color:var(--line2);background:var(--card)}
+.btn-big.outline{background:transparent;border-color:var(--line2);color:var(--gold)}.btn-big.outline:hover{background:rgba(200,168,75,.08)}
+.simple-modules{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px;justify-content:center}
+.module-link{border:none;background:transparent;color:var(--dim);font-size:13px;cursor:pointer;padding:6px 12px;border-radius:999px;border:1px solid var(--line);transition:.15s}
+.module-link:hover{border-color:var(--line2);color:var(--gold);background:rgba(200,168,75,.07)}
+.simple-promise{margin-top:32px;font-size:14px;color:var(--dim);text-align:center;max-width:540px}
+.simple-promise strong{color:var(--gold)}
+
+/* ===== ANALYSIS PAGE ===== */
+.analysis-container{max-width:860px;margin:0 auto;padding:48px 0 80px}
+.analysis-back{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:transparent;color:var(--dim);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:28px;transition:.15s}
+.analysis-back:hover{border-color:var(--line2);color:var(--gold)}
+.analysis-quote{border-left:3px solid var(--gold);padding:14px 20px;background:rgba(200,168,75,.06);border-radius:0 14px 14px 0;margin-bottom:20px;font-size:16px;color:var(--muted);font-style:italic;line-height:1.6}
+.analysis-mentors{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:28px}
+.analysis-card{border:1px solid var(--line);background:rgba(18,18,27,.8);border-radius:22px;padding:28px;margin-bottom:14px;box-shadow:0 10px 44px rgba(0,0,0,.16)}
+[data-theme="light"] .analysis-card{background:rgba(255,250,240,.85)}
+.analysis-section{margin-bottom:22px}.analysis-section:last-child{margin-bottom:0}
+.analysis-section-label{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px;font-weight:600}
+.analysis-section-title{font-family:var(--display);font-size:22px;margin:0 0 8px}
+.analysis-section-body{color:var(--muted);font-size:15px;line-height:1.65}
+.analysis-section-body ul,.analysis-section-body ol{padding-left:20px;margin:8px 0}
+.analysis-section-body li{margin-bottom:4px}
+.analysis-divider{height:1px;background:var(--line);margin:20px 0}
+.mentor-perspectives{display:grid;gap:10px;margin-top:16px}
+.mentor-response{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:16px}
+.mentor-response h4{font-family:var(--display);font-size:17px;margin:0 0 6px}
+.mentor-response p{color:var(--muted);font-size:14px;margin:0;line-height:1.6}
+
+/* Premium upsell band */
+.premium-band{border:1px solid var(--line2);background:linear-gradient(135deg,rgba(200,168,75,.1),rgba(200,168,75,.04),rgba(74,144,217,.06));border-radius:24px;padding:32px;margin-top:28px;text-align:center}
+.premium-band h3{font-family:var(--display);font-size:28px;margin:0 0 10px;letter-spacing:-.03em}
+.premium-band p{color:var(--muted);font-size:15px;max-width:640px;margin:0 auto 24px;line-height:1.6}
+.premium-band .cta-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+
+/* ===== FULL MAPPING PAGE ===== */
+.mapping-container{max-width:960px;margin:0 auto;padding:60px 0 80px}
+.mapping-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:36px}
+.mapping-feature{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:20px;transition:.2s}
+.mapping-feature:hover{border-color:var(--line2);transform:translateY(-2px)}
+.mapping-ico{font-size:26px;margin-bottom:10px}
+.mapping-feature h3{font-size:15px;font-weight:700;margin:0 0 6px}
+.mapping-feature p{font-size:13px;color:var(--dim);margin:0}
+.mapping-cta{text-align:center;margin-top:48px;padding:40px;border:1px solid var(--line2);background:linear-gradient(180deg,rgba(200,168,75,.08),transparent);border-radius:24px}
+
+/* ===== MENTOR MODAL ===== */
+.mentor-modal-card{width:min(740px,100%);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line2);background:var(--bg3);border-radius:24px;box-shadow:var(--shadow)}
+.mentor-modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--line);flex-shrink:0}
+.mentor-modal-header h2{font-family:var(--display);font-size:24px;margin:0}
+.mentor-modal-close{border:1px solid var(--line);background:transparent;color:var(--dim);width:34px;height:34px;border-radius:50%;font-size:18px;display:grid;place-items:center;cursor:pointer;transition:.15s}
+.mentor-modal-close:hover{border-color:var(--line2);color:var(--gold)}
+.mentor-modal-body{padding:20px 24px;overflow-y:auto;flex:1}
+.auto-select-btn{width:100%;border:1px solid var(--line2);background:rgba(200,168,75,.1);color:var(--gold);border-radius:14px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s}
+.auto-select-btn:hover{background:rgba(200,168,75,.18)}
+.category-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.cat-pill{border:1px solid var(--line);background:transparent;color:var(--dim);border-radius:999px;padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
+.cat-pill:hover,.cat-pill.active{border-color:var(--line2);background:rgba(200,168,75,.1);color:var(--gold)}
+.mentor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.mentor-card{border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:14px;padding:12px;cursor:pointer;transition:.15s;position:relative}
+.mentor-card:hover{border-color:rgba(200,168,75,.2);background:rgba(200,168,75,.05)}
+.mentor-card.selected{border-color:var(--line2);background:rgba(200,168,75,.1)}
+.mentor-card.locked{opacity:.5}
+.mentor-initial{width:36px;height:36px;border-radius:50%;background:rgba(200,168,75,.13);color:var(--gold);font-family:var(--display);font-weight:800;display:grid;place-items:center;font-size:13px;margin-bottom:8px}
+.mentor-card h4{font-size:13px;font-weight:700;margin:0 0 2px}
+.mentor-card small{font-size:11px;color:var(--dim)}
+.lock-badge{position:absolute;top:8px;right:8px;font-size:11px;color:var(--dim)}
+.mentor-modal-footer{padding:16px 24px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.mentor-count{font-size:13px;color:var(--dim)}
+
+/* ===== SHARED COMPONENTS ===== */
+.btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:12px 16px;font-weight:700;display:inline-flex;align-items:center;gap:8px;text-decoration:none;cursor:pointer;transition:.18s}.btn:hover{background:var(--card2);border-color:var(--line2)}
+.btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080808;border-color:transparent}.btn.gold:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent}.btn.small{padding:8px 13px;border-radius:10px;font-size:12px}
+.btn.danger{border-color:rgba(224,90,90,.36);color:var(--bad);background:rgba(224,90,90,.08)}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap}
+
+.badge{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-family:var(--mono);font-size:10px;color:var(--dim);margin:2px}
+.badge.ok{color:var(--ok);border-color:rgba(61,184,122,.35);background:rgba(61,184,122,.08)}
+.badge.warn{color:var(--warn);border-color:rgba(224,168,64,.35);background:rgba(224,168,64,.08)}
+.badge.bad{color:var(--bad);border-color:rgba(224,90,90,.35);background:rgba(224,90,90,.08)}
+.badge.gold{color:var(--gold);border-color:var(--line2);background:rgba(200,168,75,.09)}
+
+.loader{display:inline-flex;gap:4px;align-items:center}.loader i{width:7px;height:7px;background:var(--gold);border-radius:50%;animation:dot 1s infinite}.loader i:nth-child(2){animation-delay:.15s}.loader i:nth-child(3){animation-delay:.3s}@keyframes dot{50%{opacity:.2;transform:translateY(-4px)}}
+.loading-msg{display:flex;align-items:center;gap:12px;color:var(--dim);padding:20px 0}
+
+.panel{border:1px solid var(--line);background:rgba(18,18,27,.8);border-radius:22px;padding:24px;margin-bottom:16px}
+[data-theme="light"] .panel{background:rgba(255,250,240,.85)}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+.kicker{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.title{font-family:var(--display);font-size:28px;line-height:1.1;margin:4px 0}
+.subtitle{color:var(--dim);max-width:760px}
+.grid{display:grid;gap:12px}.grid.two{grid-template-columns:repeat(2,1fr)}.grid.three{grid-template-columns:repeat(3,1fr)}
+.field label{display:block;font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin:0 0 6px}
+.input,.select,.textarea{width:100%;border:1px solid var(--line);background:rgba(0,0,0,.2);color:var(--text);border-radius:12px;padding:12px 14px;outline:none;transition:.15s}
+.textarea{min-height:110px;resize:vertical}.input:focus,.select:focus,.textarea:focus{border-color:var(--line2);box-shadow:0 0 0 4px rgba(200,168,75,.08)}.select option{background:var(--bg3)}
+.hint{font-size:12px;color:var(--dim);margin-top:5px}
+.divider{height:1px;background:var(--line);margin:24px 0}
+.disclaimer{border:1px solid rgba(224,168,64,.22);background:rgba(224,168,64,.06);border-radius:12px;padding:12px 16px;font-size:12px;color:var(--dim);margin-top:14px;line-height:1.5}
+
+/* ===== APP SHELL ===== */
+.app-shell{display:grid;grid-template-columns:240px 1fr;gap:16px;padding:22px 0 70px}
+.side{position:sticky;top:82px;height:calc(100vh - 104px);border:1px solid var(--line);border-radius:20px;background:rgba(12,12,18,.76);padding:10px;overflow:auto}
+[data-theme="light"] .side{background:rgba(255,250,240,.82)}
+.side-title{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin:8px 10px 10px}
+.module-btn{width:100%;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:13px;padding:10px;display:flex;gap:10px;text-align:left;margin-bottom:4px;transition:.15s}.module-btn:hover,.module-btn.active{border-color:var(--line2);background:rgba(200,168,75,.1);color:var(--text)}.module-btn strong{display:block;font-size:13px}.module-btn span{display:block;font-size:11px;color:var(--dim);line-height:1.3}.module-ico{width:28px;height:28px;border-radius:9px;background:var(--card2);display:grid;place-items:center;flex:0 0 auto;font-family:var(--mono);font-size:10px;color:var(--gold)}
+.usage-card{margin-top:12px;border:1px solid var(--line);background:var(--card);border-radius:13px;padding:11px}.usage-bar{height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin:6px 0}.usage-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));border-radius:999px;transition:width .4s}
+.main{min-width:0}
+
+/* Question cards */
+.question-card{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:20px}
+.progress{height:6px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-bottom:18px}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:999px;transition:width .3s}
+.options{display:grid;gap:7px}.option{border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);border-radius:13px;padding:12px 14px;text-align:left;transition:.15s}.option:hover,.option.selected{border-color:var(--line2);background:rgba(200,168,75,.1);color:var(--text)}
+.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.result-card{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:16px}.result-card.full{grid-column:1/-1}.result-card h4{margin:0 0 7px;font-size:14px;font-weight:700}.result-card p,.result-card li{color:var(--muted);font-size:14px;margin:0}.result-card ul,.result-card ol{padding-left:18px;margin:8px 0}
+.scenario-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}.tab{border:1px solid var(--line);background:var(--card);color:var(--muted);padding:12px;border-radius:14px;text-align:left;transition:.15s}.tab.active{border-color:var(--line2);background:rgba(200,168,75,.12);color:var(--text)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric{border:1px solid var(--line);border-radius:16px;padding:14px;background:rgba(0,0,0,.14)}.metric small{display:block;font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}.metric strong{font-family:var(--display);font-size:22px}
+.advisor-grid{display:grid;grid-template-columns:290px 1fr;gap:16px}.advisor-list{max-height:480px;overflow:auto;border:1px solid var(--line);border-radius:16px;padding:8px;background:var(--card)}.advisor{display:flex;align-items:center;gap:10px;border:1px solid transparent;border-radius:12px;padding:10px;background:transparent;color:var(--muted);width:100%;text-align:left;transition:.15s}.advisor:hover,.advisor.selected{border-color:var(--line2);background:rgba(200,168,75,.1);color:var(--text)}.advisor.locked{opacity:.5}.advisor-initial{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(200,168,75,.13);color:var(--gold);font-family:var(--display);font-weight:800;flex:0 0 auto}
+.response{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:18px;margin-bottom:10px}.response h4{font-family:var(--display);font-size:18px;margin:0 0 6px}.response p{color:var(--muted);margin:0;white-space:pre-line}
+
+/* Plans */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;width:100%}.plan{border:1px solid var(--line);border-radius:22px;background:var(--card);padding:22px;position:relative;min-width:0;box-sizing:border-box}.plan.featured{border-color:var(--line2);background:linear-gradient(180deg,rgba(200,168,75,.1),rgba(255,255,255,.03))}.plan h3{font-family:var(--display);font-size:22px;margin:0 0 4px}.plan-desc{font-size:13px;color:var(--dim);margin:0 0 12px;word-break:break-word}.price{font-family:var(--display);font-size:40px;margin:10px 0;line-height:1}.price sup{font-size:15px;color:var(--dim);vertical-align:top;margin-top:5px}.price small{font-size:13px;color:var(--dim)}.plan ul{padding-left:18px;color:var(--muted);font-size:14px;margin:0 0 16px;word-break:break-word}.plan li{margin-bottom:4px}
+
+/* Admin */
+.admin-layout{display:grid;grid-template-columns:200px 1fr;gap:16px}.admin-nav{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:10px;height:max-content}.admin-section{display:none}.admin-section.active{display:block}
+.status{font-weight:700}.status.ok{color:var(--ok)}.status.warn{color:var(--warn)}.status.bad{color:var(--bad)}
+
+/* Account */
+.account-card{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:20px;margin-bottom:12px}
+.history-item{border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:6px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:10px}.history-item small{font-family:var(--mono);font-size:10px;color:var(--dim)}
+
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:90;display:none;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}
+.modal-card{width:min(460px,100%);border:1px solid var(--line2);background:var(--bg3);border-radius:22px;padding:24px;box-shadow:var(--shadow)}
+
+/* Toast */
+.toast{position:fixed;right:20px;bottom:20px;z-index:100;border:1px solid var(--line2);background:var(--bg3);color:var(--text);border-radius:13px;padding:12px 16px;box-shadow:var(--shadow);transform:translateY(80px);opacity:0;transition:.25s;max-width:340px}.toast.show{transform:translateY(0);opacity:1}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:980px){.app-shell,.advisor-grid,.admin-layout{grid-template-columns:1fr}.side{position:relative;top:auto;height:auto}.mapping-grid,.grid.three{grid-template-columns:repeat(2,1fr)}.mentor-grid{grid-template-columns:repeat(2,1fr)}.topbar{flex-wrap:wrap;height:auto;min-height:64px;padding:12px 16px;gap:8px}.nav{width:100%}.container{width:min(100% - 28px,1180px)}}
+@media(max-width:768px){.plans{grid-template-columns:1fr!important}}
+@media(max-width:640px){.mapping-grid,.grid.two,.grid.three,.metrics,.result-grid,.scenario-tabs,.plans{grid-template-columns:1fr!important}.mentor-grid{grid-template-columns:repeat(2,1fr)}.decision-actions{flex-direction:column}.btn-big{width:100%;justify-content:center}.simple-home{padding:32px 16px 50px}.simple-headline{font-size:30px}.panel{padding:16px}.title{font-size:23px}.tag{display:none}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="brand" onclick="showPage('home')">
+    <div class="logo">diretor<span>.</span>ai</div>
+    <div class="tag">Decisão Estratégica</div>
+  </div>
+  <nav class="nav">
+    <button class="navbtn" onclick="showPage('app','council')">Conselho</button>
+    <button class="navbtn" onclick="showPage('app','diagnosis')">Diagnóstico</button>
+    <button class="navbtn" onclick="showPage('mapping')">Mapeamento</button>
+    <button class="navbtn" onclick="showPage('plans')">Planos</button>
+    <button class="navbtn" onclick="toggleTheme()">◐</button>
+    <button class="navbtn" onclick="showPage('adminLogin')">Admin</button>
+    <span id="authArea"></span>
+  </nav>
+</header>
+
+<main>
+
+<!-- ===== HOME SIMPLES ===== -->
+<section id="page-home" class="page active">
+  <div class="simple-home">
+    <span class="simple-eyebrow">diretor.ai · decisão estratégica</span>
+    <h1 class="simple-headline">Qual decisão você<br>precisa tomar?</h1>
+    <p class="simple-sub">Digite sua dúvida e receba clareza estratégica com análise de cenários, riscos, alternativas e próximos passos.</p>
+
+    <div class="decision-box">
+      <textarea
+        class="decision-input"
+        id="decisionInput"
+        placeholder="Ex: Devo lançar meu produto agora ou esperar uma versão mais completa?"
+        rows="4"
+      ></textarea>
+
+      <div class="selected-mentor-chips" id="selectedChips"></div>
+
+      <div class="decision-actions">
+        <button class="btn-big gold" onclick="runSimpleAnalysis()">Analisar decisão</button>
+        <button class="btn-big ghost" onclick="openMentorModal()">Escolher mentor</button>
+        <button class="btn-big outline" onclick="showPage('mapping')">Mapeamento completo →</button>
+      </div>
+    </div>
+
+    <div class="simple-modules">
+      <button class="module-link" onclick="showPage('app','diagnosis')">Diagnóstico</button>
+      <button class="module-link" onclick="showPage('app','scenarios')">Cenários</button>
+      <button class="module-link" onclick="showPage('app','adversary')">Modo Adversário</button>
+      <button class="module-link" onclick="showPage('app','territory')">Mapa Estratégico</button>
+      <button class="module-link" onclick="showPage('app','final')">Decisão Final</button>
+    </div>
+
+    <p class="simple-promise">
+      <strong>Digite uma decisão. Receba direção.</strong><br>
+      Transforme sua decisão em um mapeamento estratégico completo.
+    </p>
+  </div>
+</section>
+
+<!-- ===== ANÁLISE RÁPIDA ===== -->
+<section id="page-analysis" class="page">
+  <div class="container">
+    <div class="analysis-container">
+      <button class="analysis-back" onclick="showPage('home')">← Voltar</button>
+      <div id="analysisDecisionQuote"></div>
+      <div class="analysis-mentors" id="analysisMentorChips"></div>
+      <div id="analysisResult"></div>
+      <div class="premium-band" id="premiumBand" style="display:none">
+        <h3>Quer um mapeamento estratégico completo?</h3>
+        <p>O diretor.ai pode aprofundar sua decisão com Conselho Estratégico de mentores, análise de riscos, cenários, plano de execução, materiais de apoio e relatório exportável.</p>
+        <div class="cta-row">
+          <button class="btn gold" onclick="goToFullAnalysis()">Gerar mapeamento completo</button>
+          <button class="btn" onclick="goToCouncil()">Abrir Conselho Estratégico</button>
+          <button class="btn" onclick="showPage('app','adversary')">Mapear riscos</button>
+          <button class="btn" onclick="showPage('app','final')">Gerar plano de ação</button>
+          <button class="btn ghost" onclick="showPage('plans')">Ver planos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MAPEAMENTO ESTRATÉGICO COMPLETO ===== -->
+<section id="page-mapping" class="page">
+  <div class="container">
+    <div class="mapping-container">
+      <div style="text-align:center">
+        <span class="badge gold">Premium</span>
+        <h1 style="font-family:var(--display);font-size:clamp(34px,5vw,58px);letter-spacing:-.04em;margin:14px 0 12px">Mapeamento Estratégico Completo</h1>
+        <p class="subtitle" style="margin:0 auto;max-width:600px;font-size:17px">Transforme qualquer decisão em um diagnóstico profundo com plano de execução, análise de riscos, cenários e materiais exportáveis.</p>
+      </div>
+
+      <div class="mapping-grid">
+        <div class="mapping-feature"><div class="mapping-ico">🧠</div><h3>Conselho de Mentores</h3><p>Até 8 perspectivas estratégicas especializadas analisando sua decisão simultaneamente.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">🎭</div><h3>Análise de Cenários</h3><p>Compare 3 caminhos: crescer com investimento, orgânico ou cortar custos. Projeção de risco e retorno.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">⚔️</div><h3>Modo Adversário</h3><p>7 riscos ocultos, 5 perguntas difíceis e um veredito: executar, ajustar ou adiar.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">🗺️</div><h3>Mapa Estratégico</h3><p>Análise territorial com raio de cobertura, concorrência e oportunidades por região.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">📊</div><h3>Análise Financeira</h3><p>Margem, CAC, LTV, runway, payback e cenários de crescimento ou corte.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">⚙️</div><h3>Análise Operacional</h3><p>Gargalos internos, processos críticos, automações e agentes de execução sugeridos.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">📣</div><h3>Análise de Marketing</h3><p>Canal principal, CAC por canal, posicionamento e plano de comunicação local.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">📋</div><h3>Materiais Gerados</h3><p>Resumo executivo, plano de ação, SWOT, roadmap, briefing e checklist exportáveis.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">🎯</div><h3>Decisão Final</h3><p>Síntese consolidada com recomendação, plano de 7 e 30 dias e métricas a acompanhar.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">🤖</div><h3>Agentes de Execução</h3><p>11 agentes especializados com passo a passo e texto copiável para implementar a decisão.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">📈</div><h3>Histórico de Decisões</h3><p>Registro das suas análises para acompanhar evolução e comparar decisões ao longo do tempo.</p></div>
+        <div class="mapping-feature"><div class="mapping-ico">📄</div><h3>Relatório Exportável</h3><p>HTML exportável da análise completa para compartilhar com equipe, sócios ou consultores.</p></div>
+      </div>
+
+      <div class="mapping-cta">
+        <h2 style="font-family:var(--display);font-size:32px;margin:0 0 10px">Pronto para tomar decisões melhores?</h2>
+        <p style="color:var(--muted);margin:0 0 24px">Comece com 1 diagnóstico gratuito. Sem cartão de crédito.</p>
+        <div class="cta-row" style="justify-content:center">
+          <button class="btn gold" style="font-size:16px;padding:14px 26px" onclick="showPage('plans')">Ver planos</button>
+          <button class="btn" onclick="openWhatsApp('Quero conhecer o mapeamento estratégico completo do diretor.ai.')">Falar no WhatsApp</button>
+          <button class="btn ghost" onclick="showPage('home')">← Voltar à análise</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== APP (MÓDULOS COMPLETOS) ===== -->
+<section id="page-app" class="page">
+  <div class="container app-shell">
+    <aside class="side">
+      <div class="side-title">Módulos</div>
+      <button class="module-btn active" data-module="diagnosis" onclick="setModule('diagnosis')"><span class="module-ico">01</span><span><strong>Diagnóstico Rápido</strong><span>Contexto e decisão urgente</span></span></button>
+      <button class="module-btn" data-module="scenarios" onclick="setModule('scenarios')"><span class="module-ico">02</span><span><strong>Simulador de Cenários</strong><span>Comparação de caminhos</span></span></button>
+      <button class="module-btn" data-module="adversary" onclick="setModule('adversary')"><span class="module-ico">03</span><span><strong>Modo Adversário</strong><span>Ataque crítico à decisão</span></span></button>
+      <button class="module-btn" data-module="council" onclick="setModule('council')"><span class="module-ico">04</span><span><strong>Conselho Estratégico</strong><span>Perspectivas de mentores</span></span></button>
+      <button class="module-btn" data-module="final" onclick="setModule('final')"><span class="module-ico">05</span><span><strong>Decisão Final</strong><span>Síntese e plano de ação</span></span></button>
+      <div class="usage-card">
+        <div class="kicker">Plano atual</div>
+        <b id="sidePlan">Free</b>
+        <div class="usage-bar"><div class="usage-fill" id="usageFill" style="width:0%"></div></div>
+        <small id="sideUsage" style="color:var(--dim)">0 / 1 decisão usada</small>
+        <div style="margin-top:8px"><button class="btn gold small" style="width:100%" onclick="showPage('plans')">Upgrade</button></div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <!-- MÓDULO 1: DIAGNÓSTICO -->
+      <section id="mod-diagnosis" class="module">
+        <div class="panel">
+          <div class="panel-head"><div><div class="kicker">Módulo 01</div><h2 class="title">Diagnóstico Rápido</h2><p class="subtitle">10 perguntas. Análise estratégica, 3 decisões urgentes e próximo passo.</p></div><button class="btn small" onclick="restartDiagnosis()">Recomeçar</button></div>
+          <div class="progress"><span id="diagProgress" style="width:10%"></span></div>
+          <div id="diagnosisBox"></div>
+        </div>
+      </section>
+      <!-- MÓDULO 2: CENÁRIOS -->
+      <section id="mod-scenarios" class="module hidden">
+        <div class="panel">
+          <div class="panel-head"><div><div class="kicker">Módulo 02</div><h2 class="title">Simulador de Cenários</h2><p class="subtitle">Compare 3 caminhos: investimento, orgânico ou corte de custos.</p></div><button class="btn gold small" onclick="runScenario()">Comparar</button></div>
+          <div class="scenario-tabs"><button class="tab active" data-scenario="a" onclick="selectScenario('a')"><b>A — Crescer com investimento</b></button><button class="tab" data-scenario="b" onclick="selectScenario('b')"><b>B — Crescer organicamente</b></button><button class="tab" data-scenario="c" onclick="selectScenario('c')"><b>C — Cortar custos antes</b></button></div>
+          <div id="scenarioForm"></div><div id="scenarioResult" style="margin-top:16px"></div>
+        </div>
+      </section>
+      <!-- MÓDULO 3: ADVERSÁRIO -->
+      <section id="mod-adversary" class="module hidden">
+        <div class="panel">
+          <div class="panel-head"><div><div class="kicker">Módulo 03</div><h2 class="title">Modo Adversário</h2><p class="subtitle">7 riscos ocultos, 5 perguntas difíceis e veredito.</p></div></div>
+          <div class="field"><label>Decisão a atacar</label><textarea class="textarea" id="adversaryDecision" placeholder="Descreva a decisão com contexto..." style="min-height:120px"></textarea></div>
+          <div class="cta-row" style="margin-top:12px"><button class="btn gold" onclick="runAdversary()">⚔ Atacar minha decisão</button><button class="btn small" onclick="fillAdversaryFromDecision()">Usar decisão digitada</button></div>
+          <div id="adversaryResult" style="margin-top:16px"></div>
+        </div>
+      </section>
+      <!-- MÓDULO 4: CONSELHO -->
+      <section id="mod-council" class="module hidden">
+        <div class="panel">
+          <div class="panel-head"><div><div class="kicker">Módulo 04</div><h2 class="title">Conselho Estratégico</h2><p class="subtitle">Perspectivas estratégicas de mentores especializados.</p></div><button class="btn gold small" onclick="runCouncil()">Analisar</button></div>
+          <div class="advisor-grid">
+            <div><div class="field"><label>Buscar mentor</label><input class="input" id="advisorSearch" placeholder="Jobs, Buffett, Drucker..." oninput="renderAdvisors()"></div><div class="advisor-list" id="advisorList"></div></div>
+            <div><div class="field"><label>Sua decisão</label><textarea class="textarea" id="councilQuestion" placeholder="Descreva a decisão com contexto..."></textarea></div><div style="margin:8px 0" id="selectedAdvisors"></div><div id="councilResult"></div></div>
+          </div>
+        </div>
+      </section>
+      <!-- MÓDULO 5: DECISÃO FINAL -->
+      <section id="mod-final" class="module hidden">
+        <div class="panel">
+          <div class="panel-head"><div><div class="kicker">Módulo 05</div><h2 class="title">Decisão Final</h2><p class="subtitle">Síntese com plano de 7 e 30 dias.</p></div><button class="btn gold small" onclick="runFinalDecision()">Gerar direção</button></div>
+          <div id="finalResult"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PLANOS ===== -->
+<section id="page-plans" class="page">
+  <div class="container" style="padding:56px 0 80px">
+    <div style="text-align:center;margin-bottom:36px"><div class="kicker">Planos</div><h2 style="font-family:var(--display);font-size:44px;letter-spacing:-.04em;margin:8px 0 10px">Escolha seu nível</h2><p style="color:var(--dim)">Primeiro diagnóstico gratuito. Sem cartão.</p></div>
+    <div class="plans" id="plansGrid"></div>
+  </div>
+</section>
+
+<!-- ===== LOGIN ===== -->
+<section id="page-login" class="page">
+  <div class="container" style="max-width:440px;padding:70px 0">
+    <div class="panel">
+      <div class="kicker">Acesso</div><h2 class="title">Entrar</h2>
+      <div class="grid">
+        <div class="field"><label>Email</label><input class="input" id="loginEmail" type="email" placeholder="seu@email.com"></div>
+        <div class="field"><label>Senha</label><input class="input" id="loginPassword" type="password" placeholder="senha" onkeydown="if(event.key==='Enter')login()"></div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim)"><input type="checkbox" id="loginRemember"> Lembrar sessão</label>
+        <button class="btn gold" onclick="login()">Entrar</button>
+        <button class="btn ghost" onclick="showPage('register')">Criar conta gratuita</button>
+        <button class="btn ghost small" onclick="showPage('home')" style="color:var(--dim)">← Voltar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REGISTRO ===== -->
+<section id="page-register" class="page">
+  <div class="container" style="max-width:500px;padding:70px 0">
+    <div class="panel">
+      <div class="kicker">Conta gratuita</div><h2 class="title">Criar acesso</h2>
+      <p class="subtitle">Free: 1 diagnóstico, 1 decisão, 3 perspectivas.</p>
+      <div class="grid">
+        <div class="field"><label>Nome</label><input class="input" id="regName" placeholder="Seu nome"></div>
+        <div class="field"><label>Email</label><input class="input" id="regEmail" type="email" placeholder="seu@email.com"></div>
+        <div class="field"><label>Empresa / setor</label><input class="input" id="regCompany" placeholder="Varejo, SaaS, consultoria..."></div>
+        <div class="field"><label>Senha</label><input class="input" id="regPassword" type="password" placeholder="mínimo 6 caracteres"></div>
+        <button class="btn gold" onclick="register()">Criar conta</button>
+        <button class="btn ghost" onclick="showPage('login')">Já tenho conta</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MINHA CONTA ===== -->
+<section id="page-account" class="page">
+  <div class="container" style="max-width:780px;padding:54px 0 80px">
+    <div class="kicker">Perfil</div><h2 class="title" style="margin-bottom:22px">Minha Conta</h2>
+    <div class="account-card"><div class="kicker">Dados</div><div style="margin-top:10px"><b id="accName">—</b><br><small style="color:var(--dim)" id="accEmail">—</small> <span class="badge gold" id="accPlan">Free</span></div></div>
+    <div class="account-card"><div class="kicker">Uso este mês</div><div class="grid two" style="margin-top:10px"><div><small style="color:var(--dim)">Decisões</small><br><b id="accDecisions">0/1</b></div><div><small style="color:var(--dim)">Diagnósticos</small><br><b id="accDiagnosis">0/1</b></div></div><div class="usage-bar" style="margin-top:10px"><div class="usage-fill" id="accUsageFill" style="width:0%"></div></div></div>
+    <div class="account-card"><div class="kicker">Histórico recente</div><div id="accHistory" style="margin-top:10px"></div></div>
+    <div class="account-card"><div class="kicker">Ações</div><div class="cta-row" style="margin-top:10px"><button class="btn gold small" onclick="showPage('plans')">Upgrade</button><button class="btn small" onclick="openWhatsApp('Quero solicitar consultoria no diretor.ai.')">Consultoria</button><button class="btn small danger" onclick="logout()">Sair</button></div></div>
+  </div>
+</section>
+
+<!-- ===== ADMIN LOGIN ===== -->
+<section id="page-adminLogin" class="page">
+  <div class="container" style="max-width:440px;padding:70px 0">
+    <div class="panel">
+      <div class="kicker">Admin</div><h2 class="title">Acesso administrativo</h2>
+      <p class="subtitle" style="font-size:13px">Chaves de API ficam nas variáveis de ambiente da Vercel — nunca expostas aqui.</p>
+      <div class="grid">
+        <div class="field"><label>Email admin</label><input class="input" id="adminEmail" placeholder="admin@diretor.ai"></div>
+        <div class="field"><label>Senha</label><input class="input" id="adminPassword" type="password" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+        <button class="btn gold" onclick="adminLogin()">Entrar no Admin</button>
+        <button class="btn ghost small" onclick="showPage('home')">← Voltar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ADMIN ===== -->
+<section id="page-admin" class="page">
+  <div class="container" style="padding:34px 0 70px">
+    <div class="admin-layout">
+      <div class="admin-nav">
+        <div class="kicker" style="padding:8px 10px 10px">Admin</div>
+        <button class="btn small gold" onclick="showAdminSection('ai')">IA e Provedores</button>
+        <button class="btn small" onclick="showAdminSection('payments')">Planos & Pagamentos</button>
+        <button class="btn small" onclick="showAdminSection('texts')">Textos do Site</button>
+        <button class="btn small" onclick="showAdminSection('users')">Usuários</button>
+        <div style="margin-top:10px"></div>
+        <button class="btn small danger" onclick="logoutAdmin()">Sair</button>
+      </div>
+      <div>
+        <section class="panel admin-section active" id="admin-ai">
+          <div class="kicker">IA e Provedores</div><h2 class="title">Configuração de IA</h2>
+          <div class="grid two">
+            <div class="field"><label>Provedor principal</label><select class="select" id="aiProvider"><option value="anthropic">Claude (Anthropic)</option><option value="openai">GPT (OpenAI)</option><option value="fallback">Fallback local</option></select></div>
+            <div class="field"><label>Endpoint atual</label><input class="input" id="aiEndpoint" value="/api/ai" readonly></div>
+            <div class="field"><label>Modelo Claude</label><input class="input" id="claudeModel" placeholder="claude-3-5-sonnet-latest"></div>
+            <div class="field"><label>Modelo OpenAI</label><input class="input" id="openaiModel" placeholder="gpt-4.1"></div>
+          </div>
+          <p class="subtitle" style="font-size:13px">Status: <span id="aiStatus" class="status warn">Não testado</span> · 🔒 Chaves apenas na Vercel (Environment Variables)</p>
+          <div class="cta-row"><button class="btn gold" onclick="saveAiAdmin()">Salvar</button><button class="btn" onclick="testAi()">Testar IA</button></div>
+          <div id="aiTestResult" style="margin-top:12px"></div>
+        </section>
+        <section class="panel admin-section" id="admin-payments">
+          <div class="kicker">Planos & Pagamentos</div><h2 class="title">Links de pagamento</h2>
+          <div class="grid two" id="paymentFields"></div>
+          <button class="btn gold" onclick="savePaymentAdmin()" style="margin-top:12px">Salvar</button>
+        </section>
+        <section class="panel admin-section" id="admin-texts">
+          <div class="kicker">Textos do Site</div><h2 class="title">Conteúdo editável</h2>
+          <div class="grid">
+            <div class="field"><label>Headline da home simples</label><input class="input" id="textSimpleHeadline" placeholder="Qual decisão você precisa tomar?"></div>
+            <div class="field"><label>WhatsApp</label><input class="input" id="textWhatsapp"></div>
+            <div class="field"><label>E-mail suporte</label><input class="input" id="textEmail"></div>
+          </div>
+          <button class="btn gold" onclick="saveTextsAdmin()" style="margin-top:12px">Salvar textos</button>
+        </section>
+        <section class="panel admin-section" id="admin-users">
+          <div class="kicker">Usuários</div><h2 class="title">Acessos locais</h2>
+          <div id="usersAdmin"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== MENTOR MODAL ===== -->
+<div class="modal" id="mentorModal">
+  <div class="mentor-modal-card">
+    <div class="mentor-modal-header">
+      <h2 class="title" style="margin:0">Escolher Perspectivas</h2>
+      <button class="mentor-modal-close" onclick="closeMentorModal()">×</button>
+    </div>
+    <div class="mentor-modal-body">
+      <button class="auto-select-btn" onclick="autoSelectAndClose()">
+        ✨ Deixar o diretor.ai escolher automaticamente
+      </button>
+      <div class="category-pills" id="mentorCategoryPills"></div>
+      <div class="mentor-grid" id="mentorModalGrid"></div>
+    </div>
+    <div class="mentor-modal-footer">
+      <span class="mentor-count" id="mentorSelectedCount">0 perspectiva(s) selecionada(s)</span>
+      <button class="btn gold" onclick="confirmMentorSelection()">Confirmar seleção</button>
+    </div>
+  </div>
+</div>
+
+<!-- UPGRADE MODAL -->
+<div class="modal" id="upgradeModal">
+  <div class="modal-card">
+    <div class="kicker">Recurso bloqueado</div>
+    <h2 class="title" id="upgradeTitle">Este recurso faz parte do plano Diretor.</h2>
+    <p class="subtitle" id="upgradeText">Faça upgrade para liberar.</p>
+    <div class="cta-row" style="margin-top:18px">
+      <button class="btn gold" onclick="closeUpgrade();showPage('plans')">Ver planos</button>
+      <button class="btn" onclick="openWhatsApp()">WhatsApp</button>
+      <button class="btn ghost" onclick="closeUpgrade()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== STORAGE KEYS ===== */
+const STORAGE={users:'dai2_users',current:'dai2_current',payments:'dai2_payments',texts:'dai2_texts',ai:'dai2_ai',state:'dai2_state',admin:'dai2_admin',mentors:'dai2_mentors'};
+
+/* ===== PLAN CONFIG ===== */
+const PLAN_LIMITS={
+  free:{name:'Free',decisions:1,diagnosis:1,perspectives:3,adversary:false,scenarios:false,final:true},
+  iniciado:{name:'Iniciado',decisions:5,diagnosis:99,perspectives:3,adversary:false,scenarios:false,final:true},
+  diretor:{name:'Diretor',decisions:50,diagnosis:99,perspectives:5,adversary:true,scenarios:true,final:true},
+  grande_mestre:{name:'Grande Mestre',decisions:999,perspectives:8,diagnosis:99,adversary:true,scenarios:true,final:true}
+};
+const PLAN_COPY=[
+  {id:'free',name:'Free',price:'0',label:'Grátis',desc:'Para experimentar.',features:['1 diagnóstico','1 decisão','3 perspectivas','Decisão final básica'],featured:false},
+  {id:'iniciado',name:'Iniciado',price:'97',label:'97',desc:'Para decisões estratégicas mensais.',features:['5 decisões/mês','3 perspectivas','Diagnóstico completo','Decisão final'],featured:false},
+  {id:'diretor',name:'Diretor',price:'197',label:'197',desc:'Para quem decide com frequência.',features:['50 decisões/mês','5 perspectivas','Adversário e cenários','Conselho completo','Materiais gerados'],featured:true},
+  {id:'grande_mestre',name:'Grande Mestre',price:'497',label:'497',desc:'Para empresas e consultores.',features:['Uso máximo','8 perspectivas','Tudo liberado','Mapa estratégico','Suporte prioritário'],featured:false}
+];
+const DEFAULT_PAYMENTS={mpIniciado:'',mpDiretor:'',mpGrandeMestre:'',stripeIniciado:'',stripeDiretor:'',stripeGrandeMestre:'',whatsapp:'https://wa.me/5500000000000',pix:'',activationMessage:'Envie o comprovante e seu email para ativação manual.'};
+const DEFAULT_TEXTS={simpleHeadline:'Qual decisão você precisa tomar?',whatsapp:'https://wa.me/5500000000000',email:'suporte@diretor.ai'};
+const DEFAULT_AI={provider:'anthropic',claudeModel:'claude-3-5-sonnet-latest',openaiModel:'gpt-4.1'};
+
+/* ===== MENTORS ===== */
+const ADVISORS=[
+  {id:'jobs',name:'Steve Jobs',tag:'Produto e foco',initials:'SJ',category:'produto',locked:false},
+  {id:'bezos',name:'Jeff Bezos',tag:'Cliente e escala',initials:'JB',category:'estrategia',locked:false},
+  {id:'buffett',name:'Warren Buffett',tag:'Valor e caixa',initials:'WB',category:'financas',locked:false},
+  {id:'drucker',name:'Peter Drucker',tag:'Gestão e métricas',initials:'PD',category:'negocios',locked:false},
+  {id:'suntzu',name:'Sun Tzu',tag:'Estratégia competitiva',initials:'ST',category:'estrategia',locked:false},
+  {id:'mandela',name:'Nelson Mandela',tag:'Liderança e resiliência',initials:'NM',category:'lideranca',locked:false},
+  {id:'marcus',name:'Marco Aurélio',tag:'Controle e foco',initials:'MA',category:'filosofia',locked:false},
+  {id:'seneca',name:'Sêneca',tag:'Serenidade e foco',initials:'SEN',category:'filosofia',locked:false},
+  {id:'churchill',name:'Winston Churchill',tag:'Decisão em crise',initials:'WC',category:'lideranca',locked:true},
+  {id:'thiel',name:'Peter Thiel',tag:'Monopólio e contrarian',initials:'PT',category:'estrategia',locked:true},
+  {id:'horowitz',name:'Ben Horowitz',tag:'Execução difícil',initials:'BH',category:'negocios',locked:true},
+  {id:'naval',name:'Naval Ravikant',tag:'Alavancagem',initials:'NR',category:'estrategia',locked:true},
+  {id:'musk',name:'Elon Musk',tag:'Primeiros princípios',initials:'EM',category:'produto',locked:true},
+  {id:'ogilvy',name:'David Ogilvy',tag:'Persuasão e marca',initials:'DO',category:'marketing',locked:true},
+  {id:'disney',name:'Walt Disney',tag:'Visão e criação',initials:'WD',category:'criatividade',locked:true},
+  {id:'davinci',name:'Leonardo da Vinci',tag:'Inovação multidisciplinar',initials:'LDV',category:'criatividade',locked:true},
+  {id:'bowie',name:'David Bowie',tag:'Reinvenção e identidade',initials:'DB',category:'criatividade',locked:true},
+  {id:'madonna',name:'Madonna',tag:'Posicionamento e reinvenção',initials:'MAD',category:'marketing',locked:true}
+];
+const MENTOR_CATEGORIES=[
+  {id:'all',label:'Todos'},
+  {id:'produto',label:'Produto'},
+  {id:'estrategia',label:'Estratégia'},
+  {id:'financas',label:'Finanças'},
+  {id:'marketing',label:'Marketing'},
+  {id:'lideranca',label:'Liderança'},
+  {id:'criatividade',label:'Criatividade'},
+  {id:'filosofia',label:'Filosofia'},
+  {id:'negocios',label:'Negócios'}
+];
+
+/* ===== DIAGNOSIS QUESTIONS ===== */
+const DIAG=[
+  {key:'businessType',q:'Qual é o tipo do seu negócio?',type:'text',ph:'Ex: consultoria, ecommerce, SaaS, clínica...'},
+  {key:'revenue',q:'Qual seu faturamento mensal aproximado?',type:'select',opts:['Até R$ 10 mil','R$ 10 mil a R$ 50 mil','R$ 50 mil a R$ 200 mil','R$ 200 mil a R$ 1 milhão','Acima de R$ 1 milhão']},
+  {key:'margin',q:'Qual sua margem média?',type:'select',opts:['Não sei','Negativa','Até 10%','10% a 25%','25% a 50%','Acima de 50%']},
+  {key:'problem',q:'Qual é o maior problema hoje?',type:'select',opts:['vendas','caixa','equipe','operação','marketing','produto','posicionamento','crescimento','logística','financeiro','fiscal','tecnologia']},
+  {key:'runway',q:'Seu caixa aguenta quantos meses?',type:'select',opts:['Menos de 1 mês','1 a 3 meses','3 a 6 meses','6 a 12 meses','Mais de 12 meses','Não sei']},
+  {key:'currentDecision',q:'O que você está tentando decidir agora?',type:'textarea',ph:'Descreva a decisão principal em uma frase clara.'},
+  {key:'delayedDecision',q:'Qual decisão você está adiando?',type:'textarea',ph:'O que você sabe que precisa decidir mas vem postergando?'},
+  {key:'channel',q:'Qual canal mais gera clientes hoje?',type:'select',opts:['Indicação','Instagram / conteúdo','Google / SEO','Tráfego pago','Outbound / vendas ativas','Parcerias','Marketplace','Não tenho canal previsível']},
+  {key:'failed',q:'O que você já tentou e não funcionou?',type:'textarea',ph:'Liste tentativas, canais ou ações que não deram resultado.'},
+  {key:'best90',q:'Qual seria o melhor resultado nos próximos 90 dias?',type:'textarea',ph:'Ex: crescer 30%, estabilizar caixa, contratar líder...'}
+];
+const SCENARIO_FIELDS={
+  a:[['investment','Investimento (R$)','number','30000'],['deadline','Prazo em meses','number','3'],['ticket','Ticket médio','number','700'],['margin','Margem %','number','35'],['cac','CAC estimado','number','180'],['salesGoal','Meta de vendas/mês','number','120']],
+  b:[['smallInvestment','Investimento menor (R$)','number','5000'],['longDeadline','Prazo em meses','number','6'],['organicChannels','Canais orgânicos','text','SEO, indicação, LinkedIn'],['productionCapacity','Capacidade atual %','number','70'],['growthExpectation','Expectativa de crescimento %','number','20']],
+  c:[['expenseCut','Corte de despesas (R$)','number','15000'],['cash','Caixa atual (R$)','number','80000'],['survival','Prazo alvo (meses)','number','6'],['teamImpact','Impacto no time','select','baixo|médio|alto'],['salesImpact','Impacto nas vendas','select','baixo|médio|alto']]
+};
+
+/* ===== GLOBAL STATE ===== */
+let users=[],currentUser=null,payments={},texts={},aiCfg={};
+let selectedMentorIds=['jobs','bezos','buffett'];
+let activeMentorCategory='all';
+let appState={
+  diagnosis:{answers:{},result:null,step:0},
+  scenario:{active:'a',result:null},
+  adversary:null,
+  council:{selected:['jobs','bezos','buffett'],responses:[]},
+  final:null,
+  lastDecision:''
+};
+
+/* ===== UTILS ===== */
+function $(id){return document.getElementById(id)}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function load(k,f){try{return JSON.parse(localStorage.getItem(k)||'null')??f}catch{return f}}
+function escapeHtml(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function saveState(){store(STORAGE.state,appState)}
+function showToast(msg){const t=$('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3400)}
+
+/* ===== SAFE INIT ===== */
+function safeInit(){
+  try{init()}
+  catch(e){
+    console.error('Init error:',e);
+    const body=document.body;
+    if(body)body.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;background:#07070a;color:#f6efe4;text-align:center;padding:24px"><div><div style="font-size:40px;margin-bottom:14px">⚠️</div><h2 style="color:#c8a84b;margin:0 0 8px">Erro ao iniciar</h2><p style="color:#8d8577;margin:0 0 18px">Tente limpar o cache do navegador.</p><button onclick="localStorage.clear();location.reload()" style="background:#c8a84b;color:#080808;border:none;padding:12px 24px;border-radius:12px;font-weight:700;cursor:pointer;font-size:14px">Limpar dados e recarregar</button></div></div>`;
+  }
+}
+
+function init(){
+  users=load(STORAGE.users,[]);
+  currentUser=load(STORAGE.current,null);
+  payments={...DEFAULT_PAYMENTS,...load(STORAGE.payments,{})};
+  texts={...DEFAULT_TEXTS,...load(STORAGE.texts,{})};
+  aiCfg={...DEFAULT_AI,...load(STORAGE.ai,{})};
+  const savedState=load(STORAGE.state,{});
+  if(savedState&&typeof savedState==='object')appState={...appState,...savedState};
+  const savedMentors=load(STORAGE.mentors,null);
+  if(savedMentors&&Array.isArray(savedMentors))selectedMentorIds=savedMentors;
+  updateAuth();
+  renderPlans();
+  renderAdvisors();
+  renderCouncilSelection();
+  renderDiagnosis();
+  renderScenarioForm();
+  renderPaymentAdmin();
+  renderAdminForms();
+  renderMentorModal();
+  renderSelectedChips();
+  updateUsage();
+  if(currentUser)normalizeUsage();
+  applyTexts();
+}
+
+function applyTexts(){
+  const h=$('decisionInput');
+  // Only update placeholder — don't overwrite user's text
+  if(h&&texts.simpleHeadline&&h.placeholder){/* preserve placeholder */}
+}
+
+function normalizeUsage(){
+  const m=new Date().getMonth();
+  if(currentUser&&currentUser.usageMonth!==m){currentUser.decisionsUsed=0;currentUser.diagnosisUsed=0;currentUser.usageMonth=m;saveCurrentUser()}
+}
+function saveCurrentUser(){
+  if(!currentUser)return;
+  store(STORAGE.current,currentUser);
+  const i=users.findIndex(u=>u.email===currentUser.email);
+  if(i>=0){users[i]={...users[i],...currentUser};store(STORAGE.users,users)}
+}
+function getPlan(){return PLAN_LIMITS[currentUser?.plan||'free']||PLAN_LIMITS.free}
+
+/* ===== NAVIGATION ===== */
+function showPage(page,module){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=$('page-'+page);
+  if(!el){console.warn('page not found:',page);return}
+  el.classList.add('active');
+  if(page==='app')setModule(module||'diagnosis');
+  if(page==='account')renderAccountPage();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleTheme(){document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'}
+
+function setModule(m){
+  const locked={adversary:'adversary',scenarios:'scenarios'};
+  if(locked[m]&&!getPlan()[m]){showUpgrade(`Este módulo faz parte do plano ${m==='adversary'||m==='scenarios'?'Diretor':'Grande Mestre'}.`);return}
+  document.querySelectorAll('.module').forEach(x=>x.classList.add('hidden'));
+  const mod=$('mod-'+m);if(mod)mod.classList.remove('hidden');
+  document.querySelectorAll('.module-btn').forEach(b=>b.classList.toggle('active',b.dataset.module===m));
+}
+
+/* ===== AUTH ===== */
+function updateAuth(){
+  const el=$('authArea');if(!el)return;
+  if(!currentUser){el.innerHTML=`<button class="navbtn primary" onclick="showPage('login')">Entrar</button>`;return}
+  el.innerHTML=`<span class="user-pill" onclick="showPage('account')"><span class="avatar">${escapeHtml(currentUser.name?.[0]||'U')}</span>${escapeHtml((currentUser.name||'').split(' ')[0])} · ${getPlan().name}</span>`;
+  updateUsage();
+}
+function register(){
+  const name=$('regName')?.value.trim(),email=$('regEmail')?.value.trim().toLowerCase(),company=$('regCompany')?.value.trim(),pass=$('regPassword')?.value;
+  if(!name||!email||!pass||pass.length<6)return showToast('Preencha nome, email e senha (6+ caracteres).');
+  if(users.some(u=>u.email===email))return showToast('Email já cadastrado.');
+  currentUser={name,email,company,password:pass,plan:'free',decisionsUsed:0,diagnosisUsed:0,usageMonth:new Date().getMonth(),createdAt:new Date().toISOString(),history:[]};
+  users.push(currentUser);store(STORAGE.users,users);saveCurrentUser();updateAuth();showPage('app','diagnosis');showToast('Conta criada! Bem-vindo.');
+}
+function login(){
+  const email=$('loginEmail')?.value.trim().toLowerCase(),pass=$('loginPassword')?.value;
+  const u=users.find(x=>x.email===email&&x.password===pass);
+  if(!u)return showToast('Email ou senha incorretos.');
+  currentUser={...u};normalizeUsage();saveCurrentUser();updateAuth();showPage('home');showToast('Bem-vindo, '+currentUser.name.split(' ')[0]+'.');
+}
+function logout(){currentUser=null;localStorage.removeItem(STORAGE.current);updateAuth();showPage('home');showToast('Sessão encerrada.')}
+function updateUsage(){
+  const plan=getPlan();
+  const used=currentUser?.decisionsUsed||0;
+  const pct=Math.min(100,Math.round((used/(plan.decisions||1))*100));
+  if($('sidePlan'))$('sidePlan').textContent=plan.name;
+  if($('usageFill'))$('usageFill').style.width=pct+'%';
+  if($('sideUsage'))$('sideUsage').textContent=`${used} / ${plan.decisions} decisão${plan.decisions>1?'ões':''} usadas`;
+}
+function canUseDecision(){
+  if(!currentUser){showPage('register');return false}
+  normalizeUsage();
+  const plan=getPlan();
+  if((currentUser.decisionsUsed||0)>=plan.decisions){showUpgrade(`Limite do plano ${plan.name} atingido.`);return false}
+  return true;
+}
+function consumeDecision(kind,q){
+  if(!currentUser)return;
+  currentUser.decisionsUsed=(currentUser.decisionsUsed||0)+1;
+  currentUser.history=currentUser.history||[];
+  currentUser.history.unshift({kind,q:q?.slice(0,120)||kind,at:new Date().toISOString()});
+  currentUser.history=currentUser.history.slice(0,30);
+  saveCurrentUser();updateUsage();
+}
+
+/* ===== ACCOUNT ===== */
+function renderAccountPage(){
+  if(!currentUser)return;
+  const plan=getPlan();
+  if($('accName'))$('accName').textContent=currentUser.name;
+  if($('accEmail'))$('accEmail').textContent=currentUser.email;
+  if($('accPlan'))$('accPlan').textContent=plan.name;
+  const used=currentUser.decisionsUsed||0;
+  if($('accDecisions'))$('accDecisions').textContent=`${used}/${plan.decisions}`;
+  if($('accDiagnosis'))$('accDiagnosis').textContent=`${currentUser.diagnosisUsed||0}/${plan.diagnosis}`;
+  const pct=Math.min(100,Math.round((used/plan.decisions)*100));
+  if($('accUsageFill'))$('accUsageFill').style.width=pct+'%';
+  const hist=currentUser.history||[];
+  if($('accHistory')){
+    $('accHistory').innerHTML=hist.length?hist.slice(0,8).map(h=>`<div class="history-item"><span>${escapeHtml(h.q)}</span><small>${new Date(h.at).toLocaleDateString('pt-BR')}</small></div>`).join(''):'<p style="color:var(--dim);font-size:13px">Nenhum histórico ainda.</p>';
+  }
+}
+
+/* ===== PLANS ===== */
+function renderPlans(){
+  const g=$('plansGrid');if(!g)return;
+  g.innerHTML=PLAN_COPY.map(p=>`
+    <div class="plan ${p.featured?'featured':''}">
+      ${p.featured?'<span class="badge gold" style="margin-bottom:8px">Recomendado</span><br>':''}
+      <h3>${p.name}</h3>
+      <p class="plan-desc">${p.desc}</p>
+      <div class="price">${p.price==='0'?'<small style="font-size:22px;font-family:var(--font)">Grátis</small>':`<sup>R$</sup>${p.label}<small>/mês</small>`}</div>
+      <ul>${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+      <button class="btn ${p.featured?'gold':''}" style="width:100%" onclick="payPlan('${p.id}')">${p.id==='free'?'Começar grátis':'Assinar '+p.name}</button>
+    </div>`).join('');
+}
+function payPlan(id){
+  if(id==='free'){if(!currentUser)showPage('register');else{showToast('Você já tem uma conta.');showPage('app','diagnosis')}return}
+  const map={iniciado:['mpIniciado','stripeIniciado'],diretor:['mpDiretor','stripeDiretor'],grande_mestre:['mpGrandeMestre','stripeGrandeMestre']};
+  const [mp,st]=(map[id]||[]);const link=payments[mp]||payments[st];
+  if(link){window.open(link,'_blank');return}
+  if(payments.pix){navigator.clipboard?.writeText(payments.pix);showToast('Pix copiado. '+payments.activationMessage);return}
+  openWhatsApp('Quero assinar o plano '+id+' do diretor.ai.');
+}
+function openWhatsApp(msg='Quero falar sobre o diretor.ai.'){
+  const url=payments.whatsapp||texts.whatsapp||DEFAULT_PAYMENTS.whatsapp;
+  window.open(url+(url.includes('?')?'&':'?')+'text='+encodeURIComponent(msg),'_blank');
+}
+
+/* ===== MENTOR SELECTION ===== */
+function autoSelectMentors(text){
+  if(!text)return['jobs','bezos','buffett','marcus','drucker'];
+  const t=text.toLowerCase();
+  if(/produto|lançamento|mvp|startup|app|plataforma|feature|saas|software/.test(t))return['jobs','bezos','thiel','drucker','buffett'];
+  if(/dinheiro|investimento|preço|margem|risco|financeiro|caixa|custo|juros/.test(t))return['buffett','drucker','naval','seneca','bezos'];
+  if(/marketing|marca|viral|campanha|posicionamento|audiência|comunicação|cliente/.test(t))return['jobs','ogilvy','bezos','madonna','drucker'];
+  if(/criação|arte|vídeo|música|cinema|design|criatividade|conteúdo|visual/.test(t))return['davinci','jobs','bowie','disney','drucker'];
+  if(/equipe|liderança|conflito|sociedade|gestão|time|colaborador|cultura/.test(t))return['mandela','churchill','marcus','drucker','horowitz'];
+  return['jobs','bezos','buffett','marcus','drucker'];
+}
+
+function renderSelectedChips(){
+  const el=$('selectedChips');if(!el)return;
+  if(!selectedMentorIds.length){el.innerHTML='';return}
+  el.innerHTML=selectedMentorIds.map(id=>{
+    const a=ADVISORS.find(x=>x.id===id);if(!a)return'';
+    return`<span class="badge gold" style="cursor:pointer" onclick="removeMentorChip('${id}')">${escapeHtml(a.name)} ×</span>`;
+  }).join('');
+}
+function removeMentorChip(id){
+  selectedMentorIds=selectedMentorIds.filter(x=>x!==id);
+  store(STORAGE.mentors,selectedMentorIds);
+  renderSelectedChips();renderMentorModalGrid();updateMentorCount();
+}
+
+function openMentorModal(){$('mentorModal').classList.add('open');renderMentorModal()}
+function closeMentorModal(){$('mentorModal').classList.remove('open')}
+function confirmMentorSelection(){renderSelectedChips();closeMentorModal();showToast(selectedMentorIds.length+' perspectiva(s) selecionada(s).')}
+
+function autoSelectAndClose(){
+  const decision=$('decisionInput')?.value.trim()||'';
+  selectedMentorIds=autoSelectMentors(decision).slice(0,getPlan().perspectives||3);
+  store(STORAGE.mentors,selectedMentorIds);
+  renderMentorModalGrid();updateMentorCount();
+  renderSelectedChips();
+  closeMentorModal();
+  showToast('Perspectivas selecionadas automaticamente.');
+}
+
+function renderMentorModal(){renderMentorCategoryPills();renderMentorModalGrid();updateMentorCount()}
+function renderMentorCategoryPills(){
+  const el=$('mentorCategoryPills');if(!el)return;
+  el.innerHTML=MENTOR_CATEGORIES.map(c=>`<button class="cat-pill ${activeMentorCategory===c.id?'active':''}" onclick="setMentorCategory('${c.id}')">${c.label}</button>`).join('');
+}
+function setMentorCategory(id){activeMentorCategory=id;renderMentorCategoryPills();renderMentorModalGrid()}
+function renderMentorModalGrid(){
+  const el=$('mentorModalGrid');if(!el)return;
+  const filtered=ADVISORS.filter(a=>activeMentorCategory==='all'||a.category===activeMentorCategory);
+  const plan=getPlan();
+  el.innerHTML=filtered.map(a=>{
+    const sel=selectedMentorIds.includes(a.id);
+    const locked=a.locked&&plan.perspectives<=3;
+    return`<div class="mentor-card ${sel?'selected':''} ${locked?'locked':''}" onclick="toggleMentorCard('${a.id}',${locked})">
+      <div class="mentor-initial">${escapeHtml(a.initials)}</div>
+      <h4>${escapeHtml(a.name)}</h4>
+      <small>${escapeHtml(a.tag)}${locked?' · Diretor':''}</small>
+      ${locked?'<span class="lock-badge">🔒</span>':''}
+      ${sel?'<span class="lock-badge" style="color:var(--gold)">✓</span>':''}
+    </div>`;
+  }).join('');
+}
+function toggleMentorCard(id,locked){
+  if(locked){showUpgrade('Este mentor faz parte do plano Diretor.');return}
+  const i=selectedMentorIds.indexOf(id);
+  if(i>=0)selectedMentorIds.splice(i,1);
+  else{if(selectedMentorIds.length>=getPlan().perspectives)return showUpgrade(`Seu plano permite até ${getPlan().perspectives} perspectivas.`);selectedMentorIds.push(id)}
+  store(STORAGE.mentors,selectedMentorIds);
+  renderMentorModalGrid();updateMentorCount();
+}
+function updateMentorCount(){
+  const el=$('mentorSelectedCount');
+  if(el)el.textContent=selectedMentorIds.length+' perspectiva(s) selecionada(s)';
+}
+
+/* ===== SIMPLE ANALYSIS ===== */
+async function runSimpleAnalysis(){
+  const decision=$('decisionInput')?.value.trim();
+  if(!decision||decision.length<10)return showToast('Descreva sua decisão com mais detalhe (mínimo 10 caracteres).');
+
+  // Auto-select mentors if none selected
+  if(!selectedMentorIds.length){
+    selectedMentorIds=autoSelectMentors(decision).slice(0,getPlan().perspectives||3);
+    store(STORAGE.mentors,selectedMentorIds);
+    renderSelectedChips();
+  }
+
+  appState.lastDecision=decision;
+  saveState();
+
+  // Show analysis page
+  showPage('analysis');
+
+  // Render quote
+  const quoteEl=$('analysisDecisionQuote');
+  if(quoteEl)quoteEl.innerHTML=`<div class="analysis-quote">"${escapeHtml(decision)}"</div>`;
+
+  // Render mentor chips
+  const chipsEl=$('analysisMentorChips');
+  if(chipsEl){
+    const mentors=selectedMentorIds.map(id=>ADVISORS.find(a=>a.id===id)).filter(Boolean);
+    chipsEl.innerHTML=mentors.map(m=>`<span class="badge gold">${escapeHtml(m.name)}</span>`).join('');
+  }
+
+  // Show loading
+  const resultEl=$('analysisResult');
+  if(resultEl)resultEl.innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span> Analisando decisão...</div>';
+
+  const mentors=selectedMentorIds.map(id=>ADVISORS.find(a=>a.id===id)).filter(Boolean);
+
+  // Call AI
+  let r=await aiCall('/api/ai',{
+    task:'quick-analysis',
+    decision,
+    mentors:mentors.map(m=>({name:m.name,tag:m.tag}))
+  });
+  if(!r)r=localQuickAnalysis(decision,mentors);
+
+  if(resultEl)resultEl.innerHTML=renderQuickAnalysis(r,decision,mentors);
+
+  // Show premium band
+  const band=$('premiumBand');
+  if(band)band.style.display='block';
+}
+
+function renderQuickAnalysis(r,decision,mentors){
+  const safe=(v,fb='')=>escapeHtml(v||fb);
+  let html=`<div class="analysis-card">`;
+
+  // 1. Resumo
+  html+=`<div class="analysis-section"><div class="analysis-section-label">1. Resumo da decisão</div><div class="analysis-section-body"><p>${safe(r.summary,'A decisão foi analisada com base no contexto fornecido.')}</p></div></div><div class="analysis-divider">`;
+
+  // 2. Diagnóstico
+  html+=`</div><div class="analysis-section"><div class="analysis-section-label">2. Diagnóstico estratégico</div><div class="analysis-section-body"><p>${safe(r.diagnosis)}</p></div></div><div class="analysis-divider">`;
+
+  // 3. Caminhos
+  const paths=r.paths||[];
+  html+=`</div><div class="analysis-section"><div class="analysis-section-label">3. Caminhos possíveis</div><div class="analysis-section-body"><ul>${paths.map(p=>`<li>${safe(p)}</li>`).join('')}</ul></div></div><div class="analysis-divider">`;
+
+  // 4. Riscos
+  const risks=r.risks||[];
+  html+=`</div><div class="analysis-section"><div class="analysis-section-label">4. Riscos principais</div><div class="analysis-section-body"><ul>${risks.map(rk=>`<li>${safe(rk)}</li>`).join('')}</ul></div></div><div class="analysis-divider">`;
+
+  // 5. Recomendação
+  html+=`</div><div class="analysis-section"><div class="analysis-section-label">5. Recomendação objetiva</div><div class="analysis-section-title">${safe(r.recommendation,'Execute a versão menor e mensurável antes de comprometer recursos.')}</div></div><div class="analysis-divider">`;
+
+  // 6. Próximo passo
+  html+=`</div><div class="analysis-section"><div class="analysis-section-label">6. Próximo passo sugerido</div><div class="analysis-section-body"><p>${safe(r.nextStep,'Defina hipótese, critério de sucesso e prazo de 14 dias para validar.')}</p></div></div>`;
+
+  // Mentor perspectives (if available from AI)
+  if(r.perspectives&&r.perspectives.length){
+    html+=`<div class="analysis-divider"></div><div class="analysis-section"><div class="analysis-section-label">Perspectivas dos mentores</div><div class="mentor-perspectives">${r.perspectives.map(p=>`<div class="mentor-response"><h4>${safe(p.name)}</h4><p>${safe(p.response)}</p></div>`).join('')}</div></div>`;
+  } else if(mentors.length){
+    // Fallback: show mentor perspectives from local
+    const localPersp=mentors.map(m=>({name:m.name,response:localMentorPerspective(m,decision)}));
+    html+=`<div class="analysis-divider"></div><div class="analysis-section"><div class="analysis-section-label">Perspectivas dos mentores</div><div class="mentor-perspectives">${localPersp.map(p=>`<div class="mentor-response"><h4>${safe(p.name)}</h4><p>${safe(p.response)}</p></div>`).join('')}</div></div>`;
+  }
+
+  html+=`</div>`;
+  return html;
+}
+
+function localQuickAnalysis(decision,mentors){
+  const d=decision.toLowerCase();
+  const isLaunch=/lançar|lançamento|quando|esperar|agora|depois/.test(d);
+  const isFinancial=/investir|dinheiro|caixa|margem|custo|preço/.test(d);
+  const isTeam=/equipe|contratar|demitir|sócio|parceiro/.test(d);
+
+  return{
+    summary:`Decisão identificada: "${decision.slice(0,100)}". Análise baseada em padrões estratégicos comuns em situações similares.`,
+    diagnosis:isLaunch?'A decisão envolve timing de execução — um dos dilemas mais frequentes em negócios. A pergunta central não é "quando?", mas "o que precisa ser verdadeiro para avançar?".':isFinancial?'A decisão envolve alocação de recurso escasso. O ponto crítico é o retorno esperado versus o custo de não decidir.':isTeam?'A decisão envolve capital humano. As consequências são duradouras — errar em equipe custa tempo, dinheiro e cultura.':'A decisão envolve direção estratégica. A pergunta mais importante é: quais premissas precisam ser verdadeiras para que isso funcione?',
+    paths:[
+      'Caminho A: Avançar agora com versão mínima — feedback rápido, menor risco inicial',
+      'Caminho B: Preparar melhor antes de avançar — mais qualidade, mais tempo, risco de atraso',
+      'Caminho C: Validar hipótese central com um teste pequeno antes de comprometer recursos'
+    ],
+    risks:[
+      'Timing errado pode reduzir o impacto ou desperdiçar recursos',
+      'Premissas sobre o mercado, cliente ou contexto podem estar incorretas',
+      'Custo de oportunidade: o que você deixa de fazer enquanto decide',
+      'Risco de caixa se o retorno demorar mais que o esperado'
+    ],
+    recommendation:'Execute a versão de menor risco primeiro. Defina um critério claro de sucesso e uma data de revisão. Se funcionar, escale. Se não, ajuste antes de comprometer mais.',
+    nextStep:'Escreva em uma frase: o que precisa ser verdadeiro para que essa decisão valha a pena? Isso é sua hipótese. Defina como testá-la em até 14 dias.'
+  };
+}
+
+function localMentorPerspective(mentor,decision){
+  const perspectives={
+    jobs:`Pergunte: isso é o melhor para o cliente? Se não for simples e poderoso, não é hora de lançar. Foco é dizer não para mil coisas.`,
+    bezos:`Pense a longo prazo. A pergunta certa é: em 10 anos, você vai se arrepender de ter tomado essa decisão ou de não ter tomado?`,
+    buffett:`Qual é a margem de segurança? Se você não consegue explicar por que vai funcionar em termos simples, talvez não seja tão certo.`,
+    drucker:`Qual resultado essa decisão precisa produzir? Sem métrica clara, não há decisão — há apenas esperança.`,
+    suntzu:`Conheça seu terreno antes de avançar. A vitória se decide antes da batalha, não durante ela.`,
+    mandela:`Lidere com clareza de propósito. O que essa decisão representa para além do lucro imediato?`,
+    marcus:`Controle o que está no seu controle. Separe o que depende de você do que não depende. Decida sobre o primeiro.`,
+    seneca:`Não adie o que pode ser feito agora, mas não aja por impulso. A serenidade é condição para boa decisão.`,
+    default:`Antes de avançar, defina com clareza o que significa sucesso nessa decisão e qual é o limite aceitável de perda.`
+  };
+  return perspectives[mentor.id]||perspectives.default;
+}
+
+/* ===== NAVIGATION HELPERS FROM ANALYSIS ===== */
+function goToFullAnalysis(){
+  appState.council.selected=selectedMentorIds.slice(0,getPlan().perspectives);
+  if($('councilQuestion'))$('councilQuestion').value=appState.lastDecision||'';
+  showPage('app','council');
+}
+function goToCouncil(){
+  appState.council.selected=selectedMentorIds.slice(0,getPlan().perspectives);
+  if($('councilQuestion'))$('councilQuestion').value=appState.lastDecision||'';
+  showPage('app','council');
+  renderAdvisors();renderCouncilSelection();
+}
+function fillAdversaryFromDecision(){
+  const d=$('adversaryDecision');
+  if(d)d.value=appState.lastDecision||$('decisionInput')?.value||'';
+}
+
+/* ===== AI CALL ===== */
+async function aiCall(endpoint,body){
+  try{
+    const res=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,provider:aiCfg.provider})});
+    if(!res.ok)throw new Error(String(res.status));
+    const data=await res.json();
+    return data.result||data;
+  }catch(e){console.warn('AI fallback:',e.message);return null}
+}
+
+/* ===== DIAGNOSIS ===== */
+function renderDiagnosis(){
+  const s=appState.diagnosis.step||0,answers=appState.diagnosis.answers||{};
+  const q=DIAG[s];if(!q||!$('diagnosisBox'))return;
+  if($('diagProgress'))$('diagProgress').style.width=Math.round(((s+1)/DIAG.length)*100)+'%';
+  if(appState.diagnosis.result){renderDiagnosisResult();return}
+  const value=answers[q.key]||'';
+  let input='';
+  if(q.type==='select')input=`<div class="options">${q.opts.map(o=>`<button class="option ${value===o?'selected':''}" onclick="diagAnswer('${q.key}','${escapeHtml(o).replace(/'/g,"&#39;")}')">${escapeHtml(o)}</button>`).join('')}</div>`;
+  else if(q.type==='textarea')input=`<textarea class="textarea" id="diagInput" placeholder="${escapeHtml(q.ph||'')}" style="min-height:100px">${escapeHtml(value)}</textarea>`;
+  else input=`<input class="input" id="diagInput" placeholder="${escapeHtml(q.ph||'')}" value="${escapeHtml(value)}">`;
+  $('diagnosisBox').innerHTML=`<div class="question-card"><div class="kicker">Pergunta ${s+1} de ${DIAG.length}</div><h3 style="font-family:var(--display);font-size:22px;margin:6px 0 14px">${escapeHtml(q.q)}</h3>${input}<div class="cta-row" style="margin-top:14px"><button class="btn" ${s===0?'disabled':''} onclick="diagBack()">← Voltar</button><button class="btn gold" onclick="diagNext()">${s===DIAG.length-1?'Gerar análise →':'Próxima →'}</button></div></div>`;
+}
+function diagAnswer(key,value){appState.diagnosis.answers[key]=value;saveState();renderDiagnosis()}
+function diagNext(){
+  const q=DIAG[appState.diagnosis.step];
+  if(q.type!=='select'){const val=$('diagInput')?.value.trim();if(!val)return showToast('Preencha a resposta.');appState.diagnosis.answers[q.key]=val}
+  if(!appState.diagnosis.answers[q.key])return showToast('Selecione uma resposta.');
+  if(appState.diagnosis.step<DIAG.length-1){appState.diagnosis.step++;saveState();renderDiagnosis()}
+  else finishDiagnosis();
+}
+function diagBack(){if(appState.diagnosis.step>0){appState.diagnosis.step--;saveState();renderDiagnosis()}}
+function restartDiagnosis(){appState.diagnosis={answers:{},result:null,step:0};saveState();renderDiagnosis()}
+async function finishDiagnosis(){
+  if(!currentUser){showPage('register');return}
+  if((currentUser.diagnosisUsed||0)>=getPlan().diagnosis&&currentUser.plan==='free'){showUpgrade('Diagnóstico gratuito já utilizado.');return}
+  const answers=appState.diagnosis.answers;
+  if($('diagnosisBox'))$('diagnosisBox').innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span> Gerando diagnóstico...</div>';
+  let result=await aiCall('/api/diagnosis',{answers});
+  if(!result)result=localDiagnosis(answers);
+  appState.diagnosis.result=result;
+  currentUser.diagnosisUsed=(currentUser.diagnosisUsed||0)+1;
+  saveCurrentUser();saveState();renderDiagnosisResult();
+}
+function renderDiagnosisResult(){
+  const r=appState.diagnosis.result;if(!r||!$('diagnosisBox'))return;
+  $('diagnosisBox').innerHTML=`<div class="result-grid">
+    <div class="result-card full"><span class="badge gold">Diagnóstico</span><h3 style="font-family:var(--display);font-size:22px;margin:10px 0 7px">${escapeHtml(r.mainDiagnosis||'')}</h3><p>${escapeHtml(r.summary||'')}</p></div>
+    <div class="result-card"><h4>3 decisões urgentes</h4><ol>${(r.urgentDecisions||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol></div>
+    <div class="result-card"><h4>Risco principal</h4><p>${escapeHtml(r.dangerousRisk||'')}</p></div>
+    <div class="result-card"><h4>Oportunidade</h4><p>${escapeHtml(r.clearOpportunity||'')}</p></div>
+    <div class="result-card"><h4>Próximo passo</h4><p>${escapeHtml(r.nextStep||'')}</p></div>
+    </div><div class="cta-row" style="margin-top:16px">
+    <button class="btn gold" onclick="diagToCouncil()">Levar ao Conselho</button>
+    <button class="btn" onclick="setModule('adversary');if($('adversaryDecision'))$('adversaryDecision').value=appState.diagnosis.answers.currentDecision||''">Atacar decisão</button>
+    </div>`;
+}
+function diagToCouncil(){setModule('council');if($('councilQuestion'))$('councilQuestion').value=`Diagnóstico: ${appState.diagnosis.result?.mainDiagnosis||''}\nDecisão: ${appState.diagnosis.answers.currentDecision||''}`}
+function localDiagnosis(a){const p=a.problem||'crescimento',r=a.runway||'';const cash=p==='caixa'||r.includes('Menos')||r.includes('1 a 3');return{mainDiagnosis:cash?'Proteger caixa é a prioridade estratégica antes de qualquer crescimento.':'Transformar a decisão adiada em uma ação mensurável é o passo mais crítico.',summary:`Pressão em ${p}. Prioridade: reduzir incerteza e executar um teste em 7 dias.`,urgentDecisions:['Definir a decisão que não pode continuar adiada','Escolher métrica de sucesso para 7 dias','Pausar o que consome caixa sem gerar aprendizado'],dangerousRisk:cash?'Crescer sem conhecer margem e runway real.':'Confundir planejamento com progresso.',clearOpportunity:'Usar o problema atual para simplificar oferta e canal.',nextStep:'Em 48h: documente números, escolha uma hipótese e defina critério de sucesso.'}}
+
+/* ===== SCENARIOS ===== */
+function selectScenario(id){appState.scenario.active=id;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.scenario===id));renderScenarioForm();saveState()}
+function renderScenarioForm(){
+  const id=appState.scenario.active||'a';const fields=SCENARIO_FIELDS[id];
+  if(!$('scenarioForm'))return;
+  $('scenarioForm').innerHTML=`<div class="grid two">${fields.map(([key,label,type,def])=>type==='select'?`<div class="field"><label>${label}</label><select class="select" id="sc-${key}">${def.split('|').map(o=>`<option>${o}</option>`).join('')}</select></div>`:`<div class="field"><label>${label}</label><input class="input" id="sc-${key}" type="${type}" value="${escapeHtml(def)}"></div>`).join('')}</div>`;
+}
+async function runScenario(){
+  if(!getPlan().scenarios){showUpgrade('Simulação de cenários faz parte do plano Diretor.');return}
+  if(!canUseDecision())return;
+  const id=appState.scenario.active;const data={scenario:id};
+  SCENARIO_FIELDS[id].forEach(([k])=>data[k]=$('sc-'+k)?.value);
+  if($('scenarioResult'))$('scenarioResult').innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span> Analisando cenário...</div>';
+  let r=await aiCall('/api/ai',{task:'scenario',data});
+  if(!r)r=localScenario(data);
+  consumeDecision('scenario','Cenário '+id.toUpperCase());
+  if($('scenarioResult'))$('scenarioResult').innerHTML=`<div class="metrics">${['potencial','risco','velocidade','necessidadeCaixa','complexidade'].map(k=>`<div class="metric"><small>${{potencial:'Potencial',risco:'Risco',velocidade:'Velocidade',necessidadeCaixa:'Caixa',complexidade:'Complexidade'}[k]||k}</small><strong>${escapeHtml(String(r[k]||'-'))}</strong></div>`).join('')}</div><div class="result-card full" style="margin-top:12px"><h4>Recomendação</h4><p>${escapeHtml(r.recommendation||r.message||'')}</p></div>`;
+}
+function localScenario(d){if(d.scenario==='a')return{potencial:'Alto',risco:'Alto',velocidade:'Alta',necessidadeCaixa:'Alta',complexidade:'Média/Alta',recommendation:'Avance somente com CAC, margem e payback validados.'};if(d.scenario==='b')return{potencial:'Médio',risco:'Baixo',velocidade:'Baixa',necessidadeCaixa:'Baixa',complexidade:'Média',recommendation:'Crescimento orgânico: seguro, exige consistência e métrica semanal.'};return{potencial:'Médio',risco:'Baixo',velocidade:'Média',necessidadeCaixa:'Reduzida',complexidade:'Alta no curto prazo',recommendation:'Recomendado se runway estiver curto. Proteja o time e o canal de receita.'}}
+
+/* ===== ADVERSARY ===== */
+async function runAdversary(){
+  if(!getPlan().adversary){showUpgrade('Modo Adversário faz parte do plano Diretor.');return}
+  const decision=$('adversaryDecision')?.value.trim();
+  if(!decision||decision.length<15)return showToast('Descreva a decisão com pelo menos 15 caracteres.');
+  if(!canUseDecision())return;
+  if($('adversaryResult'))$('adversaryResult').innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span> Atacando a decisão...</div>';
+  let r=await aiCall('/api/adversary',{decision,diagnosis:appState.diagnosis.result});
+  if(!r)r=localAdversary(decision);
+  appState.adversary=r;saveState();consumeDecision('adversary',decision);
+  if($('adversaryResult'))$('adversaryResult').innerHTML=`<div class="result-grid">
+    <div class="result-card full"><span class="badge bad">Veredito</span><h3 style="font-family:var(--display);font-size:20px;margin:10px 0 7px">${escapeHtml(r.verdict||r.title||'')}</h3><p>${escapeHtml(r.reduceRisk||'')}</p></div>
+    ${r.risks?`<div class="result-card"><h4>7 riscos ocultos</h4><ol>${r.risks.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol></div>`:''}
+    ${r.questions?`<div class="result-card"><h4>5 perguntas difíceis</h4><ol>${r.questions.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol></div>`:''}
+    ${r.wrong?`<div class="result-card"><h4>O que pode dar errado</h4><p>${escapeHtml(r.wrong)}</p></div>`:''}
+    </div>`;
+}
+function localAdversary(decision){return{title:'Ataque estratégico',risks:['Baseada em desejo, não em evidência de mercado','Custo real maior que o previsto','Equipe sem foco para executar','Caixa piora antes de qualquer retorno','Canal sem previsibilidade','Proposta de valor insuficiente para mudar comportamento','Problema anterior de posicionamento ou margem não resolvido'],questions:['Qual premissa, se falsa, derruba tudo?','Qual é o limite máximo de perda aceitável?','Qual evidência em 14 dias provaria que vale continuar?','O que será pausado para abrir foco?','Quem é responsável por execução e medição?'],wrong:`"${decision.slice(0,80)}" pode aumentar complexidade antes de provar retorno real.`,reduceRisk:'Execute uma versão menor com limite de investimento, métrica e data de corte.',verdict:'AJUSTAR: teste controlado antes de comprometer caixa relevante.'}}
+
+/* ===== COUNCIL ===== */
+function renderAdvisors(){
+  const q=($('advisorSearch')?.value||'').toLowerCase();
+  if(!$('advisorList'))return;
+  $('advisorList').innerHTML=ADVISORS.filter(a=>(a.name+a.tag).toLowerCase().includes(q)).map(a=>{
+    const locked=a.locked&&getPlan().perspectives<=3;
+    const sel=appState.council.selected.includes(a.id);
+    return`<button class="advisor ${sel?'selected':''} ${locked?'locked':''}" onclick="toggleAdvisor('${a.id}',${locked})"><span class="advisor-initial">${escapeHtml(a.initials)}</span><span><b>${escapeHtml(a.name)}</b><br><small>${escapeHtml(a.tag)}${locked?' · Diretor':''}</small></span></button>`;
+  }).join('');
+}
+function toggleAdvisor(id,locked){
+  if(locked){showUpgrade('Este mentor faz parte do plano Diretor.');return}
+  const list=appState.council.selected;
+  const i=list.indexOf(id);
+  if(i>=0)list.splice(i,1);
+  else{if(list.length>=getPlan().perspectives)return showUpgrade(`Seu plano permite até ${getPlan().perspectives} perspectivas.`);list.push(id)}
+  saveState();renderAdvisors();renderCouncilSelection();
+}
+function renderCouncilSelection(){
+  const names=appState.council.selected.map(id=>ADVISORS.find(a=>a.id===id)?.name).filter(Boolean);
+  if($('selectedAdvisors'))$('selectedAdvisors').innerHTML=names.length?names.map(n=>`<span class="badge gold">${escapeHtml(n)}</span>`).join(''):'<span class="badge warn">Selecione perspectivas à esquerda</span>';
+}
+async function runCouncil(){
+  const q=$('councilQuestion')?.value.trim();
+  if(!q||q.length<15)return showToast('Descreva a decisão com mais contexto.');
+  if(appState.council.selected.length<1)return showToast('Selecione pelo menos uma perspectiva.');
+  if(!canUseDecision())return;
+  if($('councilResult'))$('councilResult').innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span> Consultando perspectivas...</div>';
+  const selected=appState.council.selected.map(id=>ADVISORS.find(a=>a.id===id)).filter(Boolean);
+  let r=await aiCall('/api/council',{question:q,advisors:selected,diagnosis:appState.diagnosis.result});
+  if(!r)r={responses:selected.map(a=>({name:a.name,response:localMentorPerspective(a,q)})),conclusion:'Avance com teste controlado, limite de perda e métrica clara. Evite comprometer caixa antes de validar.'};
+  appState.council.responses=r.responses||[];saveState();consumeDecision('council',q);
+  if($('councilResult'))$('councilResult').innerHTML=(r.responses||[]).map(x=>`<div class="response"><h4>${escapeHtml(x.name)}</h4><p>${escapeHtml(x.response)}</p></div>`).join('')+`<div class="result-card full" style="margin-top:8px"><h4>Decisão conclusiva</h4><p>${escapeHtml(r.conclusion||'')}</p></div><div class="cta-row" style="margin-top:12px"><button class="btn gold" onclick="setModule('final')">Gerar decisão final</button></div>`;
+}
+
+/* ===== FINAL DECISION ===== */
+async function runFinalDecision(){
+  const payload={diagnosis:appState.diagnosis,scenario:appState.scenario,adversary:appState.adversary,council:appState.council};
+  if($('finalResult'))$('finalResult').innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span> Cruzando informações...</div>';
+  let r=await aiCall('/api/final-decision',payload);
+  if(!r)r={recommendation:'Executar versão menor e mensurável, com limite de caixa e data de corte.',why:'Reduz incerteza sem paralisar nem apostar em premissas não provadas.',risks:['Caixa insuficiente','Falta de foco','Canal sem previsibilidade'],next7:['Definir hipótese central','Escolher métrica','Executar teste'],next30:['Revisar resultados','Ajustar oferta','Escalar o que funcionou'],metrics:['Margem','CAC','Conversão','Runway'],avoid:['Contratar antes de validar','Aumentar complexidade'],plan:['Dia 1: escrever decisão e premissas','Dias 2-5: testar com clientes','Dia 7: continuar, ajustar ou adiar','Dia 30: escalar se comprovado']};
+  appState.final=r;saveState();
+  const LABELS={recommendation:'1. Recomendação',why:'2. Por que agora',risks:'3. Riscos',next7:'4. Plano 7 dias',next30:'5. Plano 30 dias',metrics:'6. Métricas',avoid:'7. O que evitar',plan:'8. Plano de ação'};
+  if($('finalResult'))$('finalResult').innerHTML=`<div class="result-grid">${Object.keys(LABELS).map(k=>`<div class="result-card ${k==='recommendation'||k==='plan'?'full':''}"><h4>${LABELS[k]}</h4>${Array.isArray(r[k])?`<ul>${r[k].map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>`:`<p>${escapeHtml(r[k]||'')}</p>`}</div>`).join('')}</div>`;
+}
+
+/* ===== ADMIN ===== */
+function adminLogin(){
+  const p=$('adminPassword')?.value;
+  if(p==='admin2026'||p===localStorage.getItem('dai2_admin_password')){store(STORAGE.admin,{ok:true});showPage('admin');renderUsersAdmin();showToast('Admin liberado.')}
+  else showToast('Credenciais incorretas. Demo: admin2026')
+}
+function logoutAdmin(){localStorage.removeItem(STORAGE.admin);showPage('home')}
+function showAdminSection(id){document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));$('admin-'+id)?.classList.add('active')}
+function renderAdminForms(){
+  if($('aiProvider'))$('aiProvider').value=aiCfg.provider;
+  if($('claudeModel'))$('claudeModel').value=aiCfg.claudeModel;
+  if($('openaiModel'))$('openaiModel').value=aiCfg.openaiModel;
+  if($('textWhatsapp'))$('textWhatsapp').value=texts.whatsapp;
+  if($('textEmail'))$('textEmail').value=texts.email;
+  if($('textSimpleHeadline'))$('textSimpleHeadline').value=texts.simpleHeadline||DEFAULT_TEXTS.simpleHeadline;
+}
+function saveAiAdmin(){aiCfg={provider:$('aiProvider').value,claudeModel:$('claudeModel').value.trim()||DEFAULT_AI.claudeModel,openaiModel:$('openaiModel').value.trim()||DEFAULT_AI.openaiModel};store(STORAGE.ai,aiCfg);showToast('IA salva. Chaves ficam na Vercel.')}
+async function testAi(){
+  const box=$('aiTestResult');if(box)box.innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span> Testando...</div>';
+  const r=await aiCall('/api/ai',{task:'test',message:'Responda: ok'});
+  if($('aiStatus'))$('aiStatus').className='status '+(r?'ok':'warn');
+  if($('aiStatus'))$('aiStatus').textContent=r?'Conectado':'Fallback local';
+  if(box)box.innerHTML=`<div class="result-card"><p>${escapeHtml(r?.message||r?.content||'Fallback funcionando.')}</p></div>`;
+}
+function renderPaymentAdmin(){
+  const ids=[['mpIniciado','Mercado Pago — Iniciado'],['mpDiretor','Mercado Pago — Diretor'],['mpGrandeMestre','Mercado Pago — Grande Mestre'],['stripeIniciado','Stripe — Iniciado'],['stripeDiretor','Stripe — Diretor'],['stripeGrandeMestre','Stripe — Grande Mestre'],['whatsapp','WhatsApp de suporte'],['pix','Pix manual'],['activationMessage','Mensagem de ativação']];
+  if($('paymentFields'))$('paymentFields').innerHTML=ids.map(([id,label])=>`<div class="field"><label>${label}</label><input class="input" id="pay-${id}" value="${escapeHtml(payments[id]||'')}"></div>`).join('');
+}
+function savePaymentAdmin(){Object.keys(DEFAULT_PAYMENTS).forEach(k=>{const el=$('pay-'+k);if(el)payments[k]=el.value.trim()});store(STORAGE.payments,payments);showToast('Pagamentos salvos.');renderPlans()}
+function saveTextsAdmin(){texts={...texts,simpleHeadline:$('textSimpleHeadline').value,whatsapp:$('textWhatsapp').value,email:$('textEmail').value};store(STORAGE.texts,texts);payments.whatsapp=texts.whatsapp;showToast('Textos salvos.')}
+function renderUsersAdmin(){
+  const el=$('usersAdmin');if(!el)return;
+  if(!users.length){el.innerHTML='<p style="color:var(--dim)">Nenhum usuário local.</p>';return}
+  el.innerHTML=users.map((u,i)=>`<div class="account-card"><b>${escapeHtml(u.name)}</b> — ${escapeHtml(u.email)}<br><small>${u.plan||'free'} · ${u.decisionsUsed||0} decisões</small><div class="cta-row" style="margin-top:8px"><select class="select" style="max-width:200px" onchange="promoteUser(${i},this.value)"><option value="free">Free</option><option value="iniciado">Iniciado</option><option value="diretor">Diretor</option><option value="grande_mestre">Grande Mestre</option></select><button class="btn small" onclick="resetUser(${i})">Zerar uso</button></div></div>`).join('');
+}
+function promoteUser(i,plan){users[i].plan=plan;users[i].decisionsUsed=0;store(STORAGE.users,users);if(currentUser?.email===users[i].email){currentUser.plan=plan;currentUser.decisionsUsed=0;saveCurrentUser();updateAuth()}renderUsersAdmin();showToast('Plano atualizado.')}
+function resetUser(i){users[i].decisionsUsed=0;users[i].diagnosisUsed=0;store(STORAGE.users,users);if(currentUser?.email===users[i].email){currentUser.decisionsUsed=0;currentUser.diagnosisUsed=0;saveCurrentUser();updateUsage()}renderUsersAdmin();showToast('Uso zerado.')}
+
+/* ===== MODALS ===== */
+function showUpgrade(msg){if($('upgradeTitle'))$('upgradeTitle').textContent=msg||'Recurso bloqueado.';if($('upgradeModal'))$('upgradeModal').classList.add('open')}
+function closeUpgrade(){if($('upgradeModal'))$('upgradeModal').classList.remove('open')}
+
+/* ===== START ===== */
+window.addEventListener('DOMContentLoaded',safeInit);
+</script>
+</body>
+</html>
