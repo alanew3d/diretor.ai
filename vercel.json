@@ -12,6 +12,7 @@
     { "src": "/manifest.json", "dest": "/manifest.json" },
     { "src": "/llms.txt", "dest": "/llms.txt" },
     { "src": "/agent-manifest.json", "dest": "/agent-manifest.json" },
+    { "src": "/diretor_ai_simple_strategy_v2.html", "dest": "/diretor_ai_simple_strategy_v2.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
