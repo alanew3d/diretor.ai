@@ -162,12 +162,43 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;ba
 .loader{display:inline-flex;gap:4px;align-items:center}.loader i{width:7px;height:7px;background:var(--gold);border-radius:50%;animation:pulse 1s infinite}.loader i:nth-child(2){animation-delay:.15s}.loader i:nth-child(3){animation-delay:.3s}@keyframes pulse{50%{opacity:.25;transform:translateY(-3px)}}
 .loading-msg{display:flex;align-items:center;gap:10px;color:var(--dim);padding:16px 0}
 
-/* MAP MODULE */
-.map-container{border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden;min-height:400px;position:relative}
-.map-placeholder{background:radial-gradient(circle at 50% 50%,rgba(200,168,75,.06),transparent 60%);min-height:400px;display:grid;place-items:center;position:relative}.map-grid{position:absolute;inset:0;opacity:.08;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:40px 40px}
-.map-markers{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.map-marker{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:.15s}.map-marker:hover{border-color:var(--line2)}.map-marker .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.territory-categories{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.territory-cat{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:14px;cursor:pointer;transition:.15s;text-align:center}.territory-cat:hover{border-color:var(--line2)}.territory-cat.active{border-color:var(--line2);background:rgba(200,168,75,.1)}.territory-cat .cat-ico{font-size:24px;margin-bottom:6px}.territory-cat small{font-size:12px;color:var(--dim)}
+/* TERRITORY MODULE */
+.terr-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.terr-tab{border:1px solid var(--line);background:transparent;color:var(--dim);padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;white-space:nowrap}
+.terr-tab.active{border-color:var(--line2);background:rgba(200,168,75,.1);color:var(--gold)}
+.terr-tab-content{display:none}.terr-tab-content.active{display:block}
+.map-svg-wrap{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:12px;background:#0a0a10;cursor:crosshair}
+.map-svg-wrap svg{display:block;width:100%;height:auto}
+.map-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.map-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim)}
+.map-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.marker-controls{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.marker-btn{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:7px 13px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;transition:.15s}
+.marker-btn:hover,.marker-btn.active{border-color:var(--line2);color:var(--text)}
+.marker-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.radius-wrap{display:flex;align-items:center;gap:12px;margin-top:6px}
+.radius-slider{flex:1;-webkit-appearance:none;appearance:none;height:6px;background:rgba(255,255,255,.1);border-radius:999px;outline:none}
+.radius-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--gold);border-radius:50%;cursor:pointer;box-shadow:0 0 8px rgba(200,168,75,.4)}
+.radius-label{font-family:var(--mono);font-size:14px;color:var(--gold);width:55px;text-align:right;white-space:nowrap}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.data-table th{text-align:left;font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--line)}
+.data-table td{padding:7px 10px;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:middle}
+.data-table tr:last-child td{border-bottom:none}
+.data-table input{background:transparent;border:none;color:var(--text);width:100%;outline:none;font-family:var(--font);font-size:13px}
+.data-table input::placeholder{color:var(--dim)}
+.consent-box{border:1px solid rgba(200,168,75,.3);background:rgba(200,168,75,.06);border-radius:14px;padding:16px;margin-bottom:16px}
+.consent-box label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:var(--muted);line-height:1.55}
+.consent-box input[type=checkbox]{margin-top:3px;flex-shrink:0;width:15px;height:15px;accent-color:var(--gold)}
+.markers-list-item{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:6px;font-size:13px}
+.markers-list-item .marker-info{display:flex;align-items:center;gap:8px}
+.report-section{border-left:3px solid var(--gold3);padding:10px 14px;margin-bottom:10px;background:var(--card);border-radius:0 12px 12px 0}
+.report-section h4{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px}
+.report-section p,.report-section li{font-size:13px;color:var(--muted);margin:0}
+.report-section ul{padding-left:16px;margin:6px 0}
+/* Legacy map classes kept for backward compat */
+.map-container{border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden;min-height:200px;position:relative}
+.map-placeholder{min-height:200px;display:grid;place-items:center;position:relative}
+.territory-categories{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 
 /* GAME ENGINE */
 .game-board{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}.move-card{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}.move-card:before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold3),transparent);opacity:0;transition:.2s}.move-card:hover{border-color:var(--line2);transform:translateY(-2px)}.move-card:hover:before{opacity:1}.move-card.selected{border-color:var(--line2);background:rgba(200,168,75,.08)}.move-num{font-family:var(--mono);font-size:10px;color:var(--gold)}.move-card h3{font-size:16px;font-weight:700;margin:8px 0 6px}.move-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.move-badge{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line)}
@@ -574,30 +605,155 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;ba
       <!-- MÓDULO 6: MAPA ESTRATÉGICO -->
       <section id="mod-territory" class="module hidden">
         <div class="panel">
-          <div class="panel-head"><div><div class="kicker">Módulo 06</div><h2 class="title">Mapa Estratégico</h2><p class="subtitle">Análise territorial: mapeie oportunidades, concorrência e falhas de mercado por região ou área de atuação.</p></div><button class="btn gold small" onclick="runTerritory()">Analisar território</button></div>
-          <div class="grid two" style="margin-bottom:16px">
-            <div class="field"><label>Cidade / região principal</label><input class="input" id="terrCity" placeholder="Ex: São Paulo, Zona Sul, Campinas..."></div>
-            <div class="field"><label>Tipo de negócio</label><input class="input" id="terrBusiness" placeholder="Restaurante, clínica, loja, serviço..."></div>
-            <div class="field"><label>Raio de atuação</label><select class="select" id="terrRadius"><option>Bairro</option><option>Cidade</option><option>Região metropolitana</option><option>Estado</option><option>Nacional</option></select></div>
-            <div class="field"><label>Número de concorrentes conhecidos</label><select class="select" id="terrCompetitors"><option>Nenhum</option><option>1 a 3</option><option>4 a 10</option><option>Mais de 10</option></select></div>
+          <div class="panel-head">
+            <div><div class="kicker">Módulo 06</div><h2 class="title">Mapa Estratégico</h2><p class="subtitle">Análise territorial com raio de cobertura, concorrência, oportunidades e recomendações de expansão.</p></div>
           </div>
-          <div>
-            <div class="kicker" style="margin-bottom:10px">Categorias para mapear</div>
-            <div class="territory-categories" id="terrCategories"></div>
+
+          <!-- TABS -->
+          <div class="terr-tabs">
+            <button class="terr-tab active" onclick="showTerrTab('config')">① Configuração</button>
+            <button class="terr-tab" onclick="showTerrTab('markers')">② Marcadores no Mapa</button>
+            <button class="terr-tab" onclick="showTerrTab('tables')">③ Concorrentes & Oportunidades</button>
+            <button class="terr-tab" onclick="showTerrTab('analysis')">④ Gerar Análise</button>
           </div>
-          <div class="field" style="margin-top:14px"><label>Observações sobre o território</label><textarea class="textarea" id="terrNotes" placeholder="Descreva o que você sabe sobre a região: concentração de clientes, pontos fortes da concorrência, áreas mal atendidas..."></textarea></div>
-          <div class="map-container" style="margin-top:14px">
-            <div class="map-placeholder" id="mapPlaceholder">
-              <div class="map-grid"></div>
-              <div style="text-align:center;z-index:1;position:relative">
-                <div style="font-size:32px;margin-bottom:12px">🗺️</div>
-                <b style="color:var(--gold)">Mapa Estratégico</b><br>
-                <small style="color:var(--dim)">Preencha os campos e clique em "Analisar território"<br>Integração com Google Maps disponível no plano Grande Mestre</small>
+
+          <!-- TAB 1: CONFIGURAÇÃO -->
+          <div class="terr-tab-content active" id="terr-config">
+            <div class="grid two">
+              <div class="field"><label>Endereço ou ponto de base</label><input class="input" id="terrAddress" placeholder="Ex: Av. Paulista, 1000 — São Paulo, SP"></div>
+              <div class="field"><label>Cidade / região principal</label><input class="input" id="terrCity" placeholder="Ex: São Paulo, Zona Sul, Campinas..."></div>
+              <div class="field">
+                <label>Raio de atendimento</label>
+                <div class="radius-wrap">
+                  <input type="range" class="radius-slider" id="terrRadiusSlider" min="1" max="100" value="10" oninput="updateRadius(this.value)">
+                  <span class="radius-label" id="terrRadiusLabel">10 km</span>
+                </div>
               </div>
+              <div class="field"><label>Tempo máximo de deslocamento</label><select class="select" id="terrTravelTime"><option value="15">Até 15 min</option><option value="30" selected>Até 30 min</option><option value="60">Até 60 min</option><option value="120">Até 2 horas</option><option value="0">Sem limite</option></select></div>
+              <div class="field"><label>Tipo de operação</label><select class="select" id="terrOpType">
+                <option value="loja">Loja física</option>
+                <option value="delivery">Delivery / entrega</option>
+                <option value="servico">Serviço local</option>
+                <option value="clinica">Clínica / consultório</option>
+                <option value="logistica">Logística</option>
+                <option value="distribuicao">Distribuição</option>
+                <option value="b2b">Atendimento B2B</option>
+                <option value="expansao">Expansão territorial</option>
+              </select></div>
+              <div class="field"><label>Tipo de negócio</label><input class="input" id="terrBusiness" placeholder="Restaurante, clínica, SaaS, indústria..."></div>
+              <div class="field"><label>Concorrentes conhecidos</label><select class="select" id="terrCompetitors"><option>Nenhum</option><option>1 a 3</option><option>4 a 10</option><option>Mais de 10</option></select></div>
+              <div class="field"><label>Número estimado de clientes na região</label><input class="input" id="terrCustomers" placeholder="Ex: 500 residências, 80 empresas..."></div>
             </div>
-            <div id="mapResult" class="hidden" style="padding:20px"></div>
+            <div class="field" style="margin-top:12px"><label>Observações sobre o território</label><textarea class="textarea" id="terrNotes" placeholder="Concentração de clientes, pontos fortes ou fracos da concorrência, áreas mal atendidas, particularidades da região..."></textarea></div>
+            <div style="margin-top:16px">
+              <button class="btn gold" onclick="showTerrTab('markers')">Próximo: Marcar no mapa →</button>
+            </div>
           </div>
-          <div id="territoryResult" style="margin-top:16px"></div>
+
+          <!-- TAB 2: MAPA SIMULADO -->
+          <div class="terr-tab-content" id="terr-markers">
+            <p class="subtitle" style="margin-bottom:14px">Clique no mapa para adicionar marcadores. Selecione o tipo antes de clicar.</p>
+
+            <div class="marker-controls" id="markerControls"></div>
+
+            <div class="map-svg-wrap" id="terrMapWrap">
+              <svg id="terrMapSvg" viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg" style="cursor:crosshair" onclick="handleMapClick(event)">
+                <defs>
+                  <pattern id="mapGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+                    <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"/>
+                  </pattern>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                    <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                </defs>
+                <!-- Background -->
+                <rect width="600" height="380" fill="rgba(12,12,18,0.9)" rx="12"/>
+                <rect width="600" height="380" fill="url(#mapGrid)" rx="12"/>
+                <!-- Subtle street-like lines -->
+                <line x1="0" y1="190" x2="600" y2="190" stroke="rgba(255,255,255,0.04)" stroke-width="8"/>
+                <line x1="300" y1="0" x2="300" y2="380" stroke="rgba(255,255,255,0.04)" stroke-width="8"/>
+                <line x1="0" y1="95" x2="600" y2="95" stroke="rgba(255,255,255,0.025)" stroke-width="4"/>
+                <line x1="0" y1="285" x2="600" y2="285" stroke="rgba(255,255,255,0.025)" stroke-width="4"/>
+                <line x1="150" y1="0" x2="150" y2="380" stroke="rgba(255,255,255,0.025)" stroke-width="4"/>
+                <line x1="450" y1="0" x2="450" y2="380" stroke="rgba(255,255,255,0.025)" stroke-width="4"/>
+                <!-- Coverage circle (updated dynamically) -->
+                <circle id="terrCoverageCircle" cx="300" cy="190" r="80" fill="rgba(200,168,75,0.06)" stroke="rgba(200,168,75,0.35)" stroke-width="1.5" stroke-dasharray="6,4"/>
+                <!-- Dynamic markers will be inserted here -->
+                <g id="terrMarkersGroup"></g>
+                <!-- Placeholder text when empty -->
+                <text id="terrMapHint" x="300" y="195" text-anchor="middle" fill="rgba(141,133,119,0.6)" font-size="12" font-family="JetBrains Mono, monospace">Clique no mapa para adicionar marcadores</text>
+              </svg>
+            </div>
+
+            <div class="map-legend" id="mapLegend"></div>
+
+            <div id="terrMarkersList" style="margin-top:16px"></div>
+
+            <div class="cta-row" style="margin-top:14px">
+              <button class="btn small" onclick="clearTerrMarkers()">Limpar marcadores</button>
+              <button class="btn gold" onclick="showTerrTab('tables')">Próximo: Dados de concorrência →</button>
+            </div>
+
+            <div class="disclaimer" style="margin-top:14px">Ao adicionar dados de localização de clientes, colaboradores ou parceiros, você confirma ter autorização para usar estas informações e entende que serão usadas apenas para a análise solicitada. Evite inserir endereços pessoais desnecessariamente.</div>
+          </div>
+
+          <!-- TAB 3: TABELAS -->
+          <div class="terr-tab-content" id="terr-tables">
+            <div style="margin-bottom:20px">
+              <div class="kicker" style="margin-bottom:8px">Concorrentes</div>
+              <p class="subtitle" style="margin-bottom:10px">Liste os principais concorrentes da região para análise comparativa.</p>
+              <table class="data-table" id="terrCompTable">
+                <thead><tr><th>Nome</th><th>Bairro / Região</th><th>Ponto fraco percebido</th><th>Força percebida</th><th></th></tr></thead>
+                <tbody id="terrCompBody"></tbody>
+              </table>
+              <button class="btn small" onclick="addCompetitorRow()" style="margin-top:8px">+ Adicionar concorrente</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div style="margin-bottom:20px">
+              <div class="kicker" style="margin-bottom:8px">Polos de Oportunidade / Demanda</div>
+              <p class="subtitle" style="margin-bottom:10px">Regiões, bairros ou pontos com concentração de público ou demanda não atendida.</p>
+              <table class="data-table" id="terrOppTable">
+                <thead><tr><th>Nome / bairro</th><th>Tipo de oportunidade</th><th>Potencial estimado</th><th></th></tr></thead>
+                <tbody id="terrOppBody"></tbody>
+              </table>
+              <button class="btn small" onclick="addOpportunityRow()" style="margin-top:8px">+ Adicionar oportunidade</button>
+            </div>
+
+            <div class="cta-row" style="margin-top:14px">
+              <button class="btn gold" onclick="showTerrTab('analysis')">Próximo: Gerar análise →</button>
+            </div>
+          </div>
+
+          <!-- TAB 4: ANÁLISE -->
+          <div class="terr-tab-content" id="terr-analysis">
+            <div class="consent-box" id="terrConsentBox">
+              <label>
+                <input type="checkbox" id="terrConsent" onchange="checkTerritoryConsent()">
+                <span>Confirmo que os dados de localização inseridos são de uso empresarial e tenho autorização para utilizá-los nesta análise. Entendo que os dados serão processados apenas para geração do relatório estratégico e não serão compartilhados com terceiros.</span>
+              </label>
+            </div>
+
+            <div id="terrAnalysisActions" style="display:none">
+              <div class="grid two" style="margin-bottom:16px">
+                <div class="result-card"><b>📍 Base:</b> <span id="terrSummaryBase">—</span></div>
+                <div class="result-card"><b>📏 Raio:</b> <span id="terrSummaryRadius">—</span></div>
+                <div class="result-card"><b>⚙️ Operação:</b> <span id="terrSummaryOp">—</span></div>
+                <div class="result-card"><b>🏢 Concorrentes:</b> <span id="terrSummaryComp">—</span></div>
+              </div>
+              <button class="btn gold" onclick="runTerritory()" style="margin-bottom:16px">🗺️ Gerar Relatório de Cobertura e Oportunidades</button>
+            </div>
+
+            <div id="territoryResult"></div>
+
+            <div class="disclaimer" style="margin-top:14px">
+              A análise territorial é estratégica e estimativa, baseada nos dados inseridos manualmente. Para análise geográfica precisa com dados reais (concorrentes via Google Places, densidade demográfica, heatmaps), é necessária integração avançada disponível sob consulta.<br><br>
+              <b>Integrações futuras preparadas:</b> Google Maps API · Google Places API · Google Geocoding API · Google Distance Matrix · Mapbox · OpenStreetMap · Nominatim · Importação CSV de clientes/concorrentes.
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -959,7 +1115,7 @@ function init(){
   renderGameBoard();
   renderAgentsGrid();
   renderMaterialsGrid();
-  renderTerritoryCategories();
+  /* territory module is initialized on open via onTerritoryModuleOpen() */
   updateUsage();
   if(currentUser)normalizeUsage();
   initDecisionCore();
@@ -998,6 +1154,7 @@ function setModule(m){
   document.querySelectorAll('.module').forEach(x=>x.classList.add('hidden'));
   $('mod-'+m)?.classList.remove('hidden');
   document.querySelectorAll('.module-btn').forEach(b=>b.classList.toggle('active',b.dataset.module===m));
+  if(m==='territory')onTerritoryModuleOpen();
 }
 
 function showToast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)}
@@ -1382,39 +1539,273 @@ async function runFinalDecision(){
 }
 function localFinal(){return{recommendation:'Executar uma versão menor e mensurável da decisão, com limite claro de caixa e data de corte.',why:'É a melhor decisão agora porque reduz incerteza sem paralisar a empresa nem apostar tudo em premissas não provadas.',risks:['Caixa insuficiente','Falta de foco','Canal sem previsibilidade','Métrica errada'],next7:['Definir hipótese central com critério claro de sucesso','Escolher métrica de validação','Executar teste com clientes reais'],next30:['Revisar resultados da semana 1','Ajustar oferta com base em evidência','Escalar somente o que comprovou retorno'],metrics:['Margem','CAC','Conversão','Runway de caixa','Receita incremental'],avoid:['Contratar antes de validar','Aumentar complexidade','Trocar estratégia semanalmente'],plan:['Dia 1: escrever a decisão, premissas e limite de perda','Dias 2 a 5: testar com clientes ou prospects reais','Dia 7: decidir continuar, ajustar ou adiar','Dia 30: dobrar aposta apenas se a métrica comprovar']}}
 
-/* ===== TERRITORY ===== */
-function renderTerritoryCategories(){
-  const el=$('terrCategories');if(!el)return;
-  el.innerHTML=TERRITORY_CATS.map(c=>`<div class="territory-cat ${appState.territory?.categories?.includes(c.id)?'active':''}" onclick="toggleTerrCat('${c.id}')"><div class="cat-ico">${c.ico}</div><small>${c.label}</small></div>`).join('');
+/* ===== TERRITORY MODULE ===== */
+const TERR_TYPES=[
+  {id:'own',label:'Minha operação',color:'#3db87a',emoji:'🏢'},
+  {id:'competitor',label:'Concorrente',color:'#e05a5a',emoji:'⚔️'},
+  {id:'opportunity',label:'Oportunidade',color:'#c8a84b',emoji:'⭐'},
+  {id:'risk',label:'Risco',color:'#e0a840',emoji:'⚠️'},
+  {id:'uncovered',label:'Área descoberta',color:'#4a90d9',emoji:'🎯'},
+  {id:'demand',label:'Polo de demanda',color:'#9b7bd4',emoji:'🔥'},
+  {id:'logistics',label:'Ponto logístico',color:'#5bc8a0',emoji:'🚚'}
+];
+const OP_TYPES={loja:'Loja física',delivery:'Delivery / entrega',servico:'Serviço local',clinica:'Clínica / consultório',logistica:'Logística',distribuicao:'Distribuição',b2b:'Atendimento B2B',expansao:'Expansão territorial'};
+
+function initTerritoryModule(){
+  renderMarkerControls();
+  renderMapLegend();
+  renderTerrMarkersList();
+  initCompetitorTable();
+  initOpportunityTable();
+  updateRadius(10);
 }
-function toggleTerrCat(id){
-  if(!appState.territory)appState.territory={categories:[]};
-  const i=appState.territory.categories.indexOf(id);
-  if(i>=0)appState.territory.categories.splice(i,1);
-  else appState.territory.categories.push(id);
-  saveState();renderTerritoryCategories();
+
+function showTerrTab(tab){
+  document.querySelectorAll('.terr-tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.terr-tab').forEach(t=>t.classList.remove('active'));
+  const idx={config:0,markers:1,tables:2,analysis:3}[tab]??0;
+  document.querySelectorAll('.terr-tab-content')[idx]?.classList.add('active');
+  document.querySelectorAll('.terr-tab')[idx]?.classList.add('active');
+  if(tab==='analysis')updateTerrAnalysisSummary();
 }
+
+function updateRadius(v){
+  if($('terrRadiusLabel'))$('terrRadiusLabel').textContent=v+' km';
+  if($('terrRadiusSlider'))$('terrRadiusSlider').value=v;
+  const maxR=90;const minKm=1;const maxKm=100;
+  const svgR=Math.round(((v-minKm)/(maxKm-minKm))*(maxR-20)+20);
+  const circle=document.getElementById('terrCoverageCircle');
+  if(circle){circle.setAttribute('r',svgR);
+    circle.setAttribute('fill',`rgba(200,168,75,${0.03+svgR/maxR*0.06})`)}
+}
+
+function renderMarkerControls(){
+  const el=$('markerControls');if(!el)return;
+  const active=appState.territory?.activeType||'own';
+  el.innerHTML=TERR_TYPES.map(t=>`<button class="marker-btn ${active===t.id?'active':''}" onclick="setMarkerType('${t.id}')" style="border-color:${active===t.id?t.color:''}"><span class="marker-dot" style="background:${t.color}"></span>${t.emoji} ${t.label}</button>`).join('');
+}
+
+function setMarkerType(id){
+  if(!appState.territory)appState.territory={markers:[],activeType:'own',competitors:[],opportunities:[]};
+  appState.territory.activeType=id;
+  renderMarkerControls();
+}
+
+function renderMapLegend(){
+  const el=$('mapLegend');if(!el)return;
+  el.innerHTML=TERR_TYPES.map(t=>`<span class="map-legend-item"><span class="map-legend-dot" style="background:${t.color}"></span>${t.label}</span>`).join('');
+}
+
+function handleMapClick(event){
+  const svg=$('terrMapSvg');if(!svg)return;
+  const rect=svg.getBoundingClientRect();
+  const vbW=600,vbH=380;
+  const x=Math.round((event.clientX-rect.left)/rect.width*vbW);
+  const y=Math.round((event.clientY-rect.top)/rect.height*vbH);
+  addTerrMarker(x,y);
+}
+
+function addTerrMarker(x,y){
+  if(!appState.territory)appState.territory={markers:[],activeType:'own',competitors:[],opportunities:[]};
+  const type=appState.territory.activeType||'own';
+  const typeInfo=TERR_TYPES.find(t=>t.id===type);
+  const count=appState.territory.markers.filter(m=>m.type===type).length+1;
+  const label=`${typeInfo?.label||type} ${count}`;
+  appState.territory.markers.push({x,y,type,label,id:Date.now()});
+  saveState();
+  renderTerrMarkersOnMap();
+  renderTerrMarkersList();
+}
+
+function renderTerrMarkersOnMap(){
+  const g=document.getElementById('terrMarkersGroup');if(!g)return;
+  const hint=$('terrMapHint');
+  const markers=appState.territory?.markers||[];
+  if(hint)hint.style.display=markers.length?'none':'block';
+  g.innerHTML=markers.map(m=>{
+    const t=TERR_TYPES.find(x=>x.id===m.type)||{color:'#c8a84b'};
+    return`<g>
+      <circle cx="${m.x}" cy="${m.y}" r="10" fill="${t.color}" opacity="0.25" filter="url(#glow)"/>
+      <circle cx="${m.x}" cy="${m.y}" r="6" fill="${t.color}" opacity="0.9"/>
+      <text x="${m.x}" y="${m.y-12}" text-anchor="middle" fill="${t.color}" font-size="9" font-family="JetBrains Mono,monospace" opacity="0.9">${escapeHtml(m.label)}</text>
+    </g>`;
+  }).join('');
+}
+
+function renderTerrMarkersList(){
+  const el=$('terrMarkersList');if(!el)return;
+  const markers=appState.territory?.markers||[];
+  if(!markers.length){el.innerHTML='<p style="color:var(--dim);font-size:13px">Nenhum marcador adicionado ainda. Clique no mapa acima.</p>';return}
+  el.innerHTML=markers.map(m=>{
+    const t=TERR_TYPES.find(x=>x.id===m.type)||{color:'#888',emoji:'📍'};
+    return`<div class="markers-list-item">
+      <div class="marker-info"><span class="marker-dot" style="background:${t.color};width:10px;height:10px;border-radius:50%"></span><span>${t.emoji} ${escapeHtml(m.label)}</span></div>
+      <button class="btn small danger" onclick="removeTerrMarker(${m.id})">×</button>
+    </div>`;
+  }).join('');
+}
+
+function removeTerrMarker(id){
+  if(!appState.territory?.markers)return;
+  appState.territory.markers=appState.territory.markers.filter(m=>m.id!==id);
+  saveState();renderTerrMarkersOnMap();renderTerrMarkersList();
+}
+
+function clearTerrMarkers(){
+  if(!appState.territory)return;
+  appState.territory.markers=[];
+  saveState();renderTerrMarkersOnMap();renderTerrMarkersList();
+}
+
+/* Competitor & Opportunity tables */
+function initCompetitorTable(){
+  if(!$('terrCompBody'))return;
+  if(!appState.territory?.competitors?.length)addCompetitorRow();
+}
+function initOpportunityTable(){
+  if(!$('terrOppBody'))return;
+  if(!appState.territory?.opportunities?.length)addOpportunityRow();
+}
+function addCompetitorRow(){
+  const tb=$('terrCompBody');if(!tb)return;
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><input placeholder="Nome do concorrente"></td><td><input placeholder="Bairro ou região"></td><td><input placeholder="Fraqueza percebida"></td><td><input placeholder="Força percebida"></td><td><button class="btn small danger" onclick="this.closest('tr').remove()">×</button></td>`;
+  tb.appendChild(tr);
+}
+function addOpportunityRow(){
+  const tb=$('terrOppBody');if(!tb)return;
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><input placeholder="Bairro ou região"></td><td><input placeholder="Tipo de oportunidade"></td><td><input placeholder="Alto / Médio / Baixo"></td><td><button class="btn small danger" onclick="this.closest('tr').remove()">×</button></td>`;
+  tb.appendChild(tr);
+}
+
+function getCompetitorRows(){
+  const rows=[];
+  $('terrCompBody')?.querySelectorAll('tr').forEach(tr=>{
+    const inputs=[...tr.querySelectorAll('input')].map(i=>i.value.trim());
+    if(inputs[0])rows.push({name:inputs[0],region:inputs[1],weakness:inputs[2],strength:inputs[3]});
+  });
+  return rows;
+}
+function getOpportunityRows(){
+  const rows=[];
+  $('terrOppBody')?.querySelectorAll('tr').forEach(tr=>{
+    const inputs=[...tr.querySelectorAll('input')].map(i=>i.value.trim());
+    if(inputs[0])rows.push({name:inputs[0],type:inputs[1],potential:inputs[2]});
+  });
+  return rows;
+}
+
+function checkTerritoryConsent(){
+  const checked=$('terrConsent')?.checked;
+  const actions=$('terrAnalysisActions');
+  if(actions)actions.style.display=checked?'block':'none';
+}
+
+function updateTerrAnalysisSummary(){
+  const city=$('terrCity')?.value||'—';
+  const address=$('terrAddress')?.value||'—';
+  const radius=$('terrRadiusSlider')?.value||10;
+  const opKey=$('terrOpType')?.value||'servico';
+  const compCount=getCompetitorRows().length;
+  if($('terrSummaryBase'))$('terrSummaryBase').textContent=address||city;
+  if($('terrSummaryRadius'))$('terrSummaryRadius').textContent=radius+' km';
+  if($('terrSummaryOp'))$('terrSummaryOp').textContent=OP_TYPES[opKey]||opKey;
+  if($('terrSummaryComp'))$('terrSummaryComp').textContent=compCount+' cadastrado(s)';
+}
+
 async function runTerritory(){
   if(!getPlan().territory){showUpgrade('O Mapa Estratégico faz parte do plano Grande Mestre.');return}
   const city=$('terrCity')?.value.trim(),business=$('terrBusiness')?.value.trim();
-  if(!city||!business)return showToast('Informe cidade e tipo de negócio.');
-  if($('territoryResult'))$('territoryResult').innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span> Analisando território...</div>';
-  const data={city,business,radius:$('terrRadius')?.value,competitors:$('terrCompetitors')?.value,notes:$('terrNotes')?.value,categories:appState.territory?.categories||[]};
+  if(!city||!business)return showToast('Informe cidade e tipo de negócio na aba Configuração.');
+  if(!$('terrConsent')?.checked)return showToast('Confirme o consentimento de dados antes de gerar a análise.');
+
+  const el=$('territoryResult');
+  if(el)el.innerHTML='<div class="loading-msg"><span class="loader"><i></i><i></i><i></i></span> Gerando Relatório de Cobertura e Oportunidades...</div>';
+
+  const data={
+    address:$('terrAddress')?.value.trim(),
+    city,business,
+    radiusKm:$('terrRadiusSlider')?.value||10,
+    travelTime:$('terrTravelTime')?.value,
+    operationType:$('terrOpType')?.value,
+    competitors:$('terrCompetitors')?.value,
+    customers:$('terrCustomers')?.value,
+    notes:$('terrNotes')?.value,
+    markers:appState.territory?.markers||[],
+    competitorData:getCompetitorRows(),
+    opportunityData:getOpportunityRows()
+  };
+
   let r=await aiCall('/api/territory',{data});
   if(!r)r=localTerritory(data);
-  if($('territoryResult'))$('territoryResult').innerHTML=renderTerritoryResult(r);
+  if(el)el.innerHTML=renderTerritoryResult(r);
 }
+
 function renderTerritoryResult(r){
-  return`<div class="result-grid">
-    <div class="result-card full"><span class="badge gold">Análise territorial</span><h3 style="font-family:var(--display);font-size:22px;margin:10px 0 6px">${escapeHtml(r.summary||'Análise do território')}</h3></div>
-    ${r.strengths?`<div class="result-card"><h4>Pontos fortes</h4><ul>${r.strengths.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>`:''}
-    ${r.opportunities?`<div class="result-card"><h4>Oportunidades</h4><ul>${r.opportunities.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>`:''}
-    ${r.threats?`<div class="result-card"><h4>Ameaças</h4><ul>${r.threats.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>`:''}
-    ${r.action7?`<div class="result-card"><h4>Ação de 7 dias</h4><p>${escapeHtml(r.action7)}</p></div>`:''}
-    ${r.action30?`<div class="result-card"><h4>Ação de 30 dias</h4><p>${escapeHtml(r.action30)}</p></div>`:''}
+  const sections=[
+    {key:'summary',label:'1. Resumo da área analisada',full:true},
+    {key:'coverage',label:'2. Raio de cobertura'},
+    {key:'strongRegions',label:'3. Regiões fortes',list:true},
+    {key:'weakRegions',label:'4. Regiões fracas',list:true},
+    {key:'competition',label:'5. Análise da concorrência'},
+    {key:'marketGaps',label:'6. Falhas do mercado',list:true},
+    {key:'logisticsOpp',label:'7. Oportunidades logísticas',list:true},
+    {key:'expansionRec',label:'8. Recomendação de expansão'},
+    {key:'commercialRec',label:'9. Recomendação comercial'},
+    {key:'mediaRec',label:'10. Recomendação de mídia local'},
+    {key:'risks',label:'11. Riscos',list:true},
+    {key:'nextData',label:'12. Próximos dados para melhorar a análise',list:true}
+  ];
+  return`<div style="margin-top:4px">
+    <div class="result-card full" style="margin-bottom:16px;border-color:var(--line2);background:linear-gradient(180deg,rgba(200,168,75,.08),transparent)">
+      <span class="badge gold">Relatório de Cobertura e Oportunidades</span>
+      <h3 style="font-family:var(--display);font-size:22px;margin:12px 0 4px">${escapeHtml(r.summary||'Análise territorial concluída')}</h3>
+    </div>
+    ${sections.filter(s=>s.key!=='summary').map(s=>{
+      const val=r[s.key];if(!val||(Array.isArray(val)&&!val.length))return'';
+      return`<div class="report-section">
+        <h4>${s.label}</h4>
+        ${Array.isArray(val)?`<ul>${val.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>`:`<p>${escapeHtml(val)}</p>`}
+      </div>`;
+    }).join('')}
+    <div class="cta-row" style="margin-top:16px">
+      <button class="btn gold" onclick="setModule('final')">Levar para Decisão Final</button>
+      <button class="btn small" onclick="setModule('game')">Ver movimentos estratégicos</button>
+      <button class="btn small" onclick="openWhatsApp('Quero análise territorial avançada com dados reais no diretor.ai.')">Solicitar análise avançada</button>
+    </div>
   </div>`;
 }
-function localTerritory(d){return{summary:`Análise do território: ${d.city} — ${d.business}.`,strengths:['Localização conhecida','Base de clientes existente','Experiência no mercado local'],opportunities:['Regiões com baixa cobertura da concorrência','Demanda não atendida por nicho específico','Parcerias locais com negócios complementares'],threats:['Concorrentes estabelecidos com maior estrutura','Sazonalidade do bairro ou cidade','Mudanças no fluxo de pessoas por obras ou eventos'],action7:'Mapear manualmente os 3 principais concorrentes: preço, diferencial e fraqueza mais clara.',action30:'Escolher uma região descoberta e lançar uma oferta piloto com prazo e meta de vendas definidos.'}}
+
+function localTerritory(d){
+  const biz=d.business||'seu negócio';
+  const city=d.city||'sua região';
+  const radius=d.radiusKm||10;
+  const opType=OP_TYPES[d.operationType]||d.operationType||'operação';
+  const hasComp=d.competitorData?.length>0;
+  return{
+    summary:`Análise territorial de ${biz} em ${city} — raio de ${radius} km (${opType}).`,
+    coverage:`Área de cobertura estimada: ${radius} km de raio a partir da base. Para ${opType}, esse raio cobre uma área relevante de captação. Ajuste conforme o tempo real de deslocamento dos clientes.`,
+    strongRegions:['Região próxima à base operacional','Áreas com relacionamento e clientes existentes','Bairros com maior concentração de público-alvo identificado'],
+    weakRegions:['Regiões periféricas com menor visibilidade da marca','Áreas com concorrentes bem estabelecidos','Zonas com baixo fluxo ou acesso logístico difícil'],
+    competition:hasComp
+      ?`Foram cadastrados ${d.competitorData.length} concorrente(s). Analise as fraquezas identificadas: são os principais pontos de entrada para capturar clientes insatisfeitos.`
+      :'Sem dados de concorrência cadastrados. Recomenda-se mapear pelo menos 3 concorrentes diretos com preço, diferencial e fraqueza principal.',
+    marketGaps:['Regiões com demanda identificada mas sem oferta adequada','Segmentos de cliente não atendidos pelos concorrentes atuais','Faixas de preço ou serviço sem cobertura no mercado local'],
+    logisticsOpp:['Pontos de alto fluxo próximos à base existente','Rotas comerciais com menor concorrência e maior concentração de público','Parcerias com negócios complementares para reduzir custo de aquisição'],
+    expansionRec:`Para ${opType} em ${city}, a expansão mais segura começa pela região imediatamente adjacente à base atual — onde a marca já tem algum reconhecimento. Teste com uma oferta específica antes de comprometer estrutura ou equipe.`,
+    commercialRec:`Priorize canais locais: indicação de clientes existentes, Google Meu Negócio otimizado e parcerias com negócios complementares na região. O canal mais barato de aquisição local costuma ser a indicação estruturada.`,
+    mediaRec:`Para mídia local: Google Ads com segmentação geográfica de ${radius} km, conteúdo no Instagram com menção de bairros e geolocalização, e participação em grupos locais de WhatsApp ou Facebook. Invista em reviews no Google Maps.`,
+    risks:['Saturação da área central com concorrentes estabelecidos','Sazonalidade e variações de fluxo por eventos ou obras','Expansão prematura sem validar demanda na nova região','Dependência de um único ponto de captação ou canal'],
+    nextData:['Pesquisa de satisfação com clientes atuais por bairro de origem','Dados de acesso ao Google Meu Negócio (regiões de origem das buscas)','Lista de endereços de clientes para mapeamento real','Dados de concorrência via Google Maps (manual ou futuro: Google Places API)','Volume de buscas por região via Google Keyword Planner']
+  };
+}
+
+/* Init territory on module render */
+function onTerritoryModuleOpen(){
+  initTerritoryModule();
+  renderTerrMarkersOnMap();
+}
 
 /* ===== GAME ENGINE ===== */
 function renderGameBoard(){
