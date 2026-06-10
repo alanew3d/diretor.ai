@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#191925"/>
+      <stop offset="100%" stop-color="#07070a"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e2c06e" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#c8a84b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+
+  <!-- Outer glow ring -->
+  <circle cx="32" cy="32" r="26" fill="url(#glow)"/>
+
+  <!-- Orbit ring -->
+  <circle cx="32" cy="32" r="20" fill="none" stroke="#c8a84b" stroke-width="1" stroke-opacity="0.35" stroke-dasharray="3 3"/>
+
+  <!-- Node spokes -->
+  <line x1="32" y1="12" x2="32" y2="18" stroke="#c8a84b" stroke-width="1.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="32" y1="46" x2="32" y2="52" stroke="#c8a84b" stroke-width="1.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="12" y1="32" x2="18" y2="32" stroke="#c8a84b" stroke-width="1.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="46" y1="32" x2="52" y2="32" stroke="#c8a84b" stroke-width="1.5" stroke-opacity="0.55" stroke-linecap="round"/>
+
+  <!-- Diagonal spokes -->
+  <line x1="46" y1="18" x2="42" y2="22" stroke="#c8a84b" stroke-width="1" stroke-opacity="0.35" stroke-linecap="round"/>
+  <line x1="18" y1="46" x2="22" y2="42" stroke="#c8a84b" stroke-width="1" stroke-opacity="0.35" stroke-linecap="round"/>
+  <line x1="18" y1="18" x2="22" y2="22" stroke="#c8a84b" stroke-width="1" stroke-opacity="0.35" stroke-linecap="round"/>
+  <line x1="46" y1="46" x2="42" y2="42" stroke="#c8a84b" stroke-width="1" stroke-opacity="0.35" stroke-linecap="round"/>
+
+  <!-- Outer satellite dots -->
+  <circle cx="32" cy="12" r="2.5" fill="#c8a84b" opacity="0.65"/>
+  <circle cx="52" cy="32" r="2.5" fill="#c8a84b" opacity="0.5"/>
+  <circle cx="32" cy="52" r="2" fill="#c8a84b" opacity="0.4"/>
+  <circle cx="12" cy="32" r="2" fill="#c8a84b" opacity="0.4"/>
+
+  <!-- Core glow -->
+  <circle cx="32" cy="32" r="10" fill="#c8a84b" opacity="0.12"/>
+  <circle cx="32" cy="32" r="7" fill="#c8a84b" opacity="0.18"/>
+
+  <!-- Core circle -->
+  <circle cx="32" cy="32" r="5" fill="#c8a84b"/>
+  <circle cx="32" cy="32" r="3" fill="#e2c06e"/>
+</svg>
