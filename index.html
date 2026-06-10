@@ -232,16 +232,16 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
 .mapping-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:32px}
 .mapping-chip{border:1px solid var(--line2);background:rgba(200,168,75,.07);color:var(--gold);border-radius:999px;padding:5px 13px;font-family:var(--mono);font-size:11px;letter-spacing:.08em}
 .mapping-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:0}
-.mapping-feature{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:14px 16px;transition:.18s;display:flex;flex-direction:column;gap:0}
+.mapping-feature{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:16px 18px;transition:.18s;display:flex;flex-direction:column;gap:0}
 .mapping-feature:hover{border-color:var(--line2);transform:translateY(-2px);background:var(--card2)}
-.mapping-feature-top{display:flex;align-items:center;gap:10px;margin-bottom:7px}
-.mapping-ico{font-size:20px;flex-shrink:0}
-.mapping-feature h3{font-size:14px;font-weight:700;margin:0;line-height:1.2}
-.mapping-feature p{font-size:12px;color:var(--dim);margin:0 0 8px;line-height:1.45}
-.mapping-bullets{list-style:none;padding:0;margin:0 0 9px;display:flex;flex-direction:column;gap:3px}
-.mapping-bullets li{font-size:11px;color:var(--muted);padding-left:12px;position:relative;line-height:1.4}
-.mapping-bullets li:before{content:"·";position:absolute;left:0;color:var(--gold)}
-.mapping-cta-link{border:none;background:transparent;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer;padding:0;text-decoration:none;font-family:var(--font);margin-top:auto}
+.mapping-feature-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.mapping-ico{font-size:22px;flex-shrink:0}
+.mapping-feature h3{font-size:16px;font-weight:700;margin:0;line-height:1.25}
+.mapping-feature p{font-size:14px;color:var(--muted);margin:0 0 10px;line-height:1.5}
+.mapping-bullets{list-style:none;padding:0;margin:0 0 10px;display:flex;flex-direction:column;gap:4px}
+.mapping-bullets li{font-size:13px;color:var(--muted);padding-left:14px;position:relative;line-height:1.45}
+.mapping-bullets li:before{content:"·";position:absolute;left:0;color:var(--gold);font-size:16px;line-height:1.2}
+.mapping-cta-link{border:none;background:transparent;color:var(--gold);font-size:13px;font-weight:700;cursor:pointer;padding:0;text-decoration:none;font-family:var(--font);margin-top:auto}
 .mapping-cta-link:hover{text-decoration:underline}
 .mapping-section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:28px 0}
 .mapping-cta{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;padding:26px 30px;border:1px solid var(--line2);background:linear-gradient(135deg,rgba(200,168,75,.09),rgba(200,168,75,.03));border-radius:22px;margin-top:0}
@@ -1019,14 +1019,42 @@ function saveCurrentUser(){if(!currentUser)return;store(STORAGE.current,currentU
 function getPlan(){return PLAN_LIMITS[currentUser?.plan||'free']||PLAN_LIMITS.free}
 
 /* ===== NAVIGATION ===== */
-function showPage(page,module){
+/* ===== NAVIGATION WITH HISTORY API ===== */
+let _currentPage='home';
+const _VALID_PAGES=['home','analysis','mapping','app','plans','login','register','account','adminLogin','admin'];
+
+function getPageFromHash(){
+  const h=window.location.hash.replace('#','').split(':')[0].trim();
+  return _VALID_PAGES.includes(h)?h:null;
+}
+function getModuleFromHash(){
+  const h=window.location.hash.replace('#','');
+  const parts=h.split(':');
+  return parts[1]||null;
+}
+
+function showPage(page,module,opts){
+  const push=opts?.push!==false;
+  // Validate page
+  if(!$('page-'+page)){console.warn('page not found:',page);page='home'}
+  // Avoid duplicate history entry
+  const hashTarget=module?page+':'+module:page;
+  if(push&&_currentPage!==hashTarget){
+    history.pushState({page,module:module||null},'','#'+hashTarget);
+  }
+  _currentPage=hashTarget;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const el=$('page-'+page);if(!el){console.warn('page not found:',page);return}
-  el.classList.add('active');
+  $('page-'+page).classList.add('active');
   if(page==='app')setModule(module||'diagnosis');
   if(page==='account')renderAccountPage();
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+window.addEventListener('popstate',function(event){
+  const page=event.state?.page||getPageFromHash()||'home';
+  const module=event.state?.module||getModuleFromHash()||null;
+  showPage(page,module,{push:false});
+});
 function toggleTheme(){document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'}
 function setModule(m){
   const locked={adversary:'adversary',scenarios:'scenarios'};
@@ -1740,7 +1768,20 @@ function localTeamAgentOutput(a){
 function showUpgrade(msg){if($('upgradeTitle'))$('upgradeTitle').textContent=msg?.split('\n')[0]||'Recurso bloqueado.';if($('upgradeText'))$('upgradeText').textContent=msg?.split('\n').slice(1).join(' ')||'';if($('upgradeModal'))$('upgradeModal').classList.add('open')}
 function closeUpgrade(){if($('upgradeModal'))$('upgradeModal').classList.remove('open')}
 
-window.addEventListener('DOMContentLoaded',safeInit);
+window.addEventListener('DOMContentLoaded',function(){
+  safeInit();
+  // Honour deep-link hash on initial load (e.g. diretor.ai/#mapping)
+  const hashPage=getPageFromHash();
+  const hashModule=getModuleFromHash();
+  if(hashPage&&hashPage!=='home'){
+    // Replace initial state so popstate has something to go back to
+    history.replaceState({page:'home',module:null},'','#home');
+    showPage(hashPage,hashModule);
+  }else{
+    history.replaceState({page:'home',module:null},'','#home');
+    _currentPage='home';
+  }
+});
 </script>
 </body>
 </html>
