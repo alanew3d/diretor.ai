@@ -221,6 +221,53 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
 .response{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:18px;margin-bottom:10px}.response h4{font-family:var(--display);font-size:18px;margin:0 0 6px}.response p{color:var(--muted);margin:0;white-space:pre-line}
 .admin-layout{display:grid;grid-template-columns:210px 1fr;gap:16px}.admin-nav{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:10px;height:max-content}.admin-section{display:none}.admin-section.active{display:block}
 .status{font-weight:700}.status.ok{color:var(--ok)}.status.warn{color:var(--warn)}.status.bad{color:var(--bad)}
+/* ===== HEALTH CHECK ===== */
+.hc-score-wrap{border:1px solid var(--line2);background:linear-gradient(135deg,rgba(200,168,75,.08),rgba(200,168,75,.02));border-radius:18px;padding:20px 22px;margin-bottom:18px}
+.hc-score-num{font-family:var(--display);font-size:48px;color:var(--gold);line-height:1;letter-spacing:-.04em}
+.hc-score-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim)}
+.hc-levels{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.hc-level{border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:var(--card)}
+.hc-level.reached{border-color:var(--line2);background:rgba(200,168,75,.07)}
+.hc-level-name{font-size:11px;font-weight:700;margin-bottom:4px}
+.hc-level-bar{height:5px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin:4px 0}
+.hc-level-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--ok));border-radius:999px;transition:width .5s}
+.hc-level-sub{font-size:10px;color:var(--dim)}
+.hc-action-bar{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.hc-ext-btns{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.hc-ext-btn{border:1px solid var(--line);background:transparent;color:var(--dim);border-radius:8px;padding:5px 10px;font-size:11px;cursor:pointer;transition:.15s}
+.hc-ext-btn:hover{border-color:var(--line2);color:var(--gold)}
+.hc-category-wrap{margin-bottom:14px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.hc-cat-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--card);cursor:pointer;user-select:none}
+.hc-cat-header:hover{background:var(--card2)}
+.hc-cat-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
+.hc-cat-meta{display:flex;align-items:center;gap:8px}
+.hc-cat-score{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.hc-cat-body{padding:8px;border-top:1px solid var(--line);display:none}
+.hc-cat-body.open{display:block}
+.hc-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:7px;background:rgba(0,0,0,.12);transition:.15s}
+.hc-item:last-child{margin-bottom:0}
+.hc-item-left{min-width:0}
+.hc-item-title{font-size:13px;font-weight:700;margin:0 0 2px;display:flex;align-items:center;gap:7px}
+.hc-item-desc{font-size:12px;color:var(--dim);margin:0 0 5px;line-height:1.45}
+.hc-item-detail{font-size:12px;color:var(--muted);background:rgba(0,0,0,.18);border-radius:7px;padding:6px 9px;margin-top:5px;display:none;line-height:1.5}
+.hc-item-detail.show{display:block}
+.hc-item-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.hc-status-dot{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 8px;font-family:var(--mono);font-size:10px;font-weight:700;white-space:nowrap}
+.hc-status-dot.ok{background:rgba(61,184,122,.12);color:var(--ok);border:1px solid rgba(61,184,122,.3)}
+.hc-status-dot.warning{background:rgba(224,168,64,.12);color:var(--warn);border:1px solid rgba(224,168,64,.3)}
+.hc-status-dot.error,.hc-status-dot.missing{background:rgba(224,90,90,.12);color:var(--bad);border:1px solid rgba(224,90,90,.3)}
+.hc-status-dot.testing{background:rgba(74,144,217,.12);color:#4a90d9;border:1px solid rgba(74,144,217,.3)}
+.hc-status-dot.unknown{background:rgba(255,255,255,.06);color:var(--dim);border:1px solid var(--line)}
+.hc-priority{font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:999px;text-transform:uppercase;letter-spacing:.08em}
+.hc-priority.critical{color:#e05a5a;background:rgba(224,90,90,.1)}
+.hc-priority.high{color:var(--warn);background:rgba(224,168,64,.1)}
+.hc-priority.medium{color:#4a90d9;background:rgba(74,144,217,.1)}
+.hc-priority.low{color:var(--dim);background:rgba(255,255,255,.06)}
+.hc-item-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.hc-btn{border:1px solid var(--line);background:transparent;color:var(--dim);border-radius:7px;padding:4px 9px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s;white-space:nowrap}
+.hc-btn:hover{border-color:var(--line2);color:var(--text)}
+.hc-btn.primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080808;border-color:transparent}
+@media(max-width:768px){.hc-levels{grid-template-columns:repeat(2,1fr)}.hc-item{grid-template-columns:1fr}.hc-item-right{flex-direction:row;align-items:center}}
 .account-card{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:20px;margin-bottom:12px}
 .history-item{border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:6px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:10px}.history-item small{font-family:var(--mono);font-size:10px;color:var(--dim)}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:90;display:none;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}
@@ -607,6 +654,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
         <button class="btn small" onclick="showAdminSection('payments')">Pagamentos</button>
         <button class="btn small" onclick="showAdminSection('texts')">Textos</button>
         <button class="btn small" onclick="showAdminSection('users')">Usuários</button>
+        <button class="btn small" onclick="showAdminSection('health');initHealthSection()" style="border-color:var(--ok);color:var(--ok)">🩺 Checklist</button>
         <div style="margin-top:10px"></div>
         <button class="btn small danger" onclick="logoutAdmin()">Sair</button>
       </div>
@@ -671,6 +719,51 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
         <section class="panel admin-section" id="admin-users">
           <div class="kicker">Usuários</div><h2 class="title">Acessos locais</h2>
           <div id="usersAdmin"></div>
+        </section>
+
+        <!-- HEALTH CHECK SECTION -->
+        <section class="panel admin-section" id="admin-health">
+          <div class="kicker">Admin → Checklist</div>
+          <h2 class="title">🩺 Checklist de Produção</h2>
+          <p class="subtitle" style="margin-bottom:16px">Teste automático de conexões, APIs, configurações e prontidão do diretor.ai para produção.</p>
+
+          <!-- SCORE -->
+          <div class="hc-score-wrap" id="hcScoreWrap">
+            <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
+              <div>
+                <div class="hc-score-num" id="hcScoreNum">—</div>
+                <div class="hc-score-label" id="hcScoreLabel">aguardando testes</div>
+              </div>
+              <div style="flex:1;min-width:180px">
+                <div class="hc-levels" id="hcLevels"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTION BUTTONS -->
+          <div class="hc-action-bar">
+            <button class="btn gold small" onclick="runAllHealthChecks()">▶ Rodar todos os testes</button>
+            <button class="btn small" onclick="runCriticalHealthChecks()">🔴 Só críticos</button>
+            <button class="btn small" onclick="copyHealthReport()">📋 Copiar relatório</button>
+          </div>
+
+          <!-- EXTERNAL LINKS -->
+          <div class="hc-ext-btns">
+            <span style="font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-right:4px">Links externos:</span>
+            <button class="hc-ext-btn" onclick="window.open('https://vercel.com/dashboard','_blank')">Vercel</button>
+            <button class="hc-ext-btn" onclick="window.open('https://github.com/alanew3d/diretor.ai','_blank')">GitHub</button>
+            <button class="hc-ext-btn" onclick="window.open('https://supabase.com/dashboard','_blank')">Supabase</button>
+            <button class="hc-ext-btn" onclick="window.open('https://dashboard.stripe.com','_blank')">Stripe</button>
+            <button class="hc-ext-btn" onclick="window.open('https://www.mercadopago.com.br/developers','_blank')">Mercado Pago</button>
+            <button class="hc-ext-btn" onclick="window.open('https://resend.com','_blank')">Resend</button>
+            <button class="hc-ext-btn" onclick="window.open('https://platform.claude.com/settings/keys','_blank')">Claude</button>
+            <button class="hc-ext-btn" onclick="window.open('https://platform.openai.com/api-keys','_blank')">OpenAI</button>
+            <button class="hc-ext-btn" onclick="window.open('https://console.cloud.google.com/google/maps-apis','_blank')">Google Maps</button>
+            <button class="hc-ext-btn" onclick="window.open('https://developers.facebook.com/tools/debug/','_blank')">FB Debug</button>
+          </div>
+
+          <!-- CHECK CATEGORIES -->
+          <div id="hcCategories"></div>
         </section>
       </div>
     </div>
@@ -1769,6 +1862,322 @@ function localTeamAgentOutput(a){
 }
 
 /* ===== MODALS ===== */
+/* =====================================================
+   HEALTH CHECK — Checklist de Produção
+   ===================================================== */
+
+const HC_STATUS_LABEL={ok:'✅ OK',warning:'⚠️ Aviso',error:'❌ Erro',missing:'❌ Faltando',testing:'⏳ Testando',unknown:'○ Pendente'};
+const HC_PRIORITY_W={critical:3,high:2,medium:1,low:0.5};
+
+// All health check definitions
+const HEALTH_CHECKS=[
+  /* ── IDENTIDADE ── */
+  {id:'https',cat:'🌐 Identidade do site',title:'HTTPS ativo',desc:'O site deve rodar exclusivamente em HTTPS em produção.',priority:'critical',fixUrl:'https://vercel.com/docs/security',fixLabel:'Ver Vercel Docs',
+   test:()=>{const ok=window.location.protocol==='https:';const isLocal=window.location.hostname==='localhost'||window.location.hostname.includes('127.0');return{status:ok?'ok':(isLocal?'warning':'error'),detail:isLocal?'Rodando em localhost — OK para desenvolvimento.':'Protocolo atual: '+window.location.protocol}}},
+
+  {id:'domain',cat:'🌐 Identidade do site',title:'Domínio principal',desc:'Confirma se o site está em diretor.ai ou preview da Vercel.',priority:'high',fixUrl:'https://vercel.com/docs/projects/domains',fixLabel:'Vercel Domains',
+   test:()=>{const h=window.location.hostname;const isProd=h==='diretor.ai'||h.endsWith('.diretor.ai');const isVercel=h.endsWith('.vercel.app');return{status:isProd?'ok':(isVercel?'warning':'warning'),detail:'Hostname atual: '+h+(isProd?' ✓ produção':isVercel?' (preview Vercel)':' (local ou desconhecido)')}}},
+
+  {id:'favicon',cat:'🌐 Identidade do site',title:'Favicon configurado',desc:'Tags de favicon no <head> e arquivo acessível.',priority:'medium',fixLabel:'Ver <head>',
+   test:async()=>{const tag=document.querySelector('link[rel="icon"],link[rel="shortcut icon"]');if(!tag)return{status:'missing',detail:'Nenhuma tag <link rel="icon"> encontrada no <head>.'};const href=tag.getAttribute('href')?.split('?')[0];try{const r=await fetch(href,{method:'HEAD',cache:'no-store'});return{status:r.ok?'ok':'error',detail:r.ok?'Favicon acessível: '+href:'Favicon não acessível ('+r.status+'): '+href}}catch{return{status:'warning',detail:'Não foi possível verificar o arquivo (normal em localhost).'};}}},
+
+  {id:'og-tags',cat:'🌐 Identidade do site',title:'Open Graph configurado',desc:'og:title, og:description, og:image e og:url presentes.',priority:'medium',fixLabel:'Ver <head>',
+   test:()=>{const check=(p)=>!!document.querySelector(`meta[property="${p}"]`)?.getAttribute('content');const title=check('og:title'),desc=check('og:description'),img=check('og:image'),url=check('og:url');const ok=title&&desc&&url;return{status:ok?(img?'ok':'warning'):'warning',detail:[title?'✓ og:title':'✗ og:title',desc?'✓ og:description':'✗ og:description',img?'✓ og:image':'✗ og:image (faltando)',url?'✓ og:url':'✗ og:url'].join(' · ')}}},
+
+  {id:'seo-meta',cat:'🌐 Identidade do site',title:'SEO básico',desc:'<title>, meta description, canonical presentes.',priority:'medium',
+   test:()=>{const title=document.title,desc=document.querySelector('meta[name="description"]')?.content,canonical=document.querySelector('link[rel="canonical"]')?.href;const ok=title&&desc&&canonical;return{status:ok?'ok':'warning',detail:[title?'✓ title: '+title.slice(0,40):' ✗ <title> vazio',desc?'✓ description':'✗ meta description ausente',canonical?'✓ canonical':'✗ canonical ausente'].join(' · ')}}},
+
+  /* ── AUTENTICAÇÃO ── */
+  {id:'auth-local',cat:'👤 Autenticação',title:'Login local/demo',desc:'Sistema de login demo com localStorage funcional.',priority:'high',adminSection:'ai-models',
+   test:()=>{const ok=typeof login==='function'&&typeof register==='function'&&typeof logout==='function';const hasUsers=Array.isArray(load(STORAGE.users,[]))&&load(STORAGE.users,[]).length>0;return{status:ok?'warning':'error',detail:ok?'Login local funciona. Status: '+(hasUsers?'há usuários cadastrados':'nenhum usuário ainda')+'. ⚠️ Modo demo — login real exige Supabase Auth.':'Funções de login não encontradas.'}}},
+
+  {id:'auth-supabase',cat:'👤 Autenticação',title:'Supabase Auth',desc:'Autenticação real via Supabase. Necessária para produção.',priority:'critical',fixUrl:'https://supabase.com/dashboard',fixLabel:'Abrir Supabase',
+   test:async()=>{try{const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'check'})});if(r.status===405||r.ok){return{status:'warning',detail:'Endpoint /api/auth encontrado. Valide se Supabase está conectado.'}}return{status:'missing',detail:'Endpoint /api/auth não respondeu ('+r.status+'). Backend com Supabase ainda não configurado.'}}catch{return{status:'missing',detail:'Endpoint /api/auth não encontrado. Supabase Auth ainda não integrado.'}}}},
+
+  /* ── BANCO DE DADOS ── */
+  {id:'supabase-conn',cat:'🗄️ Banco de dados',title:'Conexão Supabase',desc:'SUPABASE_URL e SUPABASE_SERVICE_KEY no backend.',priority:'critical',fixUrl:'https://supabase.com/dashboard',fixLabel:'Abrir Supabase',
+   test:async()=>{try{const r=await fetch('/api/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'db-status'})});if(r.ok){const d=await r.json();return{status:d.connected?'ok':'error',detail:d.detail||'Verifique SUPABASE_URL e SUPABASE_SERVICE_KEY no Vercel.'}}return{status:'warning',detail:'Endpoint /api/admin respondeu mas sem info de DB. Configure variáveis no Vercel.'}}catch{return{status:'missing',detail:'Backend/Supabase ainda não conectado. Dados ficam apenas no localStorage (modo demo).'}}}},
+
+  {id:'supabase-tables',cat:'🗄️ Banco de dados',title:'Tabelas essenciais',desc:'profiles, decisions, competitors, radar_config etc.',priority:'high',fixUrl:'https://supabase.com/dashboard',fixLabel:'SQL Editor',
+   test:async()=>{try{const r=await fetch('/api/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'check-tables'})});if(r.ok){const d=await r.json();return{status:d.ok?'ok':'warning',detail:d.detail||'Execute supabase_setup.sql no SQL Editor.'}}return{status:'warning',detail:'Sem resposta de tabelas. Execute supabase_setup.sql para criar as tabelas necessárias.'}}catch{return{status:'warning',detail:'Banco não conectado. Execute supabase_setup.sql no Supabase SQL Editor quando o backend estiver configurado.'}}}},
+
+  /* ── PAGAMENTOS ── */
+  {id:'payment-links',cat:'💳 Planos & Pagamentos',title:'Links de pagamento',desc:'Links do Mercado Pago ou Stripe configurados para ao menos 1 plano.',priority:'high',fixUrl:'https://dashboard.stripe.com/payment-links',fixLabel:'Stripe Links',adminSection:'payments',
+   test:()=>{const p=payments||{};const links=[p.mpIniciado,p.mpDiretor,p.mpGrandeMestre,p.stripeIniciado,p.stripeDiretor,p.stripeGrandeMestre].filter(Boolean);const pix=p.pix;const wa=p.whatsapp&&!p.whatsapp.includes('5500000000000');return{status:links.length>0?'ok':(pix||wa?'warning':'missing'),detail:links.length>0?'Links configurados: '+links.length+' plano(s)':(pix?'Pix configurado. Links de pagamento online faltando.':'Nenhum link de pagamento configurado. Configure no Admin → Pagamentos.')}}},
+
+  {id:'whatsapp',cat:'💳 Planos & Pagamentos',title:'WhatsApp de suporte',desc:'Número real de suporte configurado (não o placeholder).',priority:'high',adminSection:'texts',
+   test:()=>{const wa=payments?.whatsapp||texts?.whatsapp||'';const isDefault=wa.includes('5500000000000')||!wa;return{status:isDefault?'warning':'ok',detail:isDefault?'WhatsApp ainda com número placeholder. Configure em Admin → Textos.':'WhatsApp configurado: '+wa.replace(/\?.*$/,'').slice(0,40)}}},
+
+  /* ── IA / MODELOS ── */
+  {id:'ai-endpoint',cat:'🤖 IA / Modelos',title:'Endpoint de IA (/api/ai)',desc:'Rota /api/ai acessível e respondendo.',priority:'critical',adminSection:'ai-models',
+   test:async()=>{try{const r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'test',message:'Responda: ok',provider:'fallback'})});if(!r.ok)return{status:'error',detail:'Endpoint /api/ai retornou '+r.status};const d=await r.json();const result=d.result||d;return{status:'ok',detail:'Endpoint /api/ai responde. Provider: '+(result.provider||result.providerStatus||'fallback/ok')}}catch(e){return{status:'error',detail:'Endpoint /api/ai não acessível: '+e.message}}}},
+
+  {id:'ai-claude',cat:'🤖 IA / Modelos',title:'Claude (Anthropic)',desc:'ANTHROPIC_API_KEY configurada no backend.',priority:'high',fixUrl:'https://platform.claude.com/settings/keys',fixLabel:'Claude Keys',adminSection:'ai-models',
+   test:async()=>{try{const r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'test',message:'Responda apenas: ok',provider:'anthropic'})});if(!r.ok)return{status:'warning',detail:'Endpoint respondeu '+r.status+'. Configure ANTHROPIC_API_KEY no Vercel.'};const d=await r.json();const res=d.result||d;const provider=res.provider||'';const isFallback=provider==='fallback'||res.providerStatus==='fallback';return{status:isFallback?'warning':'ok',detail:isFallback?'⚠️ Claude não conectado — usando fallback local. Configure ANTHROPIC_API_KEY no Vercel.':'✓ Claude respondeu via endpoint seguro.'}}catch(e){return{status:'warning',detail:'Não foi possível verificar Claude: '+e.message}}}},
+
+  {id:'ai-openai',cat:'🤖 IA / Modelos',title:'GPT (OpenAI)',desc:'OPENAI_API_KEY configurada no backend.',priority:'medium',fixUrl:'https://platform.openai.com/api-keys',fixLabel:'OpenAI Keys',adminSection:'ai-models',
+   test:async()=>{try{const r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'test',message:'Responda: ok',provider:'openai'})});if(!r.ok)return{status:'warning',detail:'Endpoint respondeu '+r.status+'.'};const d=await r.json();const res=d.result||d;const isFallback=(res.provider||'')==='fallback'||res.providerStatus==='fallback';return{status:isFallback?'warning':'ok',detail:isFallback?'⚠️ OpenAI não conectado — fallback ativo. Configure OPENAI_API_KEY no Vercel.':'✓ OpenAI respondeu.'}}catch(e){return{status:'warning',detail:'Não foi possível verificar OpenAI: '+e.message}}}},
+
+  {id:'ai-fallback',cat:'🤖 IA / Modelos',title:'Fallback local',desc:'Análise funciona sem API — essencial para demonstração.',priority:'high',
+   test:()=>{const ok=typeof localQuickAnalysis==='function'&&typeof localDiagnosis==='function';return{status:ok?'ok':'error',detail:ok?'Fallback local disponível. Site funciona sem API configurada.':'Funções de fallback não encontradas.'}}},
+
+  /* ── CONSELHO ── */
+  {id:'mentors-list',cat:'🧠 Conselho de Mentores',title:'Lista de mentores',desc:'Array ADVISORS carregado com todos os perfis.',priority:'high',
+   test:()=>{const ok=typeof ADVISORS!=='undefined'&&Array.isArray(ADVISORS)&&ADVISORS.length>0;return{status:ok?'ok':'error',detail:ok?'✓ '+ADVISORS.length+' mentores disponíveis: '+ADVISORS.slice(0,4).map(a=>a.name).join(', ')+'...':'ADVISORS não encontrado.'}}},
+
+  {id:'mentors-autoselect',cat:'🧠 Conselho de Mentores',title:'Sugestão automática',desc:'autoSelectMentors() detecta contexto e sugere mentores.',priority:'medium',
+   test:()=>{const ok=typeof autoSelectMentors==='function';if(!ok)return{status:'error',detail:'autoSelectMentors não definido.'};const r=autoSelectMentors('lançar produto agora');return{status:ok&&r.length>0?'ok':'warning',detail:'Sugestão para "lançar produto": '+r.map(id=>ADVISORS.find(a=>a.id===id)?.name||id).join(', ')}}},
+
+  {id:'mentors-deep',cat:'🧠 Conselho de Mentores',title:'Opiniões profundas',desc:'generateMentorDeepOpinions() retorna leitura estruturada.',priority:'medium',
+   test:()=>{const ok=typeof generateMentorDeepOpinions==='function';if(!ok)return{status:'warning',detail:'generateMentorDeepOpinions não definido.'};const testMentor=ADVISORS.find(a=>a.id==='jobs');const r=generateMentorDeepOpinions('decidir agora',[testMentor]);const hasStructure=r[0]?.reading&&r[0]?.action&&r[0]?.synthesis;return{status:hasStructure?'ok':'warning',detail:hasStructure?'✓ Estrutura completa: leitura, prioridade, risco, ação, frase-síntese.':'Estrutura incompleta — verificar generateMentorDeepOpinions.'}}},
+
+  {id:'mentors-limits',cat:'🧠 Conselho de Mentores',title:'Limites por plano',desc:'Número de perspectivas respeitado por plano.',priority:'medium',
+   test:()=>{const ok=typeof PLAN_LIMITS!=='undefined';if(!ok)return{status:'error',detail:'PLAN_LIMITS não encontrado.'};const limits=Object.entries(PLAN_LIMITS).map(([k,v])=>k+':'+v.perspectives).join(', ');return{status:'ok',detail:'Limites de perspectivas: '+limits}}},
+
+  /* ── TERRITORIAL ── */
+  {id:'terr-modal',cat:'🌐 Análise Territorial',title:'Modal territorial',desc:'Elemento #territoryModal existe no DOM.',priority:'high',
+   test:()=>{const el=$('territoryModal');return{status:el?'ok':'error',detail:el?'Modal territorial presente no DOM.':'#territoryModal não encontrado no HTML.'}}},
+
+  {id:'terr-demo',cat:'🌐 Análise Territorial',title:'Análise demo (fallback)',desc:'localTerritoryAnalysis() retorna resultado completo.',priority:'high',
+   test:()=>{const ok=typeof localTerritoryAnalysis==='function';if(!ok)return{status:'error',detail:'localTerritoryAnalysis não definido.'};const r=localTerritoryAnalysis({businessType:'clínica de estética',region:'Icaraí, Niterói',radius:'3',objective:'Abrir unidade'});const ok2=r.summary&&r.competitors&&r.nextStep;return{status:ok2?'ok':'warning',detail:ok2?'✓ Fallback territorial completo: summary, competitors, gaps, nextStep, fieldChecklist, digitalSignals.':'Estrutura incompleta.'}}},
+
+  {id:'terr-limits',cat:'🌐 Análise Territorial',title:'Limites por plano',desc:'territoryAnalyses por plano configurado.',priority:'medium',adminSection:'maps',
+   test:()=>{const ok=typeof terrLimits!=='undefined';return{status:ok?'ok':'warning',detail:ok?'Limites: Free='+terrLimits.free+' · Iniciado='+terrLimits.iniciado+' · Diretor='+terrLimits.diretor+' · Grande Mestre='+terrLimits.grande_mestre:'terrLimits não encontrado.'}}},
+
+  {id:'terr-maps-api',cat:'🌐 Análise Territorial',title:'Google Maps/Places API',desc:'GOOGLE_MAPS_API_KEY no backend para dados reais.',priority:'medium',fixUrl:'https://console.cloud.google.com/google/maps-apis',fixLabel:'Google APIs',adminSection:'maps',
+   test:()=>{const mode=mapsAdmin?.mode||'demo';return{status:mode==='prod'?'ok':(mode==='test'?'warning':'warning'),detail:mode==='demo'?'⚠️ Modo demo — análise usa dados simulados. Para dados reais, configure Google Maps/Places API e endpoint seguro no Admin.':'Modo atual: '+mode+'. Configure GOOGLE_MAPS_API_KEY e GOOGLE_PLACES_API_KEY no Vercel + endpoint seguro.'}}},
+
+  {id:'terr-gmaps-explore',cat:'🌐 Análise Territorial',title:'Exploração Google Maps (grátis)',desc:'Botões de busca direta no Google Maps funcionam sem API key.',priority:'low',
+   test:()=>{const ok=typeof openGoogleMapsSearch==='function'&&typeof buildExplorationRoutes==='function';return{status:ok?'ok':'error',detail:ok?'✓ Roteiro de exploração via URLs públicas do Google Maps disponível (sem API key, sem custo).':'Funções de exploração não encontradas.'}}},
+
+  /* ── RADAR ── */
+  {id:'radar-ui',cat:'📡 Radar de Mercado',title:'Interface Radar (frontend)',desc:'Módulo Radar de Mercado presente no frontend.',priority:'medium',fixLabel:'Implementar Radar',
+   test:()=>{const el=$('page-radar')||document.querySelector('[data-module="radar"]');const hasSection=document.body.innerHTML.includes('Radar de Mercado');return{status:hasSection?'warning':'missing',detail:hasSection?'Interface Radar presente mas não totalmente integrada. Backend /api/radar ainda não conectado.':'Módulo Radar de Mercado ainda não implementado no frontend.'}}},
+
+  {id:'radar-backend',cat:'📡 Radar de Mercado',title:'Backend Radar (/api/radar)',desc:'Rota /api/radar para análise de concorrentes.',priority:'high',fixUrl:'https://vercel.com/docs/functions',fixLabel:'Vercel Functions',
+   test:async()=>{try{const r=await fetch('/api/radar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'test'})});return{status:r.status===405?'warning':(r.ok?'ok':'warning'),detail:r.status===405?'/api/radar existe mas action test não suportada.':r.ok?'/api/radar disponível.':'/api/radar retornou '+r.status+'. Verifique api/radar.js.'}}catch{return{status:'missing',detail:'Endpoint /api/radar não encontrado. Crie api/radar.js conforme especificação.'}}}},
+
+  {id:'radar-cron',cat:'📡 Radar de Mercado',title:'Cron semanal (/api/cron)',desc:'Cron segunda 7h para relatórios automáticos (Grande Mestre).',priority:'medium',fixUrl:'https://vercel.com/docs/cron-jobs',fixLabel:'Vercel Cron',
+   test:async()=>{try{const r=await fetch('/api/cron',{method:'GET'});return{status:r.status===401?'warning':(r.ok?'warning':'missing'),detail:r.status===401?'Cron existe e exige CRON_SECRET ✓. Configure no Vercel.':'Cron retornou '+r.status+'. Verifique CRON_SECRET e configuração.'}}catch{return{status:'missing',detail:'Endpoint /api/cron não encontrado. Configure CRON_SECRET e crie api/cron.js.'}}}},
+
+  /* ── UPLOADS ── */
+  {id:'uploads-btn',cat:'📎 Uploads / Anexos',title:'Botão Anexar',desc:'openFileInput() e handleFileSelect() definidos.',priority:'high',
+   test:()=>{const ok=typeof openFileInput==='function'&&typeof handleFileSelect==='function';return{status:ok?'ok':'error',detail:ok?'✓ Botão Anexar funcional. Tipos aceitos: PDF, JPG, PNG, WEBP, XLS, XLSX, CSV, DOC, DOCX, TXT.':'Funções de upload não encontradas.'}}},
+
+  {id:'uploads-privacy',cat:'📎 Uploads / Anexos',title:'Privacidade de anexos',desc:'Arquivos ficam apenas em memória (attachedFiles[]), nunca no localStorage.',priority:'high',
+   test:()=>{const ok=typeof attachedFiles!=='undefined'&&!STORAGE.files;const noLocal=!localStorage.getItem('attachedFiles')&&!localStorage.getItem('files');return{status:ok&&noLocal?'ok':'warning',detail:ok&&noLocal?'✓ Arquivos em RAM apenas (attachedFiles[]). localStorage limpo.':'Verificar: arquivos não devem ser salvos em localStorage.'}}},
+
+  {id:'uploads-storage',cat:'📎 Uploads / Anexos',title:'Storage em produção',desc:'Supabase Storage para persistência segura de anexos.',priority:'medium',fixUrl:'https://supabase.com/dashboard',fixLabel:'Supabase Storage',
+   test:()=>({status:'warning',detail:'Storage Supabase ainda não configurado. Anexos ficam apenas na sessão local. Buckets esperados: attachments, reports, radar, territorial.'})},
+
+  /* ── E-MAIL ── */
+  {id:'email-resend',cat:'📧 E-mail / Notificações',title:'Resend API',desc:'RESEND_API_KEY no backend para e-mails transacionais.',priority:'medium',fixUrl:'https://resend.com/api-keys',fixLabel:'Resend Keys',
+   test:async()=>{try{const r=await fetch('/api/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({test:true})});return{status:r.ok?'warning':r.status===404?'missing':'warning',detail:r.ok?'Endpoint de e-mail encontrado. Verifique RESEND_API_KEY no Vercel.':'Endpoint /api/send-email não encontrado. Configure Resend e rota de e-mail para ativações e Radar semanal.'}}catch{return{status:'missing',detail:'E-mail ainda não integrado. Configure Resend (resend.com) e crie endpoint /api/send-email.'}}}},
+
+  /* ── SEO ── */
+  {id:'seo-score',cat:'🔍 SEO / Compartilhamento',title:'Score SEO completo',desc:'title, description, OG, Twitter Card, canonical, theme-color.',priority:'medium',
+   test:()=>{const checks=[['title',!!document.title],['description',!!document.querySelector('meta[name="description"]')?.content],['og:title',!!document.querySelector('meta[property="og:title"]')?.content],['og:description',!!document.querySelector('meta[property="og:description"]')?.content],['og:url',!!document.querySelector('meta[property="og:url"]')?.content],['canonical',!!document.querySelector('link[rel="canonical"]')?.href],['theme-color',!!document.querySelector('meta[name="theme-color"]')?.content]];const ok=checks.filter(c=>c[1]).length;const total=checks.length;return{status:ok===total?'ok':(ok>=total-2?'warning':'error'),detail:ok+'/'+total+' tags SEO: '+checks.map(c=>(c[1]?'✓ ':'✗ ')+c[0]).join(' · ')}}},
+
+  /* ── SEGURANÇA ── */
+  {id:'sec-no-keys',cat:'🛡️ Segurança',title:'Chaves não expostas',desc:'Scan básico por padrões de API key no HTML público.',priority:'critical',
+   test:()=>{const html=document.documentElement.innerHTML;const patterns=[/sk-ant[A-Za-z0-9\-_]{20,}/g,/sk-proj-[A-Za-z0-9]{20,}/g,/AIza[A-Za-z0-9_\-]{35}/g,/re_[A-Za-z0-9]{20,}/g,/whsec_[A-Za-z0-9]{20,}/g,/APP_USR-[A-Za-z0-9\-]{20,}/g];const found=[];patterns.forEach(p=>{const m=html.match(p);if(m)found.push(...m.map(k=>k.slice(0,8)+'…(MASCARADA)'))});return{status:found.length===0?'ok':'error',detail:found.length===0?'✓ Nenhuma API key sensível detectada no HTML público.':'⚠️ Possível chave sensível detectada: '+found.join(', ')+'. Mover para Vercel Environment Variables.'}}},
+
+  {id:'sec-admin-pass',cat:'🛡️ Segurança',title:'Senha Admin não-padrão',desc:'Senha admin não deve ser a padrão demo (admin2026).',priority:'high',
+   test:()=>{const stored=localStorage.getItem('dai4_admin_password');const isDefault=!stored||stored==='admin2026';return{status:isDefault?'warning':'ok',detail:isDefault?'⚠️ Admin usando senha padrão "admin2026". Altere para produção real.':'Senha admin customizada no localStorage ✓'}}},
+
+  {id:'sec-localstorage',cat:'🛡️ Segurança',title:'Sem secrets no localStorage',desc:'Verificar se chaves sensíveis foram salvas acidentalmente.',priority:'critical',
+   test:()=>{const dangerous=['api_key','secret','token','password','anthropic','openai','supabase_service'];const found=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);const lower=k.toLowerCase();if(dangerous.some(d=>lower.includes(d))){const val=localStorage.getItem(k)||'';if(val.length>12)found.push(k)}}return{status:found.length===0?'ok':'error',detail:found.length===0?'✓ Nenhum secret sensível detectado no localStorage.':'⚠️ Chaves possivelmente sensíveis no localStorage: '+found.join(', ')+'. Remover imediatamente.'}}}
+  ,
+
+  /* ── DEPLOY ── */
+  {id:'deploy-env',cat:'🚀 Deploy / Produção',title:'Ambiente atual',desc:'Detectar se está em produção, preview ou localhost.',priority:'high',fixUrl:'https://vercel.com/dashboard',fixLabel:'Vercel Dashboard',
+   test:()=>{const h=window.location.hostname;const isProd=h==='diretor.ai';const isPreview=h.includes('vercel.app');const isLocal=h==='localhost'||h.includes('127.');return{status:isProd?'ok':(isPreview?'warning':'warning'),detail:'Host: '+h+' → '+(isProd?'✓ PRODUÇÃO':'⚠️ '+(isPreview?'Preview Vercel (não é produção real)':'Ambiente local/dev'))}}},
+
+  {id:'deploy-history-api',cat:'🚀 Deploy / Produção',title:'History API (botão voltar)',desc:'Navegação interna registra histórico no browser.',priority:'medium',
+   test:()=>{const ok=typeof getPageFromHash==='function'&&typeof _VALID_PAGES!=='undefined';return{status:ok?'ok':'warning',detail:ok?'✓ History API implementada. pushState/popstate funcionando. URLs com hash (#home, #mapping etc.).':'History API não detectada.'}}},
+
+  {id:'deploy-vercel-json',cat:'🚀 Deploy / Produção',title:'vercel.json / rotas',desc:'Rotas de API e arquivos estáticos configuradas.',priority:'high',fixUrl:'https://vercel.com/docs/project-configuration',fixLabel:'Vercel Config',
+   test:async()=>{try{const tests=await Promise.all([fetch('/robots.txt',{method:'HEAD'}),fetch('/sitemap.xml',{method:'HEAD'}),fetch('/manifest.json',{method:'HEAD'})]);const ok=tests.filter(r=>r.ok).length;return{status:ok>=2?'ok':'warning',detail:'Arquivos estáticos acessíveis: robots.txt '+(tests[0].ok?'✓':'✗')+', sitemap.xml '+(tests[1].ok?'✓':'✗')+', manifest.json '+(tests[2].ok?'✓':'✗')}}catch{return{status:'warning',detail:'Não foi possível verificar arquivos estáticos.'}}}},
+];
+
+/* ── HEALTH CHECK ENGINE ── */
+let hcResults={};
+let hcRunning=false;
+
+function initHealthSection(){
+  if(Object.keys(hcResults).length===0)renderHealthCategories(true);
+  else renderHealthCategories(false);
+}
+
+async function runAllHealthChecks(){
+  if(hcRunning)return;
+  hcRunning=true;
+  for(const hc of HEALTH_CHECKS){
+    await _runOne(hc);
+    renderHealthCategories(false);
+  }
+  hcRunning=false;
+  renderHealthScore();
+}
+
+async function runCriticalHealthChecks(){
+  if(hcRunning)return;
+  hcRunning=true;
+  const criticals=HEALTH_CHECKS.filter(h=>h.priority==='critical'||h.priority==='high');
+  for(const hc of criticals){
+    await _runOne(hc);
+    renderHealthCategories(false);
+  }
+  hcRunning=false;
+  renderHealthScore();
+}
+
+async function runSingleCheck(id){
+  const hc=HEALTH_CHECKS.find(h=>h.id===id);
+  if(!hc)return;
+  hcResults[id]={status:'testing',detail:'',ts:new Date().toLocaleTimeString('pt-BR')};
+  renderHealthCategories(false);
+  await _runOne(hc);
+  renderHealthCategories(false);
+  renderHealthScore();
+}
+
+async function _runOne(hc){
+  hcResults[hc.id]={status:'testing',detail:'',ts:new Date().toLocaleTimeString('pt-BR')};
+  try{
+    const res=await Promise.race([hc.test(),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),6000))]);
+    hcResults[hc.id]={status:res.status||'unknown',detail:res.detail||'',ts:new Date().toLocaleTimeString('pt-BR')};
+  }catch(e){
+    hcResults[hc.id]={status:'error',detail:'Erro no teste: '+e.message,ts:new Date().toLocaleTimeString('pt-BR')};
+  }
+}
+
+function renderHealthCategories(initialRender){
+  const el=$('hcCategories');if(!el)return;
+  // Group by category
+  const cats={};
+  HEALTH_CHECKS.forEach(hc=>{if(!cats[hc.cat])cats[hc.cat]=[];cats[hc.cat].push(hc)});
+  const openCats=new Set([...el.querySelectorAll('.hc-cat-body.open')].map(b=>b.dataset.cat));
+  el.innerHTML=Object.entries(cats).map(([cat,items])=>{
+    const results=items.map(i=>hcResults[i.id]?.status||'unknown');
+    const hasError=results.some(s=>s==='error'||s==='missing');
+    const hasWarn=results.some(s=>s==='warning');
+    const allOk=results.every(s=>s==='ok');
+    const okCount=results.filter(s=>s==='ok').length;
+    const catStatus=allOk?'ok':(hasError?'error':(hasWarn?'warning':'unknown'));
+    const catIcon=catStatus==='ok'?'✅':catStatus==='error'?'❌':catStatus==='warning'?'⚠️':'○';
+    const isOpen=openCats.has(cat)||initialRender||hasError||hasWarn;
+    return`<div class="hc-category-wrap">
+      <div class="hc-cat-header" onclick="toggleHcCat(this)">
+        <span class="hc-cat-title">${escapeHtml(cat)}</span>
+        <span class="hc-cat-meta">
+          <span class="hc-cat-score">${okCount}/${items.length}</span>
+          <span>${catIcon}</span>
+          <span style="color:var(--dim);font-size:12px">${isOpen?'▲':'▼'}</span>
+        </span>
+      </div>
+      <div class="hc-cat-body ${isOpen?'open':''}" data-cat="${escapeHtml(cat)}">
+        ${items.map(hc=>renderHcItem(hc)).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  if(!initialRender)renderHealthScore();
+}
+
+function toggleHcCat(header){
+  const body=header.nextElementSibling;
+  const open=body.classList.toggle('open');
+  const arrow=header.querySelector('span:last-child');
+  if(arrow)arrow.textContent=open?'▲':'▼';
+}
+
+function renderHcItem(hc){
+  const res=hcResults[hc.id]||{status:'unknown',detail:'',ts:''};
+  const sLabel=HC_STATUS_LABEL[res.status]||res.status;
+  const pMap={critical:'🔴 crítico',high:'🟠 alto',medium:'🔵 médio',low:'⚪ baixo'};
+  const detailId='hcd-'+hc.id;
+  return`<div class="hc-item">
+    <div class="hc-item-left">
+      <div class="hc-item-title">
+        <span class="hc-status-dot ${res.status}">${sLabel}</span>
+        ${escapeHtml(hc.title)}
+      </div>
+      <div class="hc-item-desc">${escapeHtml(hc.desc)}</div>
+      ${res.detail?`<div class="hc-item-detail show" id="${detailId}">${escapeHtml(res.detail)}</div>`:`<div class="hc-item-detail" id="${detailId}"></div>`}
+      <div class="hc-item-btns">
+        <button class="hc-btn primary" onclick="runSingleCheck('${hc.id}')">⟳ Testar</button>
+        ${hc.fixUrl?`<button class="hc-btn" onclick="window.open('${hc.fixUrl}','_blank')">${escapeHtml(hc.fixLabel||'Corrigir')} ↗</button>`:''}
+        ${hc.adminSection?`<button class="hc-btn" onclick="showAdminSection('${hc.adminSection}')">⚙ Configurar</button>`:''}
+        ${res.detail?`<button class="hc-btn" onclick="toggleHcDetail('${detailId}')">Ver detalhes</button>`:''}
+      </div>
+    </div>
+    <div class="hc-item-right">
+      <span class="hc-priority ${hc.priority}">${pMap[hc.priority]||hc.priority}</span>
+      ${res.ts?`<small style="color:var(--dim);font-family:var(--mono);font-size:9px">${res.ts}</small>`:''}
+    </div>
+  </div>`;
+}
+
+function toggleHcDetail(id){const el=$(id);if(el)el.classList.toggle('show')}
+
+function renderHealthScore(){
+  const numEl=$('hcScoreNum'),lblEl=$('hcScoreLabel'),levelsEl=$('hcLevels');
+  if(!numEl)return;
+  const checked=HEALTH_CHECKS.filter(h=>hcResults[h.id]&&hcResults[h.id].status!=='unknown'&&hcResults[h.id].status!=='testing');
+  if(checked.length===0){numEl.textContent='—';lblEl.textContent='clique em Rodar todos os testes';return}
+  // Weighted score
+  let score=0,max=0;
+  HEALTH_CHECKS.forEach(h=>{
+    const w=HC_PRIORITY_W[h.priority]||1;
+    max+=w*100;
+    const s=hcResults[h.id]?.status;
+    if(s==='ok')score+=w*100;
+    else if(s==='warning')score+=w*50;
+  });
+  const pct=Math.round(score/max*100);
+  numEl.textContent=pct+'%';
+  const levels=[
+    {name:'MVP testável',keys:['https','ai-endpoint','ai-fallback','mentors-list','whatsapp'],label:'Site básico'},
+    {name:'Beta',keys:['auth-local','ai-claude','terr-demo','mentors-autoselect','uploads-btn'],label:'Usuários teste'},
+    {name:'Vendas',keys:['payment-links','email-resend','sec-no-keys','seo-score','deploy-env'],label:'Pronto vender'},
+    {name:'Escala',keys:['auth-supabase','supabase-conn','radar-backend','terr-maps-api','deploy-vercel-json'],label:'Full produção'},
+  ];
+  const levelPct=pct>=80?4:pct>=60?3:pct>=40?2:pct>=20?1:0;
+  lblEl.textContent=levelPct>=4?'Pronto para escala ✓':levelPct===3?'Pronto para vendas':levelPct===2?'Beta — faltam configurações':levelPct===1?'MVP testável':' Configuração inicial necessária';
+  if(levelsEl)levelsEl.innerHTML=levels.map((lv,i)=>{
+    const done=lv.keys.filter(k=>hcResults[k]?.status==='ok').length;
+    const total=lv.keys.length;
+    const p=Math.round(done/total*100);
+    const reached=i<levelPct;
+    return`<div class="hc-level ${reached?'reached':''}">
+      <div class="hc-level-name" style="color:${reached?'var(--gold)':'var(--dim)'}">${lv.name}</div>
+      <div class="hc-level-bar"><div class="hc-level-fill" style="width:${p}%"></div></div>
+      <div class="hc-level-sub">${done}/${total} · ${lv.label}</div>
+    </div>`;
+  }).join('');
+}
+
+function copyHealthReport(){
+  const lines=['diretor.ai — Checklist de Produção','Data: '+new Date().toLocaleString('pt-BR'),''];
+  const cats={};
+  HEALTH_CHECKS.forEach(h=>{if(!cats[h.cat])cats[h.cat]=[];cats[h.cat].push(h)});
+  Object.entries(cats).forEach(([cat,items])=>{
+    lines.push(cat.replace(/^[^\s]+\s/,''));
+    items.forEach(h=>{
+      const s=(hcResults[h.id]?.status||'unknown').toUpperCase();
+      const d=hcResults[h.id]?.detail||'não testado';
+      lines.push('  ['+s+'] '+h.title+' — '+d.slice(0,80));
+    });
+    lines.push('');
+  });
+  lines.push('--- Próximos passos ---');
+  const missing=HEALTH_CHECKS.filter(h=>hcResults[h.id]?.status==='missing'||hcResults[h.id]?.status==='error');
+  const warns=HEALTH_CHECKS.filter(h=>hcResults[h.id]?.status==='warning');
+  missing.forEach((h,i)=>lines.push((i+1)+'. [FALTANDO] '+h.title+(h.fixUrl?' → '+h.fixUrl:'')));
+  warns.forEach((h,i)=>lines.push((missing.length+i+1)+'. [AVISO] '+h.title));
+  navigator.clipboard?.writeText(lines.join('\n')).then(()=>showToast('Relatório copiado! Cole em qualquer lugar.')).catch(()=>showToast('Use Ctrl+C para copiar.'));
+}
+
 function showUpgrade(msg){if($('upgradeTitle'))$('upgradeTitle').textContent=msg?.split('\n')[0]||'Recurso bloqueado.';if($('upgradeText'))$('upgradeText').textContent=msg?.split('\n').slice(1).join(' ')||'';if($('upgradeModal'))$('upgradeModal').classList.add('open')}
 function closeUpgrade(){if($('upgradeModal'))$('upgradeModal').classList.remove('open')}
 
