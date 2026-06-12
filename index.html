@@ -6,10 +6,9 @@
 <title>diretor.ai — Qual decisão você precisa tomar?</title>
 <meta name="description" content="Análise estratégica, conselho de mentores e análise territorial. Digite sua decisão e receba direção.">
 <meta name="theme-color" content="#07070a">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3">
-<link rel="shortcut icon" href="/favicon.svg?v=3">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=10">
+<link rel="shortcut icon" href="/favicon.svg?v=10">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=10">
 <link rel="canonical" href="https://diretor.ai">
 <meta property="og:title" content="diretor.ai — Decisão Estratégica com IA">
 <meta property="og:description" content="Digite uma decisão. Receba direção. Análise territorial grátis.">
@@ -744,8 +743,10 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
           <div class="hc-action-bar">
             <button class="btn gold small" onclick="runAllHealthChecks()">▶ Rodar todos os testes</button>
             <button class="btn small" onclick="runCriticalHealthChecks()">🔴 Só críticos</button>
+            <button class="btn small" onclick="testWithExamples()">🧪 Testar motor com exemplos</button>
             <button class="btn small" onclick="copyHealthReport()">📋 Copiar relatório</button>
           </div>
+          <div id="exampleTestOutput" style="display:none;margin-bottom:16px"></div>
 
           <!-- EXTERNAL LINKS -->
           <div class="hc-ext-btns">
@@ -1998,6 +1999,75 @@ const HEALTH_CHECKS=[
 
   {id:'deploy-vercel-json',cat:'🚀 Deploy / Produção',title:'vercel.json / rotas',desc:'Rotas de API e arquivos estáticos configuradas.',priority:'high',fixUrl:'https://vercel.com/docs/project-configuration',fixLabel:'Vercel Config',
    test:async()=>{try{const tests=await Promise.all([fetch('/robots.txt',{method:'HEAD'}),fetch('/sitemap.xml',{method:'HEAD'}),fetch('/manifest.json',{method:'HEAD'})]);const ok=tests.filter(r=>r.ok).length;return{status:ok>=2?'ok':'warning',detail:'Arquivos estáticos acessíveis: robots.txt '+(tests[0].ok?'✓':'✗')+', sitemap.xml '+(tests[1].ok?'✓':'✗')+', manifest.json '+(tests[2].ok?'✓':'✗')}}catch{return{status:'warning',detail:'Não foi possível verificar arquivos estáticos.'}}}},
+
+  /* ─────────────────────────────────────────────────────
+     MOTOR DE DECISÃO / RACIOCÍNIO ESTRATÉGICO
+     ───────────────────────────────────────────────────── */
+
+  /* CAMADA 1 — CLAREZA */
+  {id:'dr-field',cat:'🧩 Motor de Decisão',title:'Campo de decisão principal',desc:'textarea principal existe, Enhance funciona, análise dispara.',priority:'critical',adminSection:'ai-models',
+   test:()=>{const ta=$('decisionInput');const analyzeBtn=document.querySelector('.analyze-btn');const enhanceBtn=$('enhanceBtn');return{status:(ta&&analyzeBtn&&enhanceBtn)?'ok':'error',detail:(ta?'✓ textarea#decisionInput ':'✗ Campo principal ausente ')+(analyzeBtn?'· ✓ botão Analisar ':'· ✗ botão Analisar ausente ')+(enhanceBtn?'· ✓ botão Enhance':'· ✗ botão Enhance ausente')}}},
+
+  {id:'dr-enhance',cat:'🧩 Motor de Decisão',title:'Enhance — melhora a pergunta',desc:'localEnhancePrompt() detecta contexto e expande decisão curta.',priority:'high',
+   test:()=>{const ok=typeof localEnhancePrompt==='function';if(!ok)return{status:'error',detail:'localEnhancePrompt não definido.'};const r=localEnhancePrompt('lançar agora?');const isExpanded=r.length>80&&r!=='lançar agora?';return{status:isExpanded?'ok':'warning',detail:isExpanded?'✓ Enhance expande para '+r.length+' chars. Ex: "'+r.slice(0,80)+'..."':'Enhance não expandiu o texto curto.'}}},
+
+  /* CAMADA 2 — EVIDÊNCIAS */
+  {id:'dr-context',cat:'🧩 Motor de Decisão',title:'Contexto e evidências',desc:'Usuário pode anexar arquivos e território. Contexto vai para análise.',priority:'medium',
+   test:()=>{const hasUpload=typeof openFileInput==='function';const hasTerritory=typeof openTerritoryModal==='function';const hasBuild=typeof buildFileContext==='function';return{status:(hasUpload&&hasTerritory&&hasBuild)?'ok':'warning',detail:[hasUpload?'✓ Anexar arquivos':'✗ Upload ausente',hasTerritory?'✓ Análise territorial':'✗ Territorial ausente',hasBuild?'✓ Contexto de arquivos no prompt':'✗ buildFileContext ausente'].join(' · ')}}},
+
+  /* CAMADA 3 — CENÁRIOS */
+  {id:'dr-scenarios',cat:'🧩 Motor de Decisão',title:'Cenários possíveis',desc:'localQuickAnalysis() retorna ao menos 3 caminhos.',priority:'high',
+   test:()=>{const ok=typeof localQuickAnalysis==='function';if(!ok)return{status:'error',detail:'localQuickAnalysis não definido.'};const r=localQuickAnalysis('devo lançar agora',[]);const paths=r.paths||[];return{status:paths.length>=3?'ok':'warning',detail:paths.length>=3?'✓ '+paths.length+' caminhos gerados. Ex: "'+paths[0]?.slice(0,60)+'..."':'Caminhos insuficientes — esperado 3, recebido '+paths.length}}},
+
+  {id:'dr-scenario-module',cat:'🧩 Motor de Decisão',title:'Módulo Simulador de Cenários',desc:'Módulo de 3 cenários (A/B/C) acessível no app.',priority:'medium',adminSection:'ai-models',
+   test:()=>{const el=$('mod-scenarios');const hasLocalScenario=typeof localScenario==='function';return{status:(el&&hasLocalScenario)?'ok':'warning',detail:(el?'✓ #mod-scenarios presente':'✗ Módulo cenários ausente')+(hasLocalScenario?' · ✓ fallback local':'· ✗ fallback ausente')}}},
+
+  /* CAMADA 4 — RISCOS */
+  {id:'dr-risks',cat:'🧩 Motor de Decisão',title:'Identificação de riscos',desc:'localQuickAnalysis() retorna risks. Modo Adversário disponível.',priority:'critical',adminSection:'ai-models',
+   test:()=>{const hasRisks=typeof localQuickAnalysis==='function';const hasAdversary=typeof localAdversary==='function';const hasAdversaryModule=!!$('mod-adversary');if(!hasRisks)return{status:'error',detail:'localQuickAnalysis não definido.'};const r=localQuickAnalysis('decidir sobre investimento',[]);const risks=r.risks||[];return{status:(risks.length>0&&hasAdversary&&hasAdversaryModule)?'ok':(risks.length>0?'warning':'error'),detail:[risks.length>0?'✓ '+risks.length+' riscos na análise rápida':'✗ Sem riscos na resposta',hasAdversary?'✓ Modo Adversário (7 riscos ocultos)':'⚠️ Modo Adversário ausente',hasAdversaryModule?'✓ #mod-adversary presente':'⚠️ Módulo adversário ausente'].join(' · ')}}},
+
+  {id:'dr-adversary-quality',cat:'🧩 Motor de Decisão',title:'Qualidade do Modo Adversário',desc:'localAdversary() retorna 7 riscos + 5 perguntas + veredito.',priority:'high',
+   test:()=>{const ok=typeof localAdversary==='function';if(!ok)return{status:'warning',detail:'localAdversary não definido.'};const r=localAdversary('investir R$ 50 mil em tráfego pago');const has7=Array.isArray(r.risks)&&r.risks.length>=5;const has5q=Array.isArray(r.questions)&&r.questions.length>=4;const hasVerdict=!!r.verdict;return{status:(has7&&has5q&&hasVerdict)?'ok':'warning',detail:[has7?'✓ '+r.risks.length+' riscos':'⚠️ Menos de 5 riscos ('+r.risks?.length+')','· '+(has5q?'✓ '+r.questions.length+' perguntas':'⚠️ Poucas perguntas'),'· '+(hasVerdict?'✓ veredito: '+r.verdict.slice(0,30):'⚠️ sem veredito')].join(' ')}}},
+
+  /* CAMADA 5 — AÇÃO */
+  {id:'dr-recommendation',cat:'🧩 Motor de Decisão',title:'Recomendação e próximo passo',desc:'Análise entrega recommendation + nextStep claros.',priority:'critical',adminSection:'ai-models',
+   test:()=>{const ok=typeof localQuickAnalysis==='function';if(!ok)return{status:'error',detail:'localQuickAnalysis não definido.'};const r=localQuickAnalysis('preciso decidir sobre meu sócio',[]);const hasRec=r.recommendation&&r.recommendation.length>30;const hasNext=r.nextStep&&r.nextStep.length>20;return{status:(hasRec&&hasNext)?'ok':'warning',detail:(hasRec?'✓ Recomendação ('+r.recommendation?.length+' chars)':'✗ Recomendação ausente ou curta')+' · '+(hasNext?'✓ Próximo passo ('+r.nextStep?.length+' chars)':'✗ Próximo passo ausente')}}},
+
+  {id:'dr-final-decision',cat:'🧩 Motor de Decisão',title:'Decisão Final (síntese)',desc:'Módulo Decisão Final cruza análises e entrega plano 7+30 dias.',priority:'high',
+   test:()=>{const el=$('mod-final');const hasLocal=typeof localFinal!=='undefined'||typeof runFinalDecision==='function';return{status:(el&&hasLocal)?'ok':'warning',detail:(el?'✓ #mod-final presente':'✗ Módulo Decisão Final ausente')+(hasLocal?' · ✓ função de decisão final disponível':' · ⚠️ função ausente')}}},
+
+  /* CONSELHO */
+  {id:'dr-council-depth',cat:'🧩 Motor de Decisão',title:'Profundidade do Conselho',desc:'Conselho gera opiniões estruturadas: leitura, risco, ação, síntese.',priority:'high',
+   test:()=>{const ok=typeof generateMentorDeepOpinions==='function';if(!ok)return{status:'error',detail:'generateMentorDeepOpinions não definido.'};const mentor=ADVISORS?.find(a=>a.id==='jobs');if(!mentor)return{status:'warning',detail:'ADVISORS não carregado.'};const r=generateMentorDeepOpinions('decidir sobre lançamento',[mentor]);const o=r[0];const depth=[o?.reading,o?.risk,o?.action,o?.synthesis].filter(Boolean).length;return{status:depth>=4?'ok':'warning',detail:depth>=4?'✓ Opinião profunda completa: leitura, risco, ação, síntese. Ex: "'+o.synthesis?.slice(0,60)+'..."':'Apenas '+depth+'/4 campos. Esperado: leitura, risco, ação, síntese.'}}},
+
+  /* MAPEAMENTO */
+  {id:'dr-mapping-page',cat:'🧩 Motor de Decisão',title:'Mapeamento estratégico completo',desc:'Página de mapeamento existe com cards e CTAs de conversão.',priority:'medium',
+   test:()=>{const el=$('page-mapping');const cards=el?el.querySelectorAll('.mapping-feature').length:0;const cta=el?!!el.querySelector('.mapping-cta'):false;return{status:el&&cards>=6?'ok':'warning',detail:(el?'✓ #page-mapping presente':'✗ Página mapeamento ausente')+' · '+(cards>=6?'✓ '+cards+' cards de módulos':'⚠️ Poucos cards: '+cards)+' · '+(cta?'✓ CTA de conversão':'⚠️ CTA ausente')}}},
+
+  /* TERRITORIAL */
+  {id:'dr-territorial-analysis',cat:'🧩 Motor de Decisão',title:'Análise territorial completa',desc:'localTerritoryAnalysis() retorna 7+ campos incluindo fieldChecklist.',priority:'high',
+   test:()=>{const ok=typeof localTerritoryAnalysis==='function';if(!ok)return{status:'error',detail:'localTerritoryAnalysis não definido.'};const r=localTerritoryAnalysis({businessType:'clínica',region:'Niterói',radius:'3',objective:'Abrir unidade'});const fields=['summary','competitors','gaps','potentialClients','partners','opportunities','nextStep','fieldChecklist','digitalSignals'];const present=fields.filter(f=>r[f]&&String(r[f]).length>20);return{status:present.length>=7?'ok':(present.length>=5?'warning':'error'),detail:present.length+'/'+fields.length+' campos completos: '+present.join(', ')}}},
+
+  {id:'dr-gmaps-routes',cat:'🧩 Motor de Decisão',title:'Roteiro Google Maps (free)',desc:'openGoogleMapsSearch() e buildExplorationRoutes() geram URLs diretas.',priority:'medium',
+   test:()=>{const ok=typeof buildExplorationRoutes==='function';if(!ok)return{status:'error',detail:'buildExplorationRoutes não definido.'};const r=buildExplorationRoutes('restaurante japonês','Icaraí, Niterói');return{status:r.length>=4?'ok':'warning',detail:'✓ '+r.length+' rotas de exploração: '+r.map(rt=>rt.label).join(' · ')}}},
+
+  /* RADAR */
+  {id:'dr-radar-concept',cat:'🧩 Motor de Decisão',title:'Radar de Mercado (recorrência)',desc:'Módulo de monitoramento de concorrentes para retenção.',priority:'medium',
+   test:()=>{const hasRadarInMapping=document.body.innerHTML.includes('Radar de Mercado');const hasTeamAgents=typeof TEAM_AGENTS!=='undefined'&&TEAM_AGENTS.length>0;return{status:hasRadarInMapping?'warning':'missing',detail:hasRadarInMapping?'⚠️ Radar mencionado no mapeamento, mas backend /api/radar ainda não implementado. Essencial para retenção/recorrência.':'Radar de Mercado ausente. Implementar para criar retenção semanal.'+(hasTeamAgents?' · ✓ Agentes de equipe disponíveis (recorrência interna)':'')}}},
+
+  /* DOCUMENTAÇÃO */
+  {id:'dr-materials',cat:'🧩 Motor de Decisão',title:'Materiais gerados / documentação',desc:'Exportação de plano de ação, SWOT, roadmap, resumo executivo.',priority:'medium',
+   test:()=>{const hasGenerateFn=typeof generateMaterial!=='undefined'||typeof localMaterial!=='undefined';const hasExportFn=typeof exportMaterial==='function';return{status:(hasGenerateFn&&hasExportFn)?'ok':(hasGenerateFn?'warning':'missing'),detail:(hasGenerateFn?'✓ Geração de materiais implementada':'⚠️ Funções de geração ausentes')+' · '+(hasExportFn?'✓ Exportação HTML disponível':'⚠️ Exportação PDF/PPTX: futuro')+'. Materiais: resumo executivo, plano de ação, SWOT, checklist, briefing.'}}},
+
+  /* DECISION READINESS 5 — score separado */
+  {id:'dr5-score',cat:'🧩 Motor de Decisão',title:'Maturidade de Decisão (D5)',desc:'Score das 5 camadas: Clareza · Evidências · Cenários · Riscos · Ação.',priority:'high',
+   test:()=>{const layers=[
+     {name:'Clareza',ok:typeof localEnhancePrompt==='function'&&!!$('decisionInput')},
+     {name:'Evidências',ok:typeof buildFileContext==='function'&&typeof openTerritoryModal==='function'},
+     {name:'Cenários',ok:typeof localScenario==='function'&&!!$('mod-scenarios')},
+     {name:'Riscos',ok:typeof localAdversary==='function'&&!!$('mod-adversary')},
+     {name:'Ação',ok:typeof localQuickAnalysis==='function'&&!!$('mod-final')},
+   ];const okCount=layers.filter(l=>l.ok).length;const pct=Math.round(okCount/layers.length*100);return{status:pct===100?'ok':(pct>=60?'warning':'error'),detail:'Score D5: '+pct+'% ('+okCount+'/5 camadas) · '+layers.map(l=>(l.ok?'✓ ':'✗ ')+l.name).join(' · ')}}},
 ];
 
 /* ── HEALTH CHECK ENGINE ── */
@@ -2135,15 +2205,33 @@ function renderHealthScore(){
     else if(s==='warning')score+=w*50;
   });
   const pct=Math.round(score/max*100);
-  numEl.textContent=pct+'%';
+
+  // Technical score (non-strategic checks)
+  const techIds=HEALTH_CHECKS.filter(h=>h.cat!=='🧩 Motor de Decisão').map(h=>h.id);
+  let techScore=0,techMax=0;
+  techIds.forEach(id=>{const h=HEALTH_CHECKS.find(x=>x.id===id);const w=HC_PRIORITY_W[h?.priority]||1;techMax+=w*100;const s=hcResults[id]?.status;if(s==='ok')techScore+=w*100;else if(s==='warning')techScore+=w*50});
+  const techPct=techMax>0?Math.round(techScore/techMax*100):0;
+
+  // Strategic score (Motor de Decisão checks)
+  const stratIds=HEALTH_CHECKS.filter(h=>h.cat==='🧩 Motor de Decisão').map(h=>h.id);
+  let stratScore=0,stratMax=0;
+  stratIds.forEach(id=>{const h=HEALTH_CHECKS.find(x=>x.id===id);const w=HC_PRIORITY_W[h?.priority]||1;stratMax+=w*100;const s=hcResults[id]?.status;if(s==='ok')stratScore+=w*100;else if(s==='warning')stratScore+=w*50});
+  const stratPct=stratMax>0?Math.round(stratScore/stratMax*100):0;
+
+  const combined=Math.round((techPct+stratPct)/2);
+  numEl.textContent=combined+'%';
+
+  // Score detail line
+  const checkedCount=HEALTH_CHECKS.filter(h=>hcResults[h.id]&&hcResults[h.id].status!=='unknown'&&hcResults[h.id].status!=='testing').length;
+  lblEl.textContent='Técnico: '+techPct+'% · Estratégico: '+stratPct+'% · '+checkedCount+'/'+HEALTH_CHECKS.length+' testados';
+
   const levels=[
-    {name:'MVP testável',keys:['https','ai-endpoint','ai-fallback','mentors-list','whatsapp'],label:'Site básico'},
-    {name:'Beta',keys:['auth-local','ai-claude','terr-demo','mentors-autoselect','uploads-btn'],label:'Usuários teste'},
-    {name:'Vendas',keys:['payment-links','email-resend','sec-no-keys','seo-score','deploy-env'],label:'Pronto vender'},
-    {name:'Escala',keys:['auth-supabase','supabase-conn','radar-backend','terr-maps-api','deploy-vercel-json'],label:'Full produção'},
+    {name:'MVP testável',keys:['https','dr-field','ai-fallback','mentors-list','whatsapp'],label:'Site básico'},
+    {name:'Beta',keys:['ai-endpoint','dr-enhance','dr-recommendation','dr-council-depth','terr-demo'],label:'Usuários teste'},
+    {name:'Vendas',keys:['payment-links','email-resend','sec-no-keys','seo-score','dr-mapping-page'],label:'Pronto vender'},
+    {name:'Escala',keys:['auth-supabase','supabase-conn','radar-backend','terr-maps-api','dr-radar-concept'],label:'Full produção'},
   ];
-  const levelPct=pct>=80?4:pct>=60?3:pct>=40?2:pct>=20?1:0;
-  lblEl.textContent=levelPct>=4?'Pronto para escala ✓':levelPct===3?'Pronto para vendas':levelPct===2?'Beta — faltam configurações':levelPct===1?'MVP testável':' Configuração inicial necessária';
+  const levelPct=combined>=80?4:combined>=60?3:combined>=40?2:combined>=20?1:0;
   if(levelsEl)levelsEl.innerHTML=levels.map((lv,i)=>{
     const done=lv.keys.filter(k=>hcResults[k]?.status==='ok').length;
     const total=lv.keys.length;
@@ -2155,6 +2243,50 @@ function renderHealthScore(){
       <div class="hc-level-sub">${done}/${total} · ${lv.label}</div>
     </div>`;
   }).join('');
+}
+
+/* ── TESTAR MOTOR COM EXEMPLOS ── */
+async function testWithExamples(){
+  const examples=[
+    {label:'🚀 Produto',text:'Devo lançar meu produto agora como MVP ou esperar uma versão completa?'},
+    {label:'🌐 Territorial',text:'Quero abrir uma clínica de estética em Icaraí, Niterói. Vale a pena?'},
+    {label:'⚔️ Concorrência',text:'Meu concorrente lançou uma campanha nova esta semana. Como devo responder?'},
+  ];
+  showToast('Testando motor com 3 exemplos...');
+  const results=[];
+  for(const ex of examples){
+    // Test localQuickAnalysis
+    let r={};try{r=localQuickAnalysis(ex.text,[])||{}}catch(e){r={}}
+    const hasAll=['summary','diagnosis','paths','risks','recommendation','nextStep'].every(k=>r[k]&&String(r[k]).length>15);
+    // Test enhance
+    let enh='';try{enh=localEnhancePrompt(ex.text.slice(0,20))||''}catch(e){}
+    const enhanced=enh.length>ex.text.length;
+    // Test mentors
+    let mentorOk=false;try{const m=ADVISORS?.find(a=>a.id==='jobs');if(m){const mo=generateMentorDeepOpinions(ex.text,[m]);mentorOk=!!(mo[0]?.reading&&mo[0]?.action)}}catch(e){}
+    results.push({...ex,hasAll,enhanced,mentorOk,r});
+  }
+  // Show results modal-style in detail
+  const el=$('exampleTestOutput');
+  if(!el)return;
+  el.style.display='block';
+  el.innerHTML=results.map(res=>{
+    const status=res.hasAll&&res.enhanced&&res.mentorOk?'ok':(res.hasAll?'warning':'error');
+    const icon=status==='ok'?'✅':status==='warning'?'⚠️':'❌';
+    return`<div class="hc-item" style="margin-bottom:10px">
+      <div class="hc-item-left">
+        <div class="hc-item-title"><span class="hc-status-dot ${status}">${icon} ${status.toUpperCase()}</span>${escapeHtml(res.label)}</div>
+        <div class="hc-item-desc" style="font-style:italic">"${escapeHtml(res.text.slice(0,80))}..."</div>
+        <div class="hc-item-detail show">
+          ${res.hasAll?'✅ Análise completa (6 campos: summary, diagnosis, paths, risks, recommendation, nextStep)':'⚠️ Resposta incompleta — verifique localQuickAnalysis'}
+          <br>${res.enhanced?'✅ Enhance expande a pergunta':'⚠️ Enhance não expandiu'}
+          <br>${res.mentorOk?'✅ Mentor entrega leitura + ação profunda':'⚠️ Opinião do mentor incompleta'}
+          ${res.hasAll?'<br>📌 Recomendação: "'+escapeHtml((res.r.recommendation||'').slice(0,80))+'..."':''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  const allOk=results.every(r=>r.hasAll);
+  showToast(allOk?'✅ Motor de decisão funcionando em todos os exemplos.':'⚠️ Alguns exemplos retornaram resposta incompleta. Verifique os detalhes.');
 }
 
 function copyHealthReport(){
