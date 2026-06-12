@@ -218,7 +218,12 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
 .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric{border:1px solid var(--line);border-radius:16px;padding:14px;background:rgba(0,0,0,.14)}.metric small{display:block;font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}.metric strong{font-family:var(--display);font-size:22px}
 .advisor-grid{display:grid;grid-template-columns:290px 1fr;gap:16px}.advisor-list{max-height:460px;overflow:auto;border:1px solid var(--line);border-radius:16px;padding:8px;background:var(--card)}.advisor{display:flex;align-items:center;gap:10px;border:1px solid transparent;border-radius:12px;padding:10px;background:transparent;color:var(--muted);width:100%;text-align:left;transition:.15s}.advisor:hover,.advisor.selected{border-color:var(--line2);background:rgba(200,168,75,.1);color:var(--text)}.advisor.locked{opacity:.5}.advisor-initial{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(200,168,75,.13);color:var(--gold);font-family:var(--display);font-weight:800;flex:0 0 auto}
 .response{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:18px;margin-bottom:10px}.response h4{font-family:var(--display);font-size:18px;margin:0 0 6px}.response p{color:var(--muted);margin:0;white-space:pre-line}
-.admin-layout{display:grid;grid-template-columns:210px 1fr;gap:16px}.admin-nav{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:10px;height:max-content}.admin-section{display:none}.admin-section.active{display:block}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;gap:18px}
+.admin-nav{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:14px 12px;height:max-content;display:flex;flex-direction:column;gap:7px}
+.admin-nav .btn{width:100%;min-height:42px;padding:10px 14px;border-radius:12px;font-size:13px;font-weight:600;line-height:1.25;justify-content:flex-start;white-space:normal;text-align:left}
+.admin-nav .admin-nav-divider{height:1px;background:var(--line);margin:4px 0}
+.admin-nav .danger{margin-top:4px}
+.admin-section{display:none}.admin-section.active{display:block}
 .status{font-weight:700}.status.ok{color:var(--ok)}.status.warn{color:var(--warn)}.status.bad{color:var(--bad)}
 /* ===== HEALTH CHECK ===== */
 .hc-score-wrap{border:1px solid var(--line2);background:linear-gradient(135deg,rgba(200,168,75,.08),rgba(200,168,75,.02));border-radius:18px;padding:20px 22px;margin-bottom:18px}
@@ -296,7 +301,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
 .mapping-section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:28px 0}
 .mapping-cta{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;padding:26px 30px;border:1px solid var(--line2);background:linear-gradient(135deg,rgba(200,168,75,.09),rgba(200,168,75,.03));border-radius:22px;margin-top:0}
 
-@media(max-width:980px){.app-shell,.advisor-grid,.admin-layout{grid-template-columns:1fr}.side{position:relative;top:auto;height:auto}.mapping-grid,.grid.two{grid-template-columns:repeat(2,1fr)}.mentor-grid{grid-template-columns:repeat(2,1fr)}.topbar{flex-wrap:wrap;height:auto;min-height:64px;padding:12px 16px;gap:8px}.nav{width:100%}.container{width:min(100% - 28px,1180px)}.mapping-cta{grid-template-columns:1fr;text-align:center}.mapping-cta .cta-row{justify-content:center}}
+@media(max-width:980px){.app-shell,.advisor-grid,.admin-layout{grid-template-columns:1fr}.side{position:relative;top:auto;height:auto}.mapping-grid,.grid.two{grid-template-columns:repeat(2,1fr)}.mentor-grid{grid-template-columns:repeat(2,1fr)}.topbar{flex-wrap:wrap;height:auto;min-height:64px;padding:12px 16px;gap:8px}.nav{width:100%}.container{width:min(100% - 28px,1180px)}.mapping-cta{grid-template-columns:1fr;text-align:center}.mapping-cta .cta-row{justify-content:center}.admin-nav{flex-direction:row;flex-wrap:wrap;gap:8px}.admin-nav .btn{flex:1 1 calc(50% - 8px);min-height:40px;justify-content:center;text-align:center}.admin-nav .admin-nav-divider{display:none}.admin-nav .danger{flex:0 0 100%}}
 @media(max-width:768px){.plans{grid-template-columns:1fr!important}.territory-modal-card,.mentor-modal-card{max-height:96vh}.terr-two-col{grid-template-columns:1fr}}
 @media(max-width:640px){.mapping-grid,.grid.two,.grid.three,.metrics,.result-grid,.scenario-tabs,.plans{grid-template-columns:1fr!important}.mentor-grid{grid-template-columns:repeat(2,1fr)}.simple-home{padding:28px 16px 44px}.simple-headline{font-size:28px}.panel{padding:14px}.title{font-size:21px}.tag{display:none}.toolbar-hint{display:none}.analyze-btn{padding:9px 14px;font-size:13px}.intent-suggestion{flex-direction:column;align-items:flex-start}}
 @media(max-width:420px){.toolbar-btn{padding:6px 10px;font-size:11px}}
@@ -647,15 +652,17 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;ba
   <div class="container" style="padding:30px 0 70px">
     <div class="admin-layout">
       <div class="admin-nav">
-        <div class="kicker" style="padding:8px 10px 10px">Admin</div>
-        <button class="btn small gold" onclick="showAdminSection('ai-models')">Modelos de IA</button>
-        <button class="btn small" onclick="showAdminSection('maps')">Mapas & Territorial</button>
-        <button class="btn small" onclick="showAdminSection('payments')">Pagamentos</button>
-        <button class="btn small" onclick="showAdminSection('texts')">Textos</button>
-        <button class="btn small" onclick="showAdminSection('users')">Usuários</button>
-        <button class="btn small" onclick="showAdminSection('health');initHealthSection()" style="border-color:var(--ok);color:var(--ok)">🩺 Checklist</button>
-        <div style="margin-top:10px"></div>
-        <button class="btn small danger" onclick="logoutAdmin()">Sair</button>
+        <div class="kicker" style="padding:4px 6px 10px;letter-spacing:.14em">Admin</div>
+        <button class="btn gold" onclick="showAdminSection('ai-models')">Modelos de IA</button>
+        <button class="btn" onclick="showAdminSection('maps')">Mapas & Territorial</button>
+        <div class="admin-nav-divider"></div>
+        <button class="btn" onclick="showAdminSection('payments')">Pagamentos</button>
+        <button class="btn" onclick="showAdminSection('texts')">Textos</button>
+        <div class="admin-nav-divider"></div>
+        <button class="btn" onclick="showAdminSection('users')">Usuários</button>
+        <button class="btn" onclick="showAdminSection('health');initHealthSection()" style="border-color:rgba(61,184,122,.45);color:var(--ok)">🩺 Checklist</button>
+        <div class="admin-nav-divider"></div>
+        <button class="btn danger" onclick="logoutAdmin()">Sair</button>
       </div>
       <div>
         <!-- ADMIN: AI MODELS -->
