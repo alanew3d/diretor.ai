@@ -6,385 +6,470 @@
 <title>KBC — Kindle BarraShopping Control</title>
 <style>
 :root {
-  --brs-green: #00634A;
-  --brs-green-dark: #004d38;
-  --brs-green-light: #E1F5EE;
-  --brs-gold: #C4922A;
-  --brs-gold-light: #FDF4E4;
-  --gray-50: #F8F8F7;
-  --gray-100: #F0EFEC;
-  --gray-200: #E4E3DF;
-  --gray-400: #9A9890;
-  --gray-600: #5C5B57;
-  --gray-900: #1A1A18;
+  --brs: #00634A;
+  --brs-dark: #004d38;
+  --brs-mid: #1D9E75;
+  --brs-light: #E1F5EE;
+  --brs-border: #5DCAA5;
+  --gold: #C4922A;
+  --gold-light: #FDF4E4;
+  --bg: #F5F4F1;
+  --bg2: #EEECEA;
+  --white: #FFFFFF;
+  --border: #E2E0DB;
+  --border2: #D0CEC8;
+  --text: #1A1A18;
+  --text2: #5C5B57;
+  --text3: #9A9890;
   --blue: #185FA5;
-  --blue-light: #E6F1FB;
+  --blue-l: #E6F1FB;
   --red: #A32D2D;
-  --red-light: #FCEBEB;
+  --red-l: #FCEBEB;
   --amber: #854F0B;
-  --amber-light: #FAEEDA;
-  --success: #0F6E56;
-  --success-light: #E1F5EE;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --amber-l: #FAEEDA;
+  --purple: #534AB7;
+  --purple-l: #EEEDFE;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--gray-50); color: var(--gray-900); min-height: 100vh; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-/* ===== LAYOUT ===== */
+/* LAYOUT */
 .layout { display: flex; min-height: 100vh; }
 
-/* ===== SIDEBAR ===== */
+/* SIDEBAR */
 .sidebar {
-  width: 220px; background: white; border-right: 1px solid var(--gray-200);
-  display: flex; flex-direction: column; flex-shrink: 0; position: fixed;
-  top: 0; left: 0; height: 100vh; z-index: 100; overflow-y: auto;
+  width: 224px; background: var(--white); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; position: fixed; top: 0; left: 0;
+  height: 100vh; z-index: 100; overflow-y: auto;
 }
-.sidebar-header { padding: 20px 16px 16px; border-bottom: 1px solid var(--gray-200); }
-.sidebar-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 4px; }
-.sidebar-logo-icon {
-  width: 32px; height: 32px; background: var(--brs-green); border-radius: 8px;
+.sb-top { padding: 18px 16px 14px; border-bottom: 1px solid var(--border); }
+.sb-brand { display: flex; align-items: center; gap: 9px; }
+.sb-icon {
+  width: 34px; height: 34px; background: var(--brs); border-radius: 9px;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.sidebar-logo-icon svg { width: 16px; height: 16px; }
-.sidebar-logo-name { font-size: 15px; font-weight: 600; color: var(--gray-900); letter-spacing: -0.02em; }
-.sidebar-client { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
-.sidebar-nav { padding: 10px 8px; flex: 1; }
-.nav-section-label { font-size: 10px; letter-spacing: 0.06em; color: var(--gray-400); text-transform: uppercase; padding: 8px 8px 4px; }
+.sb-icon svg { width: 16px; height: 16px; }
+.sb-name { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+.sb-client { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.sb-nav { padding: 10px 8px; flex: 1; }
+.sb-section { font-size: 10px; letter-spacing: 0.07em; color: var(--text3); text-transform: uppercase; padding: 10px 8px 4px; }
 .nav-item {
   display: flex; align-items: center; gap: 9px; padding: 8px 10px;
-  border-radius: var(--radius-sm); cursor: pointer; margin-bottom: 1px;
-  font-size: 13px; color: var(--gray-600); transition: all 0.12s; text-decoration: none;
+  border-radius: var(--r-sm); cursor: pointer; margin-bottom: 1px;
+  font-size: 13px; color: var(--text2); transition: all 0.12s;
 }
-.nav-item:hover { background: var(--gray-100); color: var(--gray-900); }
-.nav-item.active { background: var(--brs-green-light); color: var(--brs-green); font-weight: 500; }
-.nav-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; }
+.nav-item:hover { background: var(--bg); color: var(--text); }
+.nav-item.active { background: var(--brs-light); color: var(--brs); font-weight: 500; }
+.nav-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.6; }
 .nav-item.active svg { opacity: 1; }
-.nav-badge {
-  margin-left: auto; font-size: 10px; padding: 1px 7px;
-  border-radius: 20px; background: var(--amber-light); color: var(--amber);
+.nav-pill {
+  margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 7px;
+  border-radius: 20px; background: var(--amber-l); color: var(--amber);
 }
-.nav-badge.danger { background: var(--red-light); color: var(--red); }
-.nav-badge.ok { background: var(--success-light); color: var(--success); }
-.sidebar-footer { padding: 12px 16px; border-top: 1px solid var(--gray-200); }
-.user-row { display: flex; align-items: center; gap: 8px; }
-.user-avatar {
-  width: 28px; height: 28px; border-radius: 50%; background: var(--brs-green-light);
+.nav-pill.r { background: var(--red-l); color: var(--red); }
+.nav-pill.b { background: var(--blue-l); color: var(--blue); }
+.sb-footer { padding: 12px 14px; border-top: 1px solid var(--border); }
+.sb-user { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.sb-avatar {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--brs-light);
   display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 600; color: var(--brs-green); flex-shrink: 0;
+  font-size: 11px; font-weight: 700; color: var(--brs); flex-shrink: 0;
 }
-.user-name { font-size: 12px; font-weight: 500; color: var(--gray-900); }
-.user-role { font-size: 10px; color: var(--gray-400); }
+.sb-uname { font-size: 12px; font-weight: 500; color: var(--text); }
+.sb-urole { font-size: 10px; color: var(--text3); }
 .trello-pill {
-  display: flex; align-items: center; gap: 4px; margin-top: 8px;
-  background: var(--blue-light); border-radius: 20px; padding: 4px 10px;
-  font-size: 10px; color: var(--blue);
+  display: flex; align-items: center; gap: 5px; background: var(--blue-l);
+  border-radius: 20px; padding: 4px 10px; font-size: 10px; color: var(--blue);
 }
-.trello-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--blue); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.t-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--blue); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
 
-/* ===== MAIN ===== */
-.main { margin-left: 220px; flex: 1; min-width: 0; }
+/* MAIN */
+.main { margin-left: 224px; flex: 1; }
 .topbar {
-  background: white; border-bottom: 1px solid var(--gray-200); padding: 0 28px;
-  height: 54px; display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 50;
+  background: var(--white); border-bottom: 1px solid var(--border);
+  padding: 0 28px; height: 56px; display: flex; align-items: center;
+  justify-content: space-between; position: sticky; top: 0; z-index: 50;
 }
-.topbar-title { font-size: 15px; font-weight: 600; color: var(--gray-900); }
-.topbar-sub { font-size: 12px; color: var(--gray-400); margin-top: 1px; }
-.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.tb-left { display: flex; flex-direction: column; }
+.tb-title { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+.tb-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.tb-right { display: flex; align-items: center; gap: 8px; }
 .btn-primary {
-  background: var(--brs-green); color: white; border: none; border-radius: var(--radius-sm);
+  background: var(--brs); color: white; border: none; border-radius: var(--r-sm);
   padding: 7px 14px; font-size: 12px; font-weight: 500; cursor: pointer;
-  display: flex; align-items: center; gap: 5px;
+  display: flex; align-items: center; gap: 5px; transition: background 0.15s;
 }
-.btn-primary:hover { background: var(--brs-green-dark); }
+.btn-primary:hover { background: var(--brs-dark); }
 .btn-outline {
-  background: white; color: var(--gray-600); border: 1px solid var(--gray-200);
-  border-radius: var(--radius-sm); padding: 7px 12px; font-size: 12px; cursor: pointer;
+  background: var(--white); color: var(--text2); border: 1px solid var(--border2);
+  border-radius: var(--r-sm); padding: 7px 12px; font-size: 12px; cursor: pointer;
+  transition: border-color 0.15s;
 }
-.btn-outline:hover { border-color: var(--gray-400); color: var(--gray-900); }
+.btn-outline:hover { border-color: var(--text3); }
 .content { padding: 24px 28px; }
-
-/* ===== PANELS ===== */
 .panel { display: none; }
 .panel.active { display: block; }
 
-/* ===== DASHBOARD ===== */
-.metric-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-bottom: 24px; }
-.metric-card {
-  background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md);
-  padding: 14px 16px; cursor: pointer; transition: border-color 0.12s;
+/* METRIC CARDS */
+.metrics { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-bottom: 20px; }
+.metric {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 16px; cursor: pointer; transition: all 0.15s; box-shadow: var(--shadow);
 }
-.metric-card:hover { border-color: var(--gray-400); }
-.metric-card.warn { border-color: #EF9F27; }
-.metric-card.danger { border-color: #E24B4A; }
-.metric-num { font-size: 26px; font-weight: 600; color: var(--gray-900); line-height: 1; }
-.metric-card.warn .metric-num { color: var(--amber); }
-.metric-card.danger .metric-num { color: var(--red); }
-.metric-lbl { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+.metric:hover { border-color: var(--border2); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.metric.warn { border-color: #EF9F27; background: linear-gradient(135deg, var(--white) 60%, var(--amber-l)); }
+.metric.danger { border-color: #E24B4A; background: linear-gradient(135deg, var(--white) 60%, var(--red-l)); }
+.metric.success { border-color: var(--brs-border); background: linear-gradient(135deg, var(--white) 60%, var(--brs-light)); }
+.metric-icon { font-size: 18px; margin-bottom: 10px; }
+.metric-num { font-size: 28px; font-weight: 700; color: var(--text); line-height: 1; letter-spacing: -0.02em; }
+.metric.warn .metric-num { color: var(--amber); }
+.metric.danger .metric-num { color: var(--red); }
+.metric.success .metric-num { color: var(--brs); }
+.metric-lbl { font-size: 11px; color: var(--text3); margin-top: 5px; line-height: 1.3; }
 
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-.card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 16px; }
-.card-title { font-size: 12px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
-
-/* campaign bars */
-.camp-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.camp-name { font-size: 12px; color: var(--gray-600); width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
-.camp-bar-wrap { flex: 1; height: 5px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
-.camp-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s; }
-.camp-pct { font-size: 11px; color: var(--gray-400); width: 30px; text-align: right; }
-
-/* sac preview items */
-.sac-mini-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--gray-100); }
-.sac-mini-item:last-child { border-bottom: none; }
-.sac-urg { font-size: 9px; padding: 2px 7px; border-radius: 20px; flex-shrink: 0; margin-top: 1px; white-space: nowrap; }
-.sac-text { font-size: 12px; color: var(--gray-600); line-height: 1.4; }
-
-/* activity */
-.act-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
-.act-item:last-child { border-bottom: none; }
-.act-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
-.act-text { font-size: 12px; color: var(--gray-900); line-height: 1.5; }
-.act-meta { font-size: 10px; color: var(--gray-400); margin-top: 2px; }
-.act-tag { font-size: 10px; padding: 1px 6px; border-radius: 20px; background: var(--gray-100); color: var(--gray-600); }
-
-/* module grid */
+/* MODULE GRID */
 .mod-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
-.mod-card {
-  background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md);
-  padding: 14px; cursor: pointer; transition: all 0.12s; position: relative;
+.mod {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 16px; cursor: pointer; transition: all 0.15s; box-shadow: var(--shadow);
+  position: relative; overflow: hidden;
 }
-.mod-card:hover { border-color: var(--brs-green); box-shadow: var(--shadow-sm); }
-.mod-icon { font-size: 20px; margin-bottom: 8px; }
-.mod-name { font-size: 13px; font-weight: 500; color: var(--gray-900); }
-.mod-desc { font-size: 11px; color: var(--gray-400); margin-top: 3px; line-height: 1.4; }
+.mod::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--border); transition: background 0.15s;
+}
+.mod:hover { border-color: var(--brs); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.mod:hover::before { background: var(--brs); }
+.mod.green::before { background: var(--brs-mid); }
+.mod.blue::before { background: var(--blue); }
+.mod.amber::before { background: var(--gold); }
+.mod.red::before { background: var(--red); }
+.mod.purple::before { background: var(--purple); }
+.mod-icon { font-size: 22px; margin-bottom: 10px; }
 .mod-badge {
-  position: absolute; top: 10px; right: 10px;
-  font-size: 9px; padding: 2px 7px; border-radius: 20px;
+  position: absolute; top: 14px; right: 14px; font-size: 9px; font-weight: 600;
+  padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.04em;
 }
-.mod-badge.warn { background: var(--amber-light); color: var(--amber); }
-.mod-badge.ok { background: var(--success-light); color: var(--success); }
-.mod-badge.info { background: var(--blue-light); color: var(--blue); }
-.mod-badge.purple { background: #EEEDFE; color: #534AB7; }
+.mod-badge.g { background: var(--brs-light); color: var(--brs); }
+.mod-badge.b { background: var(--blue-l); color: var(--blue); }
+.mod-badge.a { background: var(--amber-l); color: var(--amber); }
+.mod-badge.r { background: var(--red-l); color: var(--red); }
+.mod-badge.p { background: var(--purple-l); color: var(--purple); }
+.mod-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.mod-desc { font-size: 11px; color: var(--text3); line-height: 1.4; }
+
+/* GRID */
+.g2 { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 14px; margin-bottom: 16px; }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
+.card {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 16px; box-shadow: var(--shadow);
+}
+.card-title {
+  font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 14px; display: flex; align-items: center;
+  justify-content: space-between;
+}
+.card-link { font-size: 10px; color: var(--brs); text-decoration: none; font-weight: 500; text-transform: none; letter-spacing: 0; }
+
+/* CAMP BARS */
+.camp-item { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+.camp-item:last-child { margin-bottom: 0; }
+.camp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.camp-name { font-size: 12px; color: var(--text2); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.camp-bar { flex: 1.5; height: 5px; background: var(--bg2); border-radius: 3px; overflow: hidden; }
+.camp-fill { height: 100%; border-radius: 3px; transition: width 0.8s cubic-bezier(.4,0,.2,1); }
+.camp-pct { font-size: 11px; color: var(--text3); min-width: 32px; text-align: right; font-weight: 500; }
+
+/* SAC MINI */
+.sac-mini { display: flex; flex-direction: column; gap: 0; }
+.sac-mini-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.sac-mini-row:last-child { border-bottom: none; }
+.sac-u { font-size: 9px; padding: 2px 7px; border-radius: 20px; flex-shrink: 0; margin-top: 1px; font-weight: 600; }
+.sac-t { font-size: 12px; color: var(--text2); line-height: 1.4; }
+
+/* ACTIVITY */
+.act-feed { display: flex; flex-direction: column; }
+.act-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.act-row:last-child { border-bottom: none; }
+.act-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.act-body { font-size: 12px; color: var(--text); line-height: 1.5; }
+.act-meta { font-size: 10px; color: var(--text3); margin-top: 2px; }
+.act-tag { font-size: 10px; padding: 1px 6px; border-radius: 20px; background: var(--bg); color: var(--text2); }
 
 /* ===== PLANEJAMENTO ===== */
-.month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.month-title { font-size: 16px; font-weight: 600; color: var(--gray-900); }
-.month-btns { display: flex; gap: 4px; }
-.month-btn { width: 28px; height: 28px; border: 1px solid var(--gray-200); background: white; border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; color: var(--gray-600); }
 .cal-legend { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
-.leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--gray-600); }
-.leg-dot { width: 8px; height: 8px; border-radius: 2px; }
-.cal-header { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; margin-bottom: 4px; }
-.cal-day-lbl { font-size: 10px; color: var(--gray-400); text-align: center; padding: 4px 0; }
-.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
-.cal-cell { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 6px 5px; min-height: 80px; }
-.cal-num { font-size: 11px; font-weight: 500; color: var(--gray-400); margin-bottom: 4px; }
-.cal-piece { border-radius: 3px; padding: 2px 5px; font-size: 9px; color: var(--gray-600); margin-bottom: 2px; line-height: 1.3; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.piece-reel { border-left: 2px solid #1D9E75; background: #f0faf6; }
-.piece-car { border-left: 2px solid #378ADD; background: #f0f6fd; }
-.piece-story { border-left: 2px solid #EF9F27; background: #fdf7ee; }
-.piece-creator { border-left: 2px solid #D4537E; background: #fdf0f5; }
+.leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
+.leg-sq { width: 8px; height: 8px; border-radius: 2px; }
+.cal-hdr { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; margin-bottom: 3px; }
+.cal-dlbl { font-size: 10px; color: var(--text3); text-align: center; padding: 4px 0; font-weight: 500; }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+.cal-cell { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 6px 5px; min-height: 86px; }
+.cal-n { font-size: 11px; font-weight: 600; color: var(--text3); margin-bottom: 4px; }
+.cal-p { border-radius: 3px; padding: 2px 5px; font-size: 9px; color: var(--text2); margin-bottom: 2px; line-height: 1.3; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.p-reel { border-left: 2px solid #1D9E75; background: #f0faf6; }
+.p-car { border-left: 2px solid #378ADD; background: #f0f6fd; }
+.p-story { border-left: 2px solid #EF9F27; background: #fdf7ee; }
+.p-creator { border-left: 2px solid #D4537E; background: #fdf0f5; }
 
 /* ===== APROVAÇÃO ===== */
-.aprov-filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.aprov-filter {
-  font-size: 12px; padding: 5px 12px; border-radius: 20px;
-  border: 1px solid var(--gray-200); background: white; color: var(--gray-600); cursor: pointer;
+.aprov-filters { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.af-btn { font-size: 12px; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border2); background: var(--white); color: var(--text2); cursor: pointer; transition: all 0.12s; }
+.af-btn.active { background: var(--brs); color: white; border-color: var(--brs); }
+.ap-prog { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 14px 16px; margin-bottom: 14px; box-shadow: var(--shadow); }
+.ap-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.ap-lbl { font-size: 12px; color: var(--text2); }
+.ap-pct { font-size: 12px; font-weight: 700; color: var(--brs); }
+.ap-bar-o { height: 6px; background: var(--bg2); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+.ap-bar-i { height: 100%; background: var(--brs); border-radius: 3px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+.ap-counts { display: flex; gap: 14px; }
+.ap-c { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text3); }
+.ap-cd { width: 6px; height: 6px; border-radius: 50%; }
+.pc {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
+  margin-bottom: 10px; overflow: hidden; transition: border-color 0.2s; box-shadow: var(--shadow);
 }
-.aprov-filter.active { background: var(--brs-green); color: white; border-color: var(--brs-green); }
-.aprov-progress { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 16px; }
-.ap-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.ap-label { font-size: 12px; color: var(--gray-600); }
-.ap-pct { font-size: 12px; font-weight: 600; color: var(--brs-green); }
-.ap-bar-outer { height: 6px; background: var(--gray-100); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
-.ap-bar-inner { height: 100%; background: var(--brs-green); border-radius: 3px; transition: width 0.5s; }
-.ap-counts { display: flex; gap: 16px; }
-.ap-count { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--gray-400); }
-.ap-count-dot { width: 6px; height: 6px; border-radius: 50%; }
-.piece-card {
-  background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md);
-  margin-bottom: 10px; overflow: hidden; transition: border-color 0.2s;
-}
-.piece-card.approved { border-color: #5DCAA5; }
-.piece-card.ajuste { border-color: #F09595; }
-.pc-header { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px 0; }
-.pc-thumb { width: 50px; height: 50px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.pc.approved { border-color: var(--brs-border); }
+.pc.ajuste { border-color: #F09595; }
+.pc-hdr { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px 0; }
+.pc-thumb { width: 48px; height: 48px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
 .pc-info { flex: 1; }
-.pc-name { font-size: 13px; font-weight: 500; color: var(--gray-900); margin-bottom: 4px; }
-.pc-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 3px; }
-.pc-tag { font-size: 10px; padding: 1px 7px; border-radius: 20px; background: var(--gray-100); color: var(--gray-600); }
-.pc-date-txt { font-size: 10px; color: var(--gray-400); }
-.pc-si { font-size: 20px; flex-shrink: 0; }
-.media-viewer { margin: 10px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); overflow: hidden; display: none; }
-.media-viewer.open { display: block; }
-.mv-header { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); }
-.mv-source { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--gray-600); }
-.mv-close { background: none; border: none; cursor: pointer; font-size: 14px; color: var(--gray-400); padding: 0; }
-.mv-body { background: #111; min-height: 180px; display: flex; align-items: center; justify-content: center; }
-.mv-img-sim { width: 100%; min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; position: relative; }
-.mv-vid-sim { width: 100%; min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.pc-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.pc-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 3px; }
+.pc-tag { font-size: 10px; padding: 1px 7px; border-radius: 20px; background: var(--bg); color: var(--text2); border: 1px solid var(--border); }
+.pc-date { font-size: 10px; color: var(--text3); }
+.pc-si { flex-shrink: 0; font-size: 20px; }
+.mv { margin: 10px 16px; border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; display: none; }
+.mv.open { display: block; }
+.mv-hdr { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; background: var(--bg); border-bottom: 1px solid var(--border); }
+.mv-src { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text2); }
+.mv-close { background: none; border: none; cursor: pointer; font-size: 14px; color: var(--text3); padding: 0; }
+.mv-img { width: 100%; min-height: 170px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; position: relative; }
+.mv-vid { width: 100%; min-height: 170px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
 .mv-play { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; font-size: 16px; color: white; }
-.mv-label { font-size: 11px; color: rgba(255,255,255,0.7); }
+.mv-lbl { font-size: 11px; color: rgba(255,255,255,0.7); }
 .mv-sub { font-size: 10px; color: rgba(255,255,255,0.35); }
-.mv-overlay { position: absolute; bottom: 8px; left: 8px; right: 8px; display: flex; justify-content: space-between; }
+.mv-ov { position: absolute; bottom: 8px; left: 8px; right: 8px; display: flex; justify-content: space-between; }
 .mv-tag { font-size: 9px; padding: 2px 7px; border-radius: 20px; background: rgba(0,0,0,0.5); color: rgba(255,255,255,0.8); }
-.mv-drive-link { padding: 6px 10px; background: var(--gray-50); font-size: 10px; color: var(--blue); display: flex; align-items: center; gap: 4px; border-top: 1px solid var(--gray-200); }
-.mv-vid-bar { padding: 7px 10px; background: var(--gray-50); display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--gray-200); }
-.mv-prog { flex: 1; height: 3px; background: var(--gray-200); border-radius: 2px; }
-.mv-time { font-size: 10px; color: var(--gray-400); }
-.pc-legenda { margin: 8px 16px; font-size: 12px; color: var(--gray-600); background: var(--gray-50); border-radius: var(--radius-sm); padding: 9px 12px; line-height: 1.6; }
-.pc-actions { padding: 0 16px 14px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-.btn-approve { background: var(--brs-green); color: white; border: none; border-radius: var(--radius-sm); padding: 7px 16px; font-size: 12px; font-weight: 500; cursor: pointer; }
-.btn-approve:hover { background: var(--brs-green-dark); }
-.btn-ajuste { background: white; color: var(--red); border: 1px solid #F09595; border-radius: var(--radius-sm); padding: 7px 14px; font-size: 12px; cursor: pointer; }
-.btn-view { background: var(--gray-100); color: var(--gray-600); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 7px 12px; font-size: 12px; cursor: pointer; }
-.btn-view.active { background: var(--blue-light); color: var(--blue); border-color: #85B7EB; }
-.state-ok { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--success); background: var(--success-light); padding: 7px 12px; border-radius: var(--radius-sm); }
-.state-aj { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--red); background: var(--red-light); padding: 7px 12px; border-radius: var(--radius-sm); }
-.comment-box { padding: 0 16px 14px; display: none; }
-.comment-box.open { display: block; }
-.comment-box textarea { width: 100%; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 12px; color: var(--gray-900); background: var(--gray-50); resize: none; height: 70px; font-family: inherit; line-height: 1.5; }
-.comment-box textarea:focus { outline: none; border-color: var(--brs-green); }
-.comment-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 6px; }
-.btn-send-aj { background: var(--red); color: white; border: none; border-radius: var(--radius-sm); padding: 6px 14px; font-size: 11px; cursor: pointer; }
-.btn-cancel { background: var(--gray-100); color: var(--gray-600); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 6px 12px; font-size: 11px; cursor: pointer; }
+.mv-link { padding: 6px 10px; background: var(--bg); font-size: 10px; color: var(--blue); display: flex; align-items: center; gap: 4px; border-top: 1px solid var(--border); }
+.mv-vbar { padding: 7px 10px; background: var(--bg); display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--border); }
+.mv-prog { flex: 1; height: 3px; background: var(--border); border-radius: 2px; }
+.mv-time { font-size: 10px; color: var(--text3); }
+.pc-leg { margin: 8px 16px; font-size: 12px; color: var(--text2); background: var(--bg); border-radius: var(--r-sm); padding: 9px 12px; line-height: 1.6; }
+.pc-act { padding: 0 16px 14px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.btn-ok { background: var(--brs); color: white; border: none; border-radius: var(--r-sm); padding: 7px 16px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+.btn-ok:hover { background: var(--brs-dark); }
+.btn-aj { background: var(--white); color: var(--red); border: 1px solid #F09595; border-radius: var(--r-sm); padding: 7px 14px; font-size: 12px; cursor: pointer; }
+.btn-view { background: var(--bg); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 7px 12px; font-size: 12px; cursor: pointer; }
+.btn-view.on { background: var(--blue-l); color: var(--blue); border-color: #85B7EB; }
+.st-ok { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--brs); background: var(--brs-light); padding: 7px 12px; border-radius: var(--r-sm); }
+.st-aj { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--red); background: var(--red-l); padding: 7px 12px; border-radius: var(--r-sm); }
+.cb { padding: 0 16px 14px; display: none; }
+.cb.open { display: block; }
+.cb textarea { width: 100%; border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 9px 12px; font-size: 12px; color: var(--text); background: var(--bg); resize: none; height: 68px; font-family: inherit; line-height: 1.5; }
+.cb textarea:focus { outline: none; border-color: var(--brs); }
+.cb-btns { display: flex; justify-content: flex-end; gap: 6px; margin-top: 6px; }
+.btn-send { background: var(--red); color: white; border: none; border-radius: var(--r-sm); padding: 6px 14px; font-size: 11px; cursor: pointer; }
+.btn-cc2 { background: var(--bg); color: var(--text2); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 6px 12px; font-size: 11px; cursor: pointer; }
 
-/* ===== SAC ===== */
-.sac-filters { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-.sac-filter-btn { font-size: 11px; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--gray-200); background: white; color: var(--gray-600); cursor: pointer; }
-.sac-filter-btn.active { background: var(--gray-900); color: white; border-color: var(--gray-900); }
-.sac-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 10px; }
-.sac-card.critical { border-color: #F09595; }
-.sac-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
-.sac-user { font-size: 13px; font-weight: 500; color: var(--gray-900); }
-.sac-urg-badge { font-size: 10px; padding: 2px 9px; border-radius: 20px; }
-.urg-alta { background: var(--red-light); color: var(--red); }
-.urg-media { background: var(--amber-light); color: var(--amber); }
-.urg-baixa { background: var(--success-light); color: var(--success); }
-.sac-comment { font-size: 12px; color: var(--gray-600); font-style: italic; background: var(--gray-50); border-radius: var(--radius-sm); padding: 9px 12px; margin-bottom: 10px; line-height: 1.5; }
-.sac-cats { display: flex; gap: 5px; margin-bottom: 10px; flex-wrap: wrap; }
-.sac-cat { font-size: 10px; padding: 1px 8px; border-radius: 20px; background: var(--gray-100); color: var(--gray-600); }
-.sac-resp-label { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-.sac-response { font-size: 12px; color: var(--gray-900); background: var(--gray-50); border-radius: var(--radius-sm); padding: 10px 12px; line-height: 1.6; margin-bottom: 10px; border-left: 2px solid var(--brs-green); }
-.sac-response.critical-resp { border-left-color: var(--red); background: var(--red-light); }
-.sac-actions { display: flex; gap: 6px; flex-wrap: wrap; }
-.btn-sac-use { background: var(--brs-green); color: white; border: none; border-radius: var(--radius-sm); padding: 6px 14px; font-size: 11px; cursor: pointer; }
-.btn-sac-edit { background: white; color: var(--gray-600); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 6px 12px; font-size: 11px; cursor: pointer; }
-.btn-sac-critical { background: var(--red-light); color: var(--red); border: 1px solid #F09595; border-radius: var(--radius-sm); padding: 6px 14px; font-size: 11px; cursor: pointer; }
+/* ===== SAC COPILOT ===== */
+.sac-tabs { display: flex; gap: 0; border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; margin-bottom: 16px; }
+.sac-tab { flex: 1; padding: 9px 12px; font-size: 12px; color: var(--text2); cursor: pointer; background: var(--white); border: none; border-right: 1px solid var(--border); transition: all 0.12s; }
+.sac-tab:last-child { border-right: none; }
+.sac-tab.active { background: var(--text); color: white; font-weight: 500; }
 
-/* ===== TOM ===== */
-.tom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.tom-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 14px 16px; }
-.tom-title { font-size: 13px; font-weight: 600; color: var(--gray-900); margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
-.tom-list { list-style: none; }
-.tom-list li { font-size: 12px; color: var(--gray-600); padding: 4px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; border-bottom: 1px solid var(--gray-100); }
-.tom-list li:last-child { border-bottom: none; }
-.tom-yes::before { content: "✓"; color: var(--success); flex-shrink: 0; font-weight: 600; }
-.tom-no::before { content: "✗"; color: var(--red); flex-shrink: 0; font-weight: 600; }
-.palette-row { display: flex; flex-direction: column; gap: 6px; }
-.palette-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--gray-600); }
-.palette-swatch { width: 24px; height: 24px; border-radius: 5px; flex-shrink: 0; }
-.emoji-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
-.emoji-chip { font-size: 16px; background: var(--gray-50); border-radius: 6px; padding: 6px 10px; }
-.calendar-table { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-.cal-month { font-size: 11px; color: var(--gray-600); padding: 4px 6px; background: var(--gray-50); border-radius: 4px; }
-.cal-month strong { color: var(--gray-900); font-size: 10px; text-transform: uppercase; }
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .sidebar { width: 60px; }
-  .sidebar-logo-name, .sidebar-client, .nav-item span, .nav-badge, .user-name, .user-role, .trello-pill { display: none; }
-  .sidebar-logo-icon { margin: 0 auto; }
-  .nav-item { justify-content: center; padding: 10px; }
-  .main { margin-left: 60px; }
-  .metric-grid { grid-template-columns: repeat(3,1fr); }
-  .mod-grid { grid-template-columns: repeat(2,1fr); }
-  .tom-grid { grid-template-columns: 1fr; }
-  .grid-2 { grid-template-columns: 1fr; }
+/* TAB: NOVO COMENTÁRIO */
+.novo-form { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.nf-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.nf-sub { font-size: 12px; color: var(--text3); margin-bottom: 16px; line-height: 1.5; }
+.nf-label { font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+.nf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.nf-input {
+  width: 100%; border: 1px solid var(--border2); border-radius: var(--r-sm);
+  padding: 9px 12px; font-size: 13px; color: var(--text); background: var(--bg);
+  font-family: inherit; transition: border-color 0.15s;
 }
-@media (max-width: 480px) {
-  .metric-grid { grid-template-columns: repeat(2,1fr); }
-  .mod-grid { grid-template-columns: repeat(2,1fr); }
-  .cal-grid { grid-template-columns: repeat(7,1fr); }
-  .content { padding: 14px 14px; }
-  .topbar { padding: 0 14px; }
+.nf-input:focus { outline: none; border-color: var(--brs); background: var(--white); }
+.nf-textarea { width: 100%; border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 9px 12px; font-size: 13px; color: var(--text); background: var(--bg); font-family: inherit; resize: none; height: 90px; line-height: 1.6; margin-bottom: 12px; transition: border-color 0.15s; }
+.nf-textarea:focus { outline: none; border-color: var(--brs); background: var(--white); }
+.nf-select { width: 100%; border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 9px 12px; font-size: 13px; color: var(--text); background: var(--bg); font-family: inherit; cursor: pointer; }
+.nf-select:focus { outline: none; border-color: var(--brs); }
+.btn-gerar {
+  background: var(--brs); color: white; border: none; border-radius: var(--r-sm);
+  padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; gap: 7px; transition: background 0.15s;
+  width: 100%; justify-content: center; margin-top: 4px;
+}
+.btn-gerar:hover:not(:disabled) { background: var(--brs-dark); }
+.btn-gerar:disabled { opacity: 0.6; cursor: not-allowed; }
+.loading-spin { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* RESULTADO */
+.sac-result { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 16px; display: none; }
+.sac-result.show { display: block; }
+.sr-header { padding: 12px 16px; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.sr-title { font-size: 12px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
+.sr-badges { display: flex; gap: 6px; }
+.sr-badge { font-size: 10px; padding: 2px 9px; border-radius: 20px; font-weight: 500; }
+.sr-body { padding: 16px; }
+.sr-comment { font-size: 12px; color: var(--text2); font-style: italic; background: var(--bg); border-radius: var(--r-sm); padding: 10px 12px; margin-bottom: 12px; line-height: 1.6; border-left: 3px solid var(--border2); }
+.sr-cats { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.sr-cat { font-size: 10px; padding: 2px 9px; border-radius: 20px; background: var(--bg); color: var(--text2); border: 1px solid var(--border); }
+.sr-resp-lbl { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.sr-resp {
+  font-size: 13px; color: var(--text); background: var(--brs-light); border-radius: var(--r-sm);
+  padding: 12px 14px; line-height: 1.7; margin-bottom: 12px;
+  border-left: 3px solid var(--brs); position: relative;
+}
+.sr-resp.loading { color: var(--text3); animation: fadetext 1.5s infinite; }
+@keyframes fadetext { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.sr-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-copy {
+  background: var(--brs); color: white; border: none; border-radius: var(--r-sm);
+  padding: 8px 18px; font-size: 12px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; gap: 6px; transition: all 0.15s;
+}
+.btn-copy:hover { background: var(--brs-dark); }
+.btn-copy.copied { background: var(--brs-mid); }
+.btn-regen { background: var(--white); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 8px 14px; font-size: 12px; cursor: pointer; }
+.btn-trello { background: var(--blue-l); color: var(--blue); border: 1px solid #85B7EB; border-radius: var(--r-sm); padding: 8px 14px; font-size: 12px; cursor: pointer; }
+.btn-critical { background: var(--red-l); color: var(--red); border: 1px solid #F09595; border-radius: var(--r-sm); padding: 8px 14px; font-size: 12px; cursor: pointer; }
+
+/* TAB: PENDÊNCIAS */
+.sac-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 16px; margin-bottom: 10px; box-shadow: var(--shadow); transition: border-color 0.15s;
+}
+.sac-card:hover { border-color: var(--border2); }
+.sac-card.crit { border-color: #F09595; }
+.sc-hdr { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+.sc-user { font-size: 13px; font-weight: 600; color: var(--text); }
+.sc-urg { font-size: 10px; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.sc-comment { font-size: 12px; color: var(--text2); font-style: italic; background: var(--bg); border-radius: var(--r-sm); padding: 9px 12px; margin-bottom: 10px; line-height: 1.5; border-left: 3px solid var(--border2); }
+.sc-cats { display: flex; gap: 5px; margin-bottom: 10px; flex-wrap: wrap; }
+.sc-cat { font-size: 10px; padding: 1px 8px; border-radius: 20px; background: var(--bg); color: var(--text2); border: 1px solid var(--border); }
+.sc-rl { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.sc-resp { font-size: 12px; color: var(--text); background: var(--brs-light); border-radius: var(--r-sm); padding: 10px 12px; line-height: 1.6; margin-bottom: 10px; border-left: 3px solid var(--brs); }
+.sc-resp.crit-r { background: var(--red-l); border-left-color: var(--red); }
+.sc-acts { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn-su { background: var(--brs); color: white; border: none; border-radius: var(--r-sm); padding: 7px 16px; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+.btn-se { background: var(--white); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 7px 12px; font-size: 11px; cursor: pointer; }
+.btn-sc { background: var(--red-l); color: var(--red); border: 1px solid #F09595; border-radius: var(--r-sm); padding: 7px 12px; font-size: 11px; cursor: pointer; }
+.copied-toast {
+  position: fixed; bottom: 24px; right: 24px; background: var(--text); color: white;
+  padding: 10px 18px; border-radius: var(--r-md); font-size: 13px; font-weight: 500;
+  display: none; z-index: 9999; box-shadow: var(--shadow-md);
+  animation: slideup 0.2s ease;
+}
+@keyframes slideup { from{transform:translateY(10px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ===== TOM DE VOZ ===== */
+.tom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.tom-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 16px; box-shadow: var(--shadow); }
+.tom-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+.tom-ul { list-style: none; }
+.tom-ul li { font-size: 12px; color: var(--text2); padding: 4px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; border-bottom: 1px solid var(--bg2); }
+.tom-ul li:last-child { border-bottom: none; }
+.tom-yes::before { content: "✓"; color: var(--brs); flex-shrink: 0; font-weight: 700; }
+.tom-no::before { content: "✗"; color: var(--red); flex-shrink: 0; font-weight: 700; }
+.pal-row { display: flex; flex-direction: column; gap: 7px; }
+.pal-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text2); }
+.pal-sw { width: 24px; height: 24px; border-radius: 5px; flex-shrink: 0; }
+.emoji-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.emoji-c { font-size: 16px; background: var(--bg); border-radius: 6px; padding: 6px 10px; }
+.cal-months { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.cal-m { font-size: 11px; color: var(--text2); padding: 5px 8px; background: var(--bg); border-radius: 5px; }
+.cal-m strong { color: var(--text); font-size: 10px; text-transform: uppercase; }
+
+/* FOOTER */
+.page-footer { border-top: 1px solid var(--border); padding: 12px 28px; display: flex; align-items: center; justify-content: space-between; background: var(--white); margin-top: 8px; }
+.footer-l { font-size: 11px; color: var(--text3); }
+.footer-r { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
+
+@media(max-width:768px){
+  .sidebar{width:58px;}
+  .sb-name,.sb-client,.nav-item span,.nav-pill,.sb-uname,.sb-urole,.trello-pill{display:none;}
+  .sb-brand{justify-content:center;}
+  .nav-item{justify-content:center;padding:10px;}
+  .main{margin-left:58px;}
+  .metrics{grid-template-columns:repeat(3,1fr);}
+  .mod-grid{grid-template-columns:repeat(2,1fr);}
+  .tom-grid{grid-template-columns:1fr;}
+  .g2{grid-template-columns:1fr;}
+  .content{padding:14px;}
+  .topbar{padding:0 14px;}
 }
 </style>
 </head>
 <body>
-
 <div class="layout">
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-logo">
-      <div class="sidebar-logo-icon">
+  <div class="sb-top">
+    <div class="sb-brand">
+      <div class="sb-icon">
         <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1.5" fill="white"/><rect x="9" y="2" width="5" height="5" rx="1.5" fill="white"/><rect x="2" y="9" width="5" height="5" rx="1.5" fill="white"/><rect x="9" y="9" width="5" height="5" rx="1.5" fill="white"/></svg>
       </div>
-      <span class="sidebar-logo-name">KBC</span>
-    </div>
-    <div class="sidebar-client">BarraShopping · Kindle</div>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section-label">Principal</div>
-    <a class="nav-item active" onclick="showPanel('dashboard',this)">
-      <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
-      <span>Dashboard</span>
-    </a>
-    <a class="nav-item" onclick="showPanel('plan',this)">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M5 1v4M11 1v4M2 7h12"/></svg>
-      <span>Planejamento</span>
-      <span class="nav-badge info" style="background:var(--blue-light);color:var(--blue);">Jul</span>
-    </a>
-    <a class="nav-item" onclick="showPanel('aprov',this)">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M5 8l2 2 4-4"/></svg>
-      <span>Aprovação</span>
-      <span class="nav-badge">28</span>
-    </a>
-    <div class="nav-section-label">Atendimento</div>
-    <a class="nav-item" onclick="showPanel('sac',this)">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4a1 1 0 011-1h10a1 1 0 011 1v6a1 1 0 01-1 1H5l-3 2V4z"/></svg>
-      <span>SAC Copilot</span>
-      <span class="nav-badge danger">5</span>
-    </a>
-    <div class="nav-section-label">Configuração</div>
-    <a class="nav-item" onclick="showPanel('tom',this)">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a6 6 0 100 12A6 6 0 008 2z"/><path d="M8 5v3l2 2"/></svg>
-      <span>Tom de Voz</span>
-    </a>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="user-row">
-      <div class="user-avatar">AG</div>
       <div>
-        <div class="user-name">Alan Gabriel</div>
-        <div class="user-role">Admin Kindle</div>
+        <div class="sb-name">KBC</div>
+        <div class="sb-client">BarraShopping · Kindle</div>
       </div>
     </div>
-    <div class="trello-pill">
-      <div class="trello-dot"></div>
-      <span>Trello conectado</span>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section">Principal</div>
+    <div class="nav-item active" onclick="showPanel('dashboard',this)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+      <span>Dashboard</span>
     </div>
+    <div class="nav-item" onclick="showPanel('plan',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M5 1v4M11 1v4M2 7h12"/></svg>
+      <span>Planejamento</span>
+      <span class="nav-pill b">Jul</span>
+    </div>
+    <div class="nav-item" onclick="showPanel('aprov',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M5 8l2 2 4-4"/></svg>
+      <span>Aprovação</span>
+      <span class="nav-pill">28</span>
+    </div>
+    <div class="sb-section">Atendimento</div>
+    <div class="nav-item" onclick="showPanel('sac',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4a1 1 0 011-1h10a1 1 0 011 1v6a1 1 0 01-1 1H5l-3 2V4z"/></svg>
+      <span>SAC Copilot</span>
+      <span class="nav-pill r">5</span>
+    </div>
+    <div class="sb-section">Config</div>
+    <div class="nav-item" onclick="showPanel('tom',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a6 6 0 100 12A6 6 0 008 2z"/><path d="M8 5v3l2 2"/></svg>
+      <span>Tom de Voz</span>
+    </div>
+  </nav>
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-avatar">AG</div>
+      <div><div class="sb-uname">Alan Gabriel</div><div class="sb-urole">Admin Kindle</div></div>
+    </div>
+    <div class="trello-pill"><div class="t-dot"></div><span>Trello conectado</span></div>
   </div>
 </aside>
 
 <!-- MAIN -->
 <div class="main">
-
-  <!-- TOPBAR -->
   <div class="topbar">
-    <div>
-      <div class="topbar-title" id="topbar-title">Dashboard</div>
-      <div class="topbar-sub" id="topbar-sub">BarraShopping · Junho / Julho 2026</div>
+    <div class="tb-left">
+      <div class="tb-title" id="tb-title">Dashboard</div>
+      <div class="tb-sub" id="tb-sub">BarraShopping · Junho / Julho 2026</div>
     </div>
-    <div class="topbar-actions">
+    <div class="tb-right">
       <button class="btn-outline">↓ Exportar PPT</button>
       <button class="btn-primary">+ Nova peça</button>
     </div>
@@ -392,406 +477,370 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
   <div class="content">
 
-    <!-- ===== DASHBOARD ===== -->
-    <div id="panel-dashboard" class="panel active">
-      <div class="metric-grid">
-        <div class="metric-card" onclick="showPanel('aprov',null)">
+    <!-- DASHBOARD -->
+    <div id="p-dashboard" class="panel active">
+      <div class="metrics">
+        <div class="metric" onclick="showPanel('aprov',null)">
+          <div class="metric-icon">📋</div>
           <div class="metric-num">28</div>
-          <div class="metric-lbl">Aguardando cliente</div>
+          <div class="metric-lbl">Aguardando aprovação</div>
         </div>
-        <div class="metric-card warn">
-          <div class="metric-num" style="color:var(--amber)">3</div>
-          <div class="metric-lbl">Com ajuste</div>
+        <div class="metric warn">
+          <div class="metric-icon">🔄</div>
+          <div class="metric-num">3</div>
+          <div class="metric-lbl">Com ajuste solicitado</div>
         </div>
-        <div class="metric-card danger" onclick="showPanel('sac',null)">
-          <div class="metric-num" style="color:var(--red)">5</div>
+        <div class="metric danger" onclick="showPanel('sac',null)">
+          <div class="metric-icon">💬</div>
+          <div class="metric-num">5</div>
           <div class="metric-lbl">SAC pendente</div>
         </div>
-        <div class="metric-card">
+        <div class="metric success">
+          <div class="metric-icon">✅</div>
           <div class="metric-num">29</div>
           <div class="metric-lbl">Distribuídos</div>
         </div>
-        <div class="metric-card">
+        <div class="metric">
+          <div class="metric-icon">🎨</div>
           <div class="metric-num">9</div>
           <div class="metric-lbl">Em produção</div>
         </div>
       </div>
 
       <div class="mod-grid">
-        <div class="mod-card" onclick="showPanel('plan',null)">
+        <div class="mod green" onclick="showPanel('plan',null)">
           <div class="mod-icon">📅</div>
-          <span class="mod-badge info">Julho ativo</span>
+          <span class="mod-badge b">Julho ativo</span>
           <div class="mod-name">Planejamento</div>
-          <div class="mod-desc">Calendário e cronograma de peças</div>
+          <div class="mod-desc">Calendário editorial e cronograma de peças</div>
         </div>
-        <div class="mod-card" onclick="showPanel('aprov',null)">
+        <div class="mod blue" onclick="showPanel('aprov',null)">
           <div class="mod-icon">🎨</div>
-          <span class="mod-badge warn">28 pendentes</span>
+          <span class="mod-badge a">28 pendentes</span>
           <div class="mod-name">Peças & Aprovação</div>
-          <div class="mod-desc">Artes e vídeos aguardando aprovação</div>
+          <div class="mod-desc">Artes e vídeos aguardando aprovação do cliente</div>
         </div>
-        <div class="mod-card" onclick="showPanel('sac',null)">
+        <div class="mod red" onclick="showPanel('sac',null)">
           <div class="mod-icon">💬</div>
-          <span class="mod-badge" style="background:var(--red-light);color:var(--red);">5 urgentes</span>
+          <span class="mod-badge r">5 urgentes</span>
           <div class="mod-name">SAC Copilot</div>
-          <div class="mod-desc">IA sugere respostas humanizadas</div>
+          <div class="mod-desc">IA gera respostas · humano revisa e copia</div>
         </div>
-        <div class="mod-card">
+        <div class="mod amber">
           <div class="mod-icon">📊</div>
-          <span class="mod-badge ok">Pronto</span>
+          <span class="mod-badge g">Pronto</span>
           <div class="mod-name">PPT Automático</div>
           <div class="mod-desc">Gera PPT no padrão BarraShopping</div>
         </div>
-        <div class="mod-card">
+        <div class="mod green">
           <div class="mod-icon">🔗</div>
-          <span class="mod-badge ok">Conectado</span>
+          <span class="mod-badge g">Conectado</span>
           <div class="mod-name">Trello Sync</div>
           <div class="mod-desc">69 cards · 11 listas · ao vivo</div>
         </div>
-        <div class="mod-card" onclick="showPanel('tom',null)">
+        <div class="mod purple" onclick="showPanel('tom',null)">
           <div class="mod-icon">📖</div>
-          <span class="mod-badge purple">Manual BRS</span>
+          <span class="mod-badge p">Manual BRS</span>
           <div class="mod-name">Tom de Voz</div>
-          <div class="mod-desc">Regras, cores e calendário 2026</div>
+          <div class="mod-desc">Regras, cores e calendário de ações 2026</div>
         </div>
       </div>
 
-      <div class="grid-2">
+      <div class="g2">
         <div class="card">
-          <div class="card-title">Campanhas — progresso</div>
-          <div class="camp-item"><div class="camp-name">Copa do Mundo</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:40%;background:var(--brs-green)"></div></div><div class="camp-pct">40%</div></div>
-          <div class="camp-item"><div class="camp-name">Minions 3 · UCI</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:60%;background:#378ADD"></div></div><div class="camp-pct">60%</div></div>
-          <div class="camp-item"><div class="camp-name">Teatro Infantil</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:100%;background:#1D9E75"></div></div><div class="camp-pct">100%</div></div>
-          <div class="camp-item"><div class="camp-name">Lápis Vermelho Jul</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:30%;background:#EF9F27"></div></div><div class="camp-pct">30%</div></div>
-          <div class="camp-item"><div class="camp-name">Moana · UCI</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:50%;background:#534AB7"></div></div><div class="camp-pct">50%</div></div>
-          <div class="camp-item"><div class="camp-name">Dia dos Pais · Ago</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:15%;background:#D4537E"></div></div><div class="camp-pct">15%</div></div>
+          <div class="card-title">Campanhas — progresso <a class="card-link" href="#" onclick="showPanel('aprov',null);return false">Ver todas →</a></div>
+          <div class="camp-item"><div class="camp-dot" style="background:#00634A"></div><div class="camp-name">Copa do Mundo</div><div class="camp-bar"><div class="camp-fill" style="width:40%;background:#00634A"></div></div><div class="camp-pct">40%</div></div>
+          <div class="camp-item"><div class="camp-dot" style="background:#378ADD"></div><div class="camp-name">Minions 3 · UCI</div><div class="camp-bar"><div class="camp-fill" style="width:60%;background:#378ADD"></div></div><div class="camp-pct">60%</div></div>
+          <div class="camp-item"><div class="camp-dot" style="background:#1D9E75"></div><div class="camp-name">Teatro Infantil</div><div class="camp-bar"><div class="camp-fill" style="width:100%;background:#1D9E75"></div></div><div class="camp-pct">100%</div></div>
+          <div class="camp-item"><div class="camp-dot" style="background:#EF9F27"></div><div class="camp-name">Lápis Vermelho Jul</div><div class="camp-bar"><div class="camp-fill" style="width:30%;background:#EF9F27"></div></div><div class="camp-pct">30%</div></div>
+          <div class="camp-item"><div class="camp-dot" style="background:#534AB7"></div><div class="camp-name">Moana · UCI</div><div class="camp-bar"><div class="camp-fill" style="width:50%;background:#534AB7"></div></div><div class="camp-pct">50%</div></div>
+          <div class="camp-item"><div class="camp-dot" style="background:#D4537E"></div><div class="camp-name">Dia dos Pais · Ago</div><div class="camp-bar"><div class="camp-fill" style="width:15%;background:#D4537E"></div></div><div class="camp-pct">15%</div></div>
         </div>
         <div class="card">
-          <div class="card-title">SAC · pendências</div>
-          <div class="sac-mini-item"><span class="sac-urg" style="background:var(--red-light);color:var(--red);">Alta</span><div class="sac-text">Problema de segurança relatado · aguardando</div></div>
-          <div class="sac-mini-item"><span class="sac-urg" style="background:var(--amber-light);color:var(--amber);">Média</span><div class="sac-text">Reclamação estacionamento · 2 dias</div></div>
-          <div class="sac-mini-item"><span class="sac-urg" style="background:var(--success-light);color:var(--success);">Baixa</span><div class="sac-text">Dúvida pet friendly · resposta gerada</div></div>
-          <div class="sac-mini-item"><span class="sac-urg" style="background:var(--success-light);color:var(--success);">Baixa</span><div class="sac-text">Horário Copa · resposta gerada</div></div>
-          <div class="sac-mini-item"><span class="sac-urg" style="background:var(--success-light);color:var(--success);">Baixa</span><div class="sac-text">Elogio Toy Story · curtida pendente</div></div>
+          <div class="card-title">SAC · pendências <a class="card-link" href="#" onclick="showPanel('sac',null);return false">Ver tudo →</a></div>
+          <div class="sac-mini">
+            <div class="sac-mini-row"><span class="sac-u" style="background:var(--red-l);color:var(--red)">Alta</span><div class="sac-t">Problema de segurança relatado · aguardando</div></div>
+            <div class="sac-mini-row"><span class="sac-u" style="background:var(--amber-l);color:var(--amber)">Média</span><div class="sac-t">Reclamação estacionamento · 2 dias sem resposta</div></div>
+            <div class="sac-mini-row"><span class="sac-u" style="background:var(--brs-light);color:var(--brs)">Baixa</span><div class="sac-t">Dúvida pet friendly · resposta gerada</div></div>
+            <div class="sac-mini-row"><span class="sac-u" style="background:var(--brs-light);color:var(--brs)">Baixa</span><div class="sac-t">Horário Copa · resposta gerada</div></div>
+            <div class="sac-mini-row"><span class="sac-u" style="background:var(--brs-light);color:var(--brs)">Baixa</span><div class="sac-t">Elogio Toy Story · curtida pendente</div></div>
+          </div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-title">Atividade recente</div>
-        <div class="act-item"><div class="act-dot" style="background:#1D9E75"></div><div><div class="act-text">Peça <strong>Benefícios Multi — Formas do Multi dizer te ama</strong> aprovada e publicada</div><div class="act-meta">16/06/2026 · 18h · IG Feed <span class="act-tag">Publicado</span></div></div></div>
-        <div class="act-item"><div class="act-dot" style="background:#EF9F27"></div><div><div class="act-text">Card <strong>Zona Sul — Estação Sabor (novo template)</strong> movido para Alterações</div><div class="act-meta">19/06/2026 · Trello sync <span class="act-tag">Ajuste</span></div></div></div>
-        <div class="act-item"><div class="act-dot" style="background:#378ADD"></div><div><div class="act-text">PPT <strong>Aprovações BarraShopping Junho 2026</strong> gerado e enviado</div><div class="act-meta">15/06/2026 · Kindle Atendimento</div></div></div>
-        <div class="act-item"><div class="act-dot" style="background:#D4537E"></div><div><div class="act-text">SAC: resposta para <strong>reclamação estacionamento</strong> aguarda aprovação da equipe</div><div class="act-meta">Hoje · SAC Copilot IA <span class="act-tag">Pendente</span></div></div></div>
-        <div class="act-item"><div class="act-dot" style="background:#1D9E75"></div><div><div class="act-text">Cronograma <strong>Julho 2026</strong> importado · 38 peças criadas no Trello</div><div class="act-meta">Hoje · Importação automática</div></div></div>
+        <div class="act-feed">
+          <div class="act-row"><div class="act-dot" style="background:#1D9E75"></div><div><div class="act-body">Peça <strong>Benefícios Multi — Formas do Multi dizer te ama</strong> aprovada e publicada</div><div class="act-meta">16/06/2026 · 18h · IG Feed <span class="act-tag">Publicado</span></div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:#EF9F27"></div><div><div class="act-body">Card <strong>Zona Sul — Estação Sabor (novo template)</strong> movido para Alterações no Trello</div><div class="act-meta">19/06/2026 · Trello sync <span class="act-tag">Ajuste</span></div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:#378ADD"></div><div><div class="act-body">PPT <strong>Aprovações BarraShopping Junho 2026</strong> gerado e enviado ao cliente</div><div class="act-meta">15/06/2026 · Kindle Atendimento</div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:#D4537E"></div><div><div class="act-body">SAC Copilot gerou resposta para <strong>reclamação de estacionamento</strong> · aguarda aprovação da equipe</div><div class="act-meta">Hoje · IA <span class="act-tag">Pendente</span></div></div></div>
+          <div class="act-row"><div class="act-dot" style="background:#1D9E75"></div><div><div class="act-body">Cronograma <strong>Julho 2026</strong> importado · 38 peças criadas automaticamente no Trello</div><div class="act-meta">Hoje · Importação automática</div></div></div>
+        </div>
       </div>
     </div>
 
-    <!-- ===== PLANEJAMENTO ===== -->
-    <div id="panel-plan" class="panel">
-      <div class="month-nav">
-        <div class="month-title">Julho 2026</div>
-        <div class="month-btns">
-          <button class="month-btn">‹</button>
-          <button class="month-btn">›</button>
+    <!-- PLANEJAMENTO -->
+    <div id="p-plan" class="panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-size:16px;font-weight:700;color:var(--text);">Julho 2026</div>
+        <div style="display:flex;gap:4px;">
+          <button class="btn-outline" style="width:30px;padding:5px">‹</button>
+          <button class="btn-outline" style="width:30px;padding:5px">›</button>
         </div>
       </div>
       <div class="cal-legend">
-        <div class="leg"><div class="leg-dot" style="background:#1D9E75"></div>Reel</div>
-        <div class="leg"><div class="leg-dot" style="background:#378ADD"></div>Carrossel</div>
-        <div class="leg"><div class="leg-dot" style="background:#EF9F27"></div>Story</div>
-        <div class="leg"><div class="leg-dot" style="background:#D4537E"></div>Creator</div>
+        <div class="leg"><div class="leg-sq" style="background:#1D9E75"></div>Reel</div>
+        <div class="leg"><div class="leg-sq" style="background:#378ADD"></div>Carrossel</div>
+        <div class="leg"><div class="leg-sq" style="background:#EF9F27"></div>Story</div>
+        <div class="leg"><div class="leg-sq" style="background:#D4537E"></div>Creator</div>
       </div>
-      <div class="cal-header">
-        <div class="cal-day-lbl">Seg</div><div class="cal-day-lbl">Ter</div><div class="cal-day-lbl">Qua</div><div class="cal-day-lbl">Qui</div><div class="cal-day-lbl">Sex</div><div class="cal-day-lbl">Sáb</div><div class="cal-day-lbl">Dom</div>
+      <div class="cal-hdr">
+        <div class="cal-dlbl">Seg</div><div class="cal-dlbl">Ter</div><div class="cal-dlbl">Qua</div>
+        <div class="cal-dlbl">Qui</div><div class="cal-dlbl">Sex</div><div class="cal-dlbl">Sáb</div><div class="cal-dlbl">Dom</div>
       </div>
       <div class="cal-grid">
-        <div class="cal-cell"><div class="cal-num">-</div></div>
-        <div class="cal-cell"><div class="cal-num">1</div></div>
-        <div class="cal-cell"><div class="cal-num">2</div><div class="cal-piece piece-reel">Minions 3 · IA</div><div class="cal-piece piece-car">Teatro · Prog.</div></div>
-        <div class="cal-cell"><div class="cal-num">3</div><div class="cal-piece piece-car">Copa Mouse Over</div><div class="cal-piece piece-creator">Bia Milagre</div></div>
-        <div class="cal-cell"><div class="cal-num">4</div><div class="cal-piece piece-car">Meme Caminhada</div><div class="cal-piece piece-car">Benefícios Multi</div></div>
-        <div class="cal-cell"><div class="cal-num">5</div><div class="cal-piece piece-reel">Aquece Brasil</div><div class="cal-piece piece-creator">Helena HotZone</div></div>
-        <div class="cal-cell"><div class="cal-num">6</div><div class="cal-piece piece-reel">Dia do Biquini</div><div class="cal-piece piece-car">Happy Hour</div></div>
-        <div class="cal-cell"><div class="cal-num">7</div><div class="cal-piece piece-car">Prediletos TikTok</div></div>
-        <div class="cal-cell"><div class="cal-num">8</div><div class="cal-piece piece-car">Dia Chocolate</div><div class="cal-piece piece-creator">Carol M.</div></div>
-        <div class="cal-cell"><div class="cal-num">9</div><div class="cal-piece piece-reel">Copa no BRS</div><div class="cal-piece piece-car">5 pratos Brasil</div></div>
-        <div class="cal-cell"><div class="cal-num">10</div><div class="cal-piece piece-reel">Copa no BRS</div><div class="cal-piece piece-car">Benefícios Multi</div></div>
-        <div class="cal-cell"><div class="cal-num">11</div><div class="cal-piece piece-reel">Moana · Estreia</div><div class="cal-piece piece-creator">Bia e Leo · Pizza</div></div>
-        <div class="cal-cell"><div class="cal-num">12</div><div class="cal-piece piece-reel">8ª Expansão</div><div class="cal-piece piece-reel">HotZone</div></div>
-        <div class="cal-cell"><div class="cal-num">13</div><div class="cal-piece piece-car">Viagem · BRS</div><div class="cal-piece piece-creator">Clara Gastr.</div></div>
-        <div class="cal-cell"><div class="cal-num">14</div><div class="cal-piece piece-car">O Jeans Perfeito</div></div>
-        <div class="cal-cell"><div class="cal-num">15</div><div class="cal-piece piece-creator">Carol M. Inverno</div></div>
-        <div class="cal-cell"><div class="cal-num">16</div><div class="cal-piece piece-car">Centro Médico</div></div>
-        <div class="cal-cell"><div class="cal-num">17</div><div class="cal-piece piece-story">Story Pixar</div></div>
-        <div class="cal-cell"><div class="cal-num">18</div><div class="cal-piece piece-creator">Jojo Toledo</div><div class="cal-piece piece-car">Achadinhos</div></div>
-        <div class="cal-cell"><div class="cal-num">19</div><div class="cal-piece piece-car">Sobremesas</div></div>
-        <div class="cal-cell"><div class="cal-num">20</div><div class="cal-piece piece-car">Passos Estilo</div><div class="cal-piece piece-creator">Mariana Alves</div></div>
-        <div class="cal-cell"><div class="cal-num">21</div></div>
-        <div class="cal-cell"><div class="cal-num">22</div><div class="cal-piece piece-reel">HotZone</div></div>
-        <div class="cal-cell"><div class="cal-num">23</div><div class="cal-piece piece-creator">Natalia V.</div></div>
-        <div class="cal-cell"><div class="cal-num">24</div></div>
-        <div class="cal-cell"><div class="cal-num">25</div><div class="cal-piece piece-creator">Vic Matos</div></div>
-        <div class="cal-cell"><div class="cal-num">26</div><div class="cal-piece piece-car">Benefícios Multi</div></div>
-        <div class="cal-cell"><div class="cal-num">27</div><div class="cal-piece piece-creator">João Ramalho</div></div>
+        <div class="cal-cell"><div class="cal-n">—</div></div>
+        <div class="cal-cell"><div class="cal-n">1</div></div>
+        <div class="cal-cell"><div class="cal-n">2</div><div class="cal-p p-reel">Minions 3 · IA</div><div class="cal-p p-car">Teatro · Prog.</div></div>
+        <div class="cal-cell"><div class="cal-n">3</div><div class="cal-p p-car">Copa Mouse Over</div><div class="cal-p p-creator">Bia Milagre</div></div>
+        <div class="cal-cell"><div class="cal-n">4</div><div class="cal-p p-car">Meme Caminhada</div><div class="cal-p p-car">Benefícios Multi</div></div>
+        <div class="cal-cell"><div class="cal-n">5</div><div class="cal-p p-reel">Aquece Brasil</div><div class="cal-p p-creator">Helena HotZone</div></div>
+        <div class="cal-cell"><div class="cal-n">6</div><div class="cal-p p-reel">Dia do Biquini</div><div class="cal-p p-car">Happy Hour</div></div>
+        <div class="cal-cell"><div class="cal-n">7</div><div class="cal-p p-car">Prediletos TikTok</div></div>
+        <div class="cal-cell"><div class="cal-n">8</div><div class="cal-p p-car">Dia Chocolate</div><div class="cal-p p-creator">Carol M.</div></div>
+        <div class="cal-cell"><div class="cal-n">9</div><div class="cal-p p-reel">Copa no BRS</div><div class="cal-p p-car">5 pratos Brasil</div></div>
+        <div class="cal-cell"><div class="cal-n">10</div><div class="cal-p p-reel">Copa no BRS</div><div class="cal-p p-car">Benefícios Multi</div></div>
+        <div class="cal-cell"><div class="cal-n">11</div><div class="cal-p p-reel">Moana · Estreia</div><div class="cal-p p-creator">Bia e Leo · Pizza</div></div>
+        <div class="cal-cell"><div class="cal-n">12</div><div class="cal-p p-reel">8ª Expansão</div><div class="cal-p p-reel">HotZone</div></div>
+        <div class="cal-cell"><div class="cal-n">13</div><div class="cal-p p-car">Viagem · BRS</div><div class="cal-p p-creator">Clara Gastr.</div></div>
+        <div class="cal-cell"><div class="cal-n">14</div><div class="cal-p p-car">O Jeans Perfeito</div></div>
+        <div class="cal-cell"><div class="cal-n">15</div><div class="cal-p p-creator">Carol M. Inverno</div></div>
+        <div class="cal-cell"><div class="cal-n">16</div><div class="cal-p p-car">Centro Médico</div></div>
+        <div class="cal-cell"><div class="cal-n">17</div><div class="cal-p p-story">Story Pixar</div></div>
+        <div class="cal-cell"><div class="cal-n">18</div><div class="cal-p p-creator">Jojo Toledo</div><div class="cal-p p-car">Achadinhos</div></div>
+        <div class="cal-cell"><div class="cal-n">19</div><div class="cal-p p-car">Sobremesas</div></div>
+        <div class="cal-cell"><div class="cal-n">20</div><div class="cal-p p-car">Passos Estilo</div><div class="cal-p p-creator">Mariana Alves</div></div>
+        <div class="cal-cell"><div class="cal-n">21</div></div>
+        <div class="cal-cell"><div class="cal-n">22</div><div class="cal-p p-reel">HotZone</div></div>
+        <div class="cal-cell"><div class="cal-n">23</div><div class="cal-p p-creator">Natalia V.</div></div>
+        <div class="cal-cell"><div class="cal-n">24</div></div>
+        <div class="cal-cell"><div class="cal-n">25</div><div class="cal-p p-creator">Vic Matos</div></div>
+        <div class="cal-cell"><div class="cal-n">26</div><div class="cal-p p-car">Benefícios Multi</div></div>
+        <div class="cal-cell"><div class="cal-n">27</div><div class="cal-p p-creator">João Ramalho</div></div>
       </div>
     </div>
 
-    <!-- ===== APROVAÇÃO ===== -->
-    <div id="panel-aprov" class="panel">
+    <!-- APROVAÇÃO -->
+    <div id="p-aprov" class="panel">
       <div class="aprov-filters">
-        <button class="aprov-filter active">Todas</button>
-        <button class="aprov-filter">Copa do Mundo</button>
-        <button class="aprov-filter">Teatro</button>
-        <button class="aprov-filter">Minions 3</button>
-        <button class="aprov-filter">Multi</button>
+        <button class="af-btn active">Todas</button>
+        <button class="af-btn">Copa do Mundo</button>
+        <button class="af-btn">Teatro</button>
+        <button class="af-btn">Minions 3</button>
+        <button class="af-btn">Multi</button>
       </div>
-      <div class="aprov-progress">
-        <div class="ap-row">
-          <div class="ap-label">Progresso Copa do Mundo</div>
-          <div class="ap-pct" id="ap-pct">17% aprovado</div>
-        </div>
-        <div class="ap-bar-outer"><div class="ap-bar-inner" id="ap-bar" style="width:17%"></div></div>
+      <div class="ap-prog">
+        <div class="ap-top"><div class="ap-lbl">Progresso Copa do Mundo</div><div class="ap-pct" id="ap-pct">17% aprovado</div></div>
+        <div class="ap-bar-o"><div class="ap-bar-i" id="ap-bar" style="width:17%"></div></div>
         <div class="ap-counts">
-          <div class="ap-count"><div class="ap-count-dot" style="background:var(--brs-green)"></div><span id="cnt-ok">1 aprovada</span></div>
-          <div class="ap-count"><div class="ap-count-dot" style="background:#EF9F27"></div><span id="cnt-pend">4 pendentes</span></div>
-          <div class="ap-count"><div class="ap-count-dot" style="background:#E24B4A"></div><span id="cnt-aj">1 com ajuste</span></div>
+          <div class="ap-c"><div class="ap-cd" style="background:var(--brs)"></div><span id="cnt-ok">1 aprovada</span></div>
+          <div class="ap-c"><div class="ap-cd" style="background:#EF9F27"></div><span id="cnt-pend">4 pendentes</span></div>
+          <div class="ap-c"><div class="ap-cd" style="background:#E24B4A"></div><span id="cnt-aj">1 com ajuste</span></div>
         </div>
       </div>
-
-      <!-- CARD 0 approved -->
-      <div class="piece-card approved" id="pc0">
-        <div class="pc-header">
-          <div class="pc-thumb" style="background:#E6F1FB">🗂️</div>
+      <!-- cards de aprovação -->
+      <div class="pc approved" id="pc0">
+        <div class="pc-hdr">
+          <div class="pc-thumb" style="background:var(--blue-l)">🗂️</div>
           <div class="pc-info">
             <div class="pc-name">Formas do Multi dizer te ama</div>
             <div class="pc-tags"><span class="pc-tag">Carrossel</span><span class="pc-tag">Feed</span><span class="pc-tag">IG + FB</span></div>
-            <div class="pc-date-txt">Publicado · 16/06/2026 · 18h</div>
+            <div class="pc-date">Publicado · 16/06/2026 · 18h</div>
           </div>
           <div class="pc-si">✅</div>
         </div>
-        <div class="media-viewer open" id="mv0">
-          <div class="mv-header">
-            <div class="mv-source">📁 Drive · Multi_Formas_v3 · 5 frames</div>
-            <button class="mv-close" onclick="closeMedia(0)">✕</button>
+        <div class="mv open" id="mv0">
+          <div class="mv-hdr"><div class="mv-src">📁 Drive · Multi_Formas_v3 · 5 frames</div><button class="mv-close" onclick="closeMedia(0)">✕</button></div>
+          <div class="mv-img" style="background:linear-gradient(135deg,#004d35,#00634A);min-height:150px;">
+            <div style="font-size:26px">💚</div><div style="font-size:12px;color:rgba(255,255,255,.9);font-weight:600">Benefícios Multi · Arte aprovada</div>
+            <div class="mv-ov"><span class="mv-tag">Carrossel · 5 frames</span><span class="mv-tag">Drive ✓</span></div>
           </div>
-          <div class="mv-img-sim" style="background:linear-gradient(135deg,#004d35,#00634A);min-height:160px;">
-            <div style="font-size:28px">💚</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.9);font-weight:500">Benefícios Multi · Arte aprovada</div>
-            <div class="mv-overlay"><span class="mv-tag">Carrossel · 5 frames</span><span class="mv-tag">Drive ✓</span></div>
-          </div>
-          <div class="mv-drive-link">📁 drive.google.com/…/Multi_Formas_v3 ↗</div>
+          <div class="mv-link">📁 drive.google.com/…/Multi_Formas_v3 ↗</div>
         </div>
-        <div class="pc-actions"><div class="state-ok">✓ Aprovado · 16/06 · você</div><button class="btn-view" onclick="window.open('#')">📁 Abrir Drive</button></div>
+        <div class="pc-act"><div class="st-ok">✓ Aprovado · 16/06 · você</div><button class="btn-view">📁 Abrir Drive</button></div>
       </div>
-
-      <!-- CARD 1 ajuste -->
-      <div class="piece-card ajuste" id="pc1">
-        <div class="pc-header">
-          <div class="pc-thumb" style="background:#E1F5EE">🎬</div>
+      <div class="pc ajuste" id="pc1">
+        <div class="pc-hdr">
+          <div class="pc-thumb" style="background:var(--brs-light)">🎬</div>
           <div class="pc-info">
             <div class="pc-name">Aquece Brasil — Copa no BRS</div>
             <div class="pc-tags"><span class="pc-tag">Reel</span><span class="pc-tag">Feed</span><span class="pc-tag">Vídeo 15s</span></div>
-            <div class="pc-date-txt">Prazo: 05/07 · ajuste solicitado</div>
+            <div class="pc-date">Prazo: 05/07 · ajuste solicitado</div>
           </div>
           <div class="pc-si">🔄</div>
         </div>
-        <div class="media-viewer" id="mv1">
-          <div class="mv-header">
-            <div class="mv-source">📁 Drive · Aquece_Brasil_v1.mp4 · 15s</div>
-            <button class="mv-close" onclick="closeMedia(1)">✕</button>
-          </div>
-          <div class="mv-vid-sim" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);min-height:160px;">
-            <div class="mv-play">▶</div>
-            <div class="mv-label">Aquece Brasil — Reel 15s</div>
-            <div class="mv-sub">MP4 · 1080×1920 · 38MB · Drive</div>
-          </div>
-          <div class="mv-vid-bar"><span style="font-size:12px">▶</span><div class="mv-prog"></div><div class="mv-time">0:00 / 0:15</div></div>
-          <div class="mv-drive-link">📁 drive.google.com/…/Aquece_Brasil_v1.mp4 — abrir no Drive para reproduzir ↗</div>
+        <div class="mv" id="mv1">
+          <div class="mv-hdr"><div class="mv-src">📁 Drive · Aquece_Brasil_v1.mp4 · 15s</div><button class="mv-close" onclick="closeMedia(1)">✕</button></div>
+          <div class="mv-vid" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);min-height:150px;"><div class="mv-play">▶</div><div class="mv-lbl">Aquece Brasil — Reel 15s</div><div class="mv-sub">MP4 · 1080×1920 · 38MB</div></div>
+          <div class="mv-vbar"><span>▶</span><div class="mv-prog"></div><div class="mv-time">0:00 / 0:15</div></div>
+          <div class="mv-link">📁 drive.google.com/…/Aquece_Brasil_v1.mp4 — abrir no Drive ↗</div>
         </div>
-        <div class="pc-legenda">🇧🇷 Muda o jogo quando entra em campo. Animação IA · trilha a definir.</div>
-        <div class="pc-actions" id="pa1">
-          <div class="state-aj">↩ Ajuste: "Incluir data do jogo e trocar trilha"</div>
-          <button class="btn-view" id="vb1" onclick="toggleMedia(1,'vb1')">🎬 Ver vídeo</button>
-        </div>
+        <div class="pc-leg">🇧🇷 Muda o jogo quando entra em campo. Animação IA · trilha a definir.</div>
+        <div class="pc-act" id="pa1"><div class="st-aj">↩ Ajuste: "Incluir data do jogo e trocar trilha"</div><button class="btn-view" id="vb1" onclick="toggleMedia(1,'vb1')">🎬 Ver vídeo</button></div>
       </div>
-
-      <!-- CARD 2 pending -->
-      <div class="piece-card" id="pc2">
-        <div class="pc-header">
-          <div class="pc-thumb" style="background:#E6F1FB">🗂️</div>
+      <div class="pc" id="pc2">
+        <div class="pc-hdr">
+          <div class="pc-thumb" style="background:var(--blue-l)">🗂️</div>
           <div class="pc-info">
             <div class="pc-name">Se a Copa fosse decidida na mesa…</div>
             <div class="pc-tags"><span class="pc-tag">Carrossel</span><span class="pc-tag">Feed</span><span class="pc-tag">Mouse Over</span></div>
-            <div class="pc-date-txt">Publicação: 03/07 · aguardando aprovação</div>
+            <div class="pc-date">Publicação: 03/07 · aguardando aprovação</div>
           </div>
           <div class="pc-si">🕐</div>
         </div>
-        <div class="media-viewer" id="mv2">
-          <div class="mv-header">
-            <div class="mv-source">📁 Drive · Copa_MouseOver_v2 · 3 frames</div>
-            <button class="mv-close" onclick="closeMedia(2)">✕</button>
-          </div>
-          <div class="mv-img-sim" style="background:linear-gradient(135deg,#004d35,#1a7a55);min-height:160px;">
-            <div style="font-size:28px">⚽🍽️</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.9);font-weight:500">Se a Copa fosse decidida na mesa…</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">Mouse over para revelar · 3 frames</div>
-            <div class="mv-overlay"><span class="mv-tag">PNG · 1080×1080</span><span class="mv-tag">Frame 1 de 3</span></div>
-          </div>
-          <div class="mv-drive-link">📁 drive.google.com/…/Copa_MouseOver_v2 ↗</div>
+        <div class="mv" id="mv2">
+          <div class="mv-hdr"><div class="mv-src">📁 Drive · Copa_MouseOver_v2 · 3 frames</div><button class="mv-close" onclick="closeMedia(2)">✕</button></div>
+          <div class="mv-img" style="background:linear-gradient(135deg,#004d35,#1a7a55);min-height:150px;"><div style="font-size:26px">⚽🍽️</div><div style="font-size:12px;color:rgba(255,255,255,.9);font-weight:600">Se a Copa fosse decidida na mesa…</div><div class="mv-ov"><span class="mv-tag">PNG · 1080×1080</span><span class="mv-tag">Frame 1 de 3</span></div></div>
+          <div class="mv-link">📁 drive.google.com/…/Copa_MouseOver_v2 ↗</div>
         </div>
-        <div class="pc-legenda">Gastronomia no BarraShopping 🍽️⚽ — Mouse over para revelar o campeão na mesa.</div>
-        <div class="pc-actions" id="pa2">
-          <button class="btn-approve" onclick="approve(2)">✓ Aprovar</button>
-          <button class="btn-ajuste" onclick="toggleCbox(2)">↩ Pedir ajuste</button>
+        <div class="pc-leg">Gastronomia no BarraShopping 🍽️⚽ — Mouse over para revelar o campeão na mesa.</div>
+        <div class="pc-act" id="pa2">
+          <button class="btn-ok" onclick="approveCard(2)">✓ Aprovar</button>
+          <button class="btn-aj" onclick="toggleCb(2)">↩ Pedir ajuste</button>
           <button class="btn-view" id="vb2" onclick="toggleMedia(2,'vb2')">🖼 Ver arte</button>
         </div>
-        <div class="comment-box" id="cb2">
-          <textarea placeholder="Ex: 'Incluir logo da campanha copa no canto inferior'" id="ct2"></textarea>
-          <div class="comment-actions"><button class="btn-cancel" onclick="toggleCbox(2)">Cancelar</button><button class="btn-send-aj" onclick="sendAj(2)">Enviar ajuste</button></div>
-        </div>
+        <div class="cb" id="cb2"><textarea placeholder="Ex: 'Incluir logo da campanha copa no canto inferior'" id="ct2"></textarea><div class="cb-btns"><button class="btn-cc2" onclick="toggleCb(2)">Cancelar</button><button class="btn-send" onclick="sendAj(2)">Enviar</button></div></div>
       </div>
-
-      <!-- CARD 3 pending -->
-      <div class="piece-card" id="pc3">
-        <div class="pc-header">
-          <div class="pc-thumb" style="background:#FAEEDA">📱</div>
+      <div class="pc" id="pc3">
+        <div class="pc-hdr">
+          <div class="pc-thumb" style="background:var(--amber-l)">📱</div>
           <div class="pc-info">
             <div class="pc-name">HotZone — Copa na Pista</div>
             <div class="pc-tags"><span class="pc-tag">Story</span><span class="pc-tag">9:16</span><span class="pc-tag">IG</span></div>
-            <div class="pc-date-txt">Publicação: 07/07</div>
+            <div class="pc-date">Publicação: 07/07</div>
           </div>
           <div class="pc-si">🕐</div>
         </div>
-        <div class="media-viewer" id="mv3">
-          <div class="mv-header">
-            <div class="mv-source">📁 Drive · HotZone_Copa_Story_v1.png</div>
-            <button class="mv-close" onclick="closeMedia(3)">✕</button>
-          </div>
-          <div class="mv-img-sim" style="background:linear-gradient(135deg,#1a1a2e,#c0392b);min-height:160px;">
-            <div style="font-size:28px">🎳⚽</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.9);font-weight:500">HotZone · Copa na Pista</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.5)">Arte enviada pelo BarraShopping</div>
-            <div class="mv-overlay"><span class="mv-tag">PNG · 1080×1920</span><span class="mv-tag">Story 9:16</span></div>
-          </div>
-          <div class="mv-drive-link">📁 drive.google.com/…/HotZone_Copa_Story_v1.png ↗</div>
+        <div class="mv" id="mv3">
+          <div class="mv-hdr"><div class="mv-src">📁 Drive · HotZone_Copa_Story_v1.png</div><button class="mv-close" onclick="closeMedia(3)">✕</button></div>
+          <div class="mv-img" style="background:linear-gradient(135deg,#1a1a2e,#c0392b);min-height:150px;"><div style="font-size:26px">🎳⚽</div><div style="font-size:12px;color:rgba(255,255,255,.9);font-weight:600">HotZone · Copa na Pista</div><div class="mv-ov"><span class="mv-tag">PNG · 1080×1920</span><span class="mv-tag">Story 9:16</span></div></div>
+          <div class="mv-link">📁 drive.google.com/…/HotZone_Copa_Story_v1.png ↗</div>
         </div>
-        <div class="pc-legenda">Ativação Copa no HotZone — bowling e pista temática Brasil 🎳🇧🇷</div>
-        <div class="pc-actions" id="pa3">
-          <button class="btn-approve" onclick="approve(3)">✓ Aprovar</button>
-          <button class="btn-ajuste" onclick="toggleCbox(3)">↩ Pedir ajuste</button>
+        <div class="pc-leg">Ativação Copa no HotZone — bowling e pista temática Brasil 🎳🇧🇷</div>
+        <div class="pc-act" id="pa3">
+          <button class="btn-ok" onclick="approveCard(3)">✓ Aprovar</button>
+          <button class="btn-aj" onclick="toggleCb(3)">↩ Pedir ajuste</button>
           <button class="btn-view" id="vb3" onclick="toggleMedia(3,'vb3')">🖼 Ver arte</button>
         </div>
-        <div class="comment-box" id="cb3">
-          <textarea placeholder="Descreva o ajuste necessário..." id="ct3"></textarea>
-          <div class="comment-actions"><button class="btn-cancel" onclick="toggleCbox(3)">Cancelar</button><button class="btn-send-aj" onclick="sendAj(3)">Enviar ajuste</button></div>
+        <div class="cb" id="cb3"><textarea placeholder="Descreva o ajuste necessário..." id="ct3"></textarea><div class="cb-btns"><button class="btn-cc2" onclick="toggleCb(3)">Cancelar</button><button class="btn-send" onclick="sendAj(3)">Enviar</button></div></div>
+      </div>
+    </div>
+
+    <!-- SAC COPILOT -->
+    <div id="p-sac" class="panel">
+      <div class="sac-tabs">
+        <button class="sac-tab active" onclick="showSacTab('novo',this)">✏️ Novo comentário</button>
+        <button class="sac-tab" onclick="showSacTab('pend',this)">📋 Pendências (5)</button>
+      </div>
+
+      <!-- TAB NOVO -->
+      <div id="sac-novo">
+        <div class="novo-form">
+          <div class="nf-title">Gerar resposta com IA</div>
+          <div class="nf-sub">Cole o comentário recebido. A IA classifica, detecta urgência e gera uma resposta no tom de voz do BarraShopping. Você revisa e copia para enviar.</div>
+          <div class="nf-row">
+            <div>
+              <div class="nf-label">Usuário / perfil</div>
+              <input class="nf-input" id="sac-user" placeholder="@nome_do_usuario" />
+            </div>
+            <div>
+              <div class="nf-label">Canal</div>
+              <select class="nf-select" id="sac-canal">
+                <option>Instagram · Comentário</option>
+                <option>Instagram · DM</option>
+                <option>Facebook · Comentário</option>
+                <option>Facebook · Inbox</option>
+              </select>
+            </div>
+          </div>
+          <div class="nf-label">Comentário recebido</div>
+          <textarea class="nf-textarea" id="sac-comentario" placeholder="Cole aqui o comentário ou mensagem recebida..."></textarea>
+          <button class="btn-gerar" id="btn-gerar" onclick="gerarResposta()">
+            <span id="gerar-icon">✨</span>
+            <span id="gerar-txt">Gerar resposta com IA</span>
+          </button>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="sac-result" id="sac-result">
+          <div class="sr-header">
+            <div class="sr-title">
+              <span>✨ Resposta gerada</span>
+            </div>
+            <div class="sr-badges">
+              <span class="sr-badge" id="sr-urg-badge" style="background:var(--amber-l);color:var(--amber)">—</span>
+              <span class="sr-badge" id="sr-cat-badge" style="background:var(--bg);color:var(--text2)">—</span>
+            </div>
+          </div>
+          <div class="sr-body">
+            <div class="sr-comment" id="sr-comment">—</div>
+            <div class="sr-cats" id="sr-cats"></div>
+            <div class="sr-resp-lbl">Resposta sugerida pela IA</div>
+            <div class="sr-resp" id="sr-resp">Gerando...</div>
+            <div class="sr-actions" id="sr-actions">
+              <button class="btn-copy" id="btn-copy" onclick="copyResposta()">📋 Copiar resposta</button>
+              <button class="btn-regen" onclick="gerarResposta()">↺ Gerar outra</button>
+              <button class="btn-trello" onclick="criarCardTrello()">🔗 Card Trello</button>
+              <button class="btn-critical" id="btn-crit" style="display:none" onclick="encaminharSAC()">⚠️ Encaminhar ao SAC</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- CARD 4 pending -->
-      <div class="piece-card" id="pc4">
-        <div class="pc-header">
-          <div class="pc-thumb" style="background:#E1F5EE">🎬</div>
-          <div class="pc-info">
-            <div class="pc-name">Programação UCI — Semana Copa</div>
-            <div class="pc-tags"><span class="pc-tag">Story</span><span class="pc-tag">Comercial</span><span class="pc-tag">IG</span></div>
-            <div class="pc-date-txt">Publicação: 04/07 · 10h</div>
-          </div>
-          <div class="pc-si">🕐</div>
+      <!-- TAB PENDÊNCIAS -->
+      <div id="sac-pend" style="display:none">
+        <div class="sac-card crit">
+          <div class="sc-hdr"><span class="sc-user">@usuario_anonimo</span><span class="sc-urg" style="background:var(--red-l);color:var(--red)">Alta · Crítico</span></div>
+          <div class="sc-comment">"Tive um problema de segurança no shopping hoje."</div>
+          <div class="sc-cats"><span class="sc-cat" style="background:var(--red-l);color:var(--red)">Segurança</span><span class="sc-cat">Urgente</span></div>
+          <div class="sc-rl">Ação recomendada</div>
+          <div class="sc-resp crit-r">Não responder publicamente. Encaminhar ao SAC imediatamente: sac@barrashopping.com.br · (21) 99992-0551. Acolher no inbox com brevidade.</div>
+          <div class="sc-acts"><button class="btn-sc" onclick="encaminharSACCard(this)">⚠️ Encaminhar ao SAC BRS</button><button class="btn-se">🔗 Card Trello</button></div>
         </div>
-        <div class="media-viewer" id="mv4">
-          <div class="mv-header">
-            <div class="mv-source">📁 Drive · UCI_Copa_Story_v1.png</div>
-            <button class="mv-close" onclick="closeMedia(4)">✕</button>
-          </div>
-          <div class="mv-img-sim" style="background:linear-gradient(135deg,#0d0d0d,#1a1a2e);min-height:160px;">
-            <div style="font-size:28px">🎬🍿</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.9);font-weight:500">UCI · Programação Copa</div>
-            <div class="mv-overlay"><span class="mv-tag">Story 9:16</span><span class="mv-tag">Drive ✓</span></div>
-          </div>
-          <div class="mv-drive-link">📁 drive.google.com/…/UCI_Copa_Story_v1.png ↗</div>
+        <div class="sac-card">
+          <div class="sc-hdr"><span class="sc-user">@marcelo_rj99</span><span class="sc-urg" style="background:var(--amber-l);color:var(--amber)">Média</span></div>
+          <div class="sc-comment">"Fui ontem e o estacionamento estava um caos. Esperei 35 minutos para sair."</div>
+          <div class="sc-cats"><span class="sc-cat">Reclamação</span><span class="sc-cat">Estacionamento</span><span class="sc-cat">Insatisfação</span></div>
+          <div class="sc-rl">Resposta sugerida</div>
+          <div class="sc-resp" id="resp-marc">Olá, Marcelo! Lamentamos sua experiência. O BarraShopping preza sempre pelo conforto dos visitantes e encaminharemos seu relato para a equipe responsável. Poderia nos enviar por inbox o horário aproximado para entendermos melhor o ocorrido? 🙏💚</div>
+          <div class="sc-acts"><button class="btn-su" onclick="copyCard('resp-marc',this)">📋 Copiar resposta</button><button class="btn-se">✏️ Editar</button><button class="btn-se">↺ Gerar outra</button><button class="btn-se">🔗 Card Trello</button></div>
         </div>
-        <div class="pc-legenda">Programação completa do UCI durante a Copa. CTA para ingresso online.</div>
-        <div class="pc-actions" id="pa4">
-          <button class="btn-approve" onclick="approve(4)">✓ Aprovar</button>
-          <button class="btn-ajuste" onclick="toggleCbox(4)">↩ Pedir ajuste</button>
-          <button class="btn-view" id="vb4" onclick="toggleMedia(4,'vb4')">🖼 Ver arte</button>
+        <div class="sac-card">
+          <div class="sc-hdr"><span class="sc-user">@claudia_barra</span><span class="sc-urg" style="background:var(--brs-light);color:var(--brs)">Baixa</span></div>
+          <div class="sc-comment">"Que horas funciona o pet friendly no domingo?"</div>
+          <div class="sc-cats"><span class="sc-cat">Dúvida</span><span class="sc-cat">Pet Friendly</span><span class="sc-cat">Horário</span></div>
+          <div class="sc-rl">Resposta sugerida</div>
+          <div class="sc-resp" id="resp-clau">Olá! Tudo bem? O BarraShopping é pet friendly todos os dias, incluindo domingos. Cães de raças como pitbull, doberman e rottweiler devem usar guia e focinheira, conforme legislação. Venha nos visitar! 💚</div>
+          <div class="sc-acts"><button class="btn-su" onclick="copyCard('resp-clau',this)">📋 Copiar resposta</button><button class="btn-se">✏️ Editar</button><button class="btn-se">↺ Gerar outra</button></div>
         </div>
-        <div class="comment-box" id="cb4">
-          <textarea placeholder="Descreva o ajuste necessário..." id="ct4"></textarea>
-          <div class="comment-actions"><button class="btn-cancel" onclick="toggleCbox(4)">Cancelar</button><button class="btn-send-aj" onclick="sendAj(4)">Enviar ajuste</button></div>
+        <div class="sac-card">
+          <div class="sc-hdr"><span class="sc-user">@ana_copa2026</span><span class="sc-urg" style="background:var(--brs-light);color:var(--brs)">Baixa</span></div>
+          <div class="sc-comment">"O BarraShopping vai ter telão para assistir os jogos da Copa?"</div>
+          <div class="sc-cats"><span class="sc-cat">Dúvida</span><span class="sc-cat">Copa do Mundo</span><span class="sc-cat">Evento</span></div>
+          <div class="sc-rl">Resposta sugerida</div>
+          <div class="sc-resp" id="resp-ana">Olá! Tudo bem? Fique atento às nossas redes sociais para conferir toda a programação especial da Copa no BarraShopping. Tem muita novidade por aí! 🇧🇷⚽💚</div>
+          <div class="sc-acts"><button class="btn-su" onclick="copyCard('resp-ana',this)">📋 Copiar resposta</button><button class="btn-se">✏️ Editar</button><button class="btn-se">↺ Gerar outra</button></div>
         </div>
       </div>
     </div>
 
-    <!-- ===== SAC ===== -->
-    <div id="panel-sac" class="panel">
-      <div class="sac-filters">
-        <button class="sac-filter-btn active">Todos</button>
-        <button class="sac-filter-btn">Urgente</button>
-        <button class="sac-filter-btn">Dúvidas</button>
-        <button class="sac-filter-btn">Reclamações</button>
-        <button class="sac-filter-btn">Elogios</button>
-      </div>
-
-      <div class="sac-card critical">
-        <div class="sac-header"><span class="sac-user">@usuario_anonimo</span><span class="sac-urg-badge urg-alta">Alta · Crítico</span></div>
-        <div class="sac-comment">"Tive um problema de segurança no shopping hoje."</div>
-        <div class="sac-cats"><span class="sac-cat" style="background:var(--red-light);color:var(--red)">Segurança</span><span class="sac-cat">Urgente</span></div>
-        <div class="sac-resp-label">Ação recomendada</div>
-        <div class="sac-response critical-resp">Não responder publicamente. Encaminhar ao SAC imediatamente via sac@barrashopping.com.br ou (21) 99992-0551. Responder no inbox com acolhimento breve.</div>
-        <div class="sac-actions">
-          <button class="btn-sac-critical">⚠ Encaminhar ao SAC BRS</button>
-          <button class="btn-sac-edit">Criar card Trello</button>
-        </div>
-      </div>
-
-      <div class="sac-card">
-        <div class="sac-header"><span class="sac-user">@marcelo_rj99</span><span class="sac-urg-badge urg-media">Média</span></div>
-        <div class="sac-comment">"Fui ontem e o estacionamento estava um caos. Esperei 35 minutos para sair."</div>
-        <div class="sac-cats"><span class="sac-cat">Reclamação</span><span class="sac-cat">Estacionamento</span><span class="sac-cat">Insatisfação</span></div>
-        <div class="sac-resp-label">Resposta sugerida pela IA</div>
-        <div class="sac-response">Olá, Marcelo! Lamentamos sua experiência. O BarraShopping preza sempre pelo conforto dos visitantes e encaminharemos seu relato para a equipe responsável. Poderia nos enviar por inbox o horário aproximado para entendermos melhor o ocorrido? 🙏💚</div>
-        <div class="sac-actions">
-          <button class="btn-sac-use" onclick="sacUsed(this)">✓ Usar resposta</button>
-          <button class="btn-sac-edit">Editar</button>
-          <button class="btn-sac-edit">Gerar outra</button>
-          <button class="btn-sac-edit">Card Trello</button>
-        </div>
-      </div>
-
-      <div class="sac-card">
-        <div class="sac-header"><span class="sac-user">@claudia_barra</span><span class="sac-urg-badge urg-baixa">Baixa</span></div>
-        <div class="sac-comment">"Que horas funciona o pet friendly no domingo?"</div>
-        <div class="sac-cats"><span class="sac-cat">Dúvida</span><span class="sac-cat">Pet Friendly</span><span class="sac-cat">Horário</span></div>
-        <div class="sac-resp-label">Resposta sugerida pela IA</div>
-        <div class="sac-response">Olá! Tudo bem? O BarraShopping é pet friendly todos os dias, incluindo domingos. Cães de raças como pitbull, doberman e rottweiler devem usar guia e focinheira, conforme legislação. Venha nos visitar! 💚</div>
-        <div class="sac-actions">
-          <button class="btn-sac-use" onclick="sacUsed(this)">✓ Usar resposta</button>
-          <button class="btn-sac-edit">Editar</button>
-          <button class="btn-sac-edit">Gerar outra</button>
-        </div>
-      </div>
-
-      <div class="sac-card">
-        <div class="sac-header"><span class="sac-user">@ana_copa2026</span><span class="sac-urg-badge urg-baixa">Baixa</span></div>
-        <div class="sac-comment">"O BarraShopping vai ter telão para assistir os jogos da Copa?"</div>
-        <div class="sac-cats"><span class="sac-cat">Dúvida</span><span class="sac-cat">Copa do Mundo</span><span class="sac-cat">Evento</span></div>
-        <div class="sac-resp-label">Resposta sugerida pela IA</div>
-        <div class="sac-response">Olá! Tudo bem? Fique atento às nossas redes sociais para conferir toda a programação especial da Copa do Mundo no BarraShopping. Tem muita novidade por aí! 🇧🇷⚽💚</div>
-        <div class="sac-actions">
-          <button class="btn-sac-use" onclick="sacUsed(this)">✓ Usar resposta</button>
-          <button class="btn-sac-edit">Editar</button>
-          <button class="btn-sac-edit">Gerar outra</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== TOM DE VOZ ===== -->
-    <div id="panel-tom" class="panel">
+    <!-- TOM DE VOZ -->
+    <div id="p-tom" class="panel">
       <div class="tom-grid">
         <div class="tom-card">
           <div class="tom-title">📢 Tom de voz oficial</div>
-          <ul class="tom-list">
+          <ul class="tom-ul">
             <li class="tom-yes">Terceira pessoa · impessoal · solícito · resolutivo</li>
             <li class="tom-yes">Sempre: "Olá [nome], tudo bem?"</li>
             <li class="tom-yes">Terminar com emoji simpático ou 💚</li>
@@ -805,129 +854,246 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         </div>
         <div class="tom-card">
           <div class="tom-title">🎨 Cores oficiais</div>
-          <div class="palette-row">
-            <div class="palette-item"><div class="palette-swatch" style="background:#00634A"></div><span>#00634A · Verde Pantone 342 C</span></div>
-            <div class="palette-item"><div class="palette-swatch" style="background:#000000;border:1px solid #eee"></div><span>#000000 · Preto Process Black</span></div>
-            <div class="palette-item"><div class="palette-swatch" style="background:#43494E"></div><span>#43494E · Pantone 432 C</span></div>
-            <div class="palette-item"><div class="palette-swatch" style="background:#C4922A"></div><span>#C4922A · Ouro 45 anos</span></div>
+          <div class="pal-row">
+            <div class="pal-item"><div class="pal-sw" style="background:#00634A"></div>#00634A · Verde Pantone 342 C</div>
+            <div class="pal-item"><div class="pal-sw" style="background:#000;border:1px solid #eee"></div>#000000 · Preto Process Black</div>
+            <div class="pal-item"><div class="pal-sw" style="background:#43494E"></div>#43494E · Pantone 432 C</div>
+            <div class="pal-item"><div class="pal-sw" style="background:#C4922A"></div>#C4922A · Ouro 45 anos</div>
           </div>
           <div class="tom-title" style="margin-top:14px">💚 Emojis aprovados</div>
-          <div class="emoji-row"><span class="emoji-chip">💚</span><span class="emoji-chip">🥰</span><span class="emoji-chip">😊</span><span class="emoji-chip">☺️</span><span class="emoji-chip">😉</span><span class="emoji-chip">🙏</span></div>
+          <div class="emoji-row"><span class="emoji-c">💚</span><span class="emoji-c">🥰</span><span class="emoji-c">😊</span><span class="emoji-c">☺️</span><span class="emoji-c">😉</span><span class="emoji-c">🙏</span></div>
         </div>
         <div class="tom-card" style="grid-column:1/-1">
           <div class="tom-title">📅 Calendário de ações 2026</div>
-          <div class="calendar-table">
-            <div class="cal-month"><strong>Jan</strong> · Evento de Férias</div>
-            <div class="cal-month"><strong>Jul</strong> · Lápis Vermelho + Promoção Multi</div>
-            <div class="cal-month"><strong>Fev</strong> · Pré-Carnaval + Lápis Vermelho</div>
-            <div class="cal-month"><strong>Ago</strong> · Promoção Pais</div>
-            <div class="cal-month"><strong>Mar</strong> · Teatrinho Infantil</div>
-            <div class="cal-month"><strong>Set</strong> · Comida di Buteco + Dia das Crianças</div>
-            <div class="cal-month"><strong>Abr</strong> · Pixar 2.0 + Promoção Páscoa</div>
-            <div class="cal-month"><strong>Out</strong> · Aniversário 45 anos (promoção)</div>
-            <div class="cal-month"><strong>Mai</strong> · Promoção Mães</div>
-            <div class="cal-month"><strong>Nov</strong> · Natal (01/11) + Black Friday</div>
-            <div class="cal-month"><strong>Jun</strong> · Promoção Namorados + Copa</div>
-            <div class="cal-month"><strong>Dez</strong> · —</div>
+          <div class="cal-months">
+            <div class="cal-m"><strong>Jan</strong> · Evento de Férias</div>
+            <div class="cal-m"><strong>Jul</strong> · Lápis Vermelho + Promoção Multi</div>
+            <div class="cal-m"><strong>Fev</strong> · Pré-Carnaval + Lápis Vermelho</div>
+            <div class="cal-m"><strong>Ago</strong> · Promoção Pais</div>
+            <div class="cal-m"><strong>Mar</strong> · Teatrinho Infantil</div>
+            <div class="cal-m"><strong>Set</strong> · Comida di Buteco + Dia das Crianças</div>
+            <div class="cal-m"><strong>Abr</strong> · Pixar 2.0 + Promoção Páscoa</div>
+            <div class="cal-m"><strong>Out</strong> · Aniversário 45 anos (promoção)</div>
+            <div class="cal-m"><strong>Mai</strong> · Promoção Mães</div>
+            <div class="cal-m"><strong>Nov</strong> · Natal (01/11) + Black Friday</div>
+            <div class="cal-m"><strong>Jun</strong> · Promoção Namorados + Copa</div>
+            <div class="cal-m"><strong>Dez</strong> · —</div>
           </div>
         </div>
         <div class="tom-card" style="grid-column:1/-1">
-          <div class="tom-title">⏱ Regras de atendimento SAC</div>
-          <ul class="tom-list">
-            <li class="tom-yes">Verificar redes 3× ao dia · tempo máximo: 24h</li>
-            <li class="tom-yes">Fins de semana: mensagem automática ativa no Facebook Creator</li>
-            <li class="tom-yes">Feriado em dia útil: ativar mensagem manual e desativar depois</li>
-            <li class="tom-yes">Pós-feriado: priorizar comentários do período sem resposta</li>
-            <li class="tom-no">Nunca apagar comentários · sempre restringir se necessário</li>
+          <div class="tom-title">⏱ Regras SAC</div>
+          <ul class="tom-ul">
+            <li class="tom-yes">Verificar 3× ao dia · tempo máximo: 24h</li>
+            <li class="tom-yes">Fins de semana: mensagem automática no Facebook Creator</li>
+            <li class="tom-yes">Feriado útil: ativar mensagem manual e desativar depois</li>
+            <li class="tom-no">Nunca apagar · sempre restringir se necessário</li>
           </ul>
         </div>
       </div>
     </div>
 
   </div>
+
+  <div class="page-footer">
+    <div class="footer-l">KBC · Kindle BarraShopping Control · Junho / Julho 2026</div>
+    <div class="footer-r">🔒 Acesso seguro</div>
+  </div>
 </div>
 </div>
+
+<div class="copied-toast" id="toast">✓ Copiado para o clipboard</div>
 
 <script>
-// NAVIGATION
+// NAV
 const titles = {
-  dashboard: ['Dashboard','BarraShopping · Junho / Julho 2026'],
-  plan: ['Planejamento Editorial','Julho 2026 · 38 peças'],
-  aprov: ['Aprovação de Peças','Copa do Mundo · aguardando BarraShopping'],
-  sac: ['SAC Copilot','5 interações pendentes'],
-  tom: ['Tom de Voz & Manual','BarraShopping · Multiplan']
+  dashboard:['Dashboard','BarraShopping · Junho / Julho 2026'],
+  plan:['Planejamento Editorial','Julho 2026 · 38 peças'],
+  aprov:['Aprovação de Peças','Copa do Mundo · aguardando BarraShopping'],
+  sac:['SAC Copilot','Comentários e interações do BarraShopping'],
+  tom:['Tom de Voz & Manual','BarraShopping · Multiplan']
 };
-function showPanel(id, navEl) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-' + id).classList.add('active');
-  if (navEl) {
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    navEl.classList.add('active');
-  }
-  const t = titles[id];
-  if (t) {
-    document.getElementById('topbar-title').textContent = t[0];
-    document.getElementById('topbar-sub').textContent = t[1];
-  }
-  window.scrollTo(0, 0);
+function showPanel(id, el) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  if(el){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');}
+  const t=titles[id];
+  if(t){document.getElementById('tb-title').textContent=t[0];document.getElementById('tb-sub').textContent=t[1];}
+  window.scrollTo(0,0);
 }
 
-// APPROVAL STATE
-let approved = 1, pending = 3, ajuste = 1, total = 5;
-function updAprov() {
-  const pct = Math.round(approved / total * 100);
-  document.getElementById('ap-bar').style.width = pct + '%';
-  document.getElementById('ap-pct').textContent = pct + '% aprovado';
-  document.getElementById('cnt-ok').textContent = approved + ' aprovada' + (approved !== 1 ? 's' : '');
-  document.getElementById('cnt-pend').textContent = pending + ' pendente' + (pending !== 1 ? 's' : '');
-  document.getElementById('cnt-aj').textContent = ajuste + ' com ajuste';
+// APPROVAL
+let apOk=1,apPend=3,apAj=1,apTotal=5;
+function updAp(){
+  const p=Math.round(apOk/apTotal*100);
+  document.getElementById('ap-bar').style.width=p+'%';
+  document.getElementById('ap-pct').textContent=p+'% aprovado';
+  document.getElementById('cnt-ok').textContent=apOk+' aprovada'+(apOk!==1?'s':'');
+  document.getElementById('cnt-pend').textContent=apPend+' pendente'+(apPend!==1?'s':'');
+  document.getElementById('cnt-aj').textContent=apAj+' com ajuste';
 }
-function approve(i) {
-  const c = document.getElementById('pc' + i);
-  const a = document.getElementById('pa' + i);
+function approveCard(i){
+  const c=document.getElementById('pc'+i),a=document.getElementById('pa'+i);
   closeMedia(i);
-  c.classList.remove('ajuste'); c.classList.add('approved');
-  c.querySelector('.pc-si').textContent = '✅';
-  a.innerHTML = '<div class="state-ok">✓ Aprovado agora · você</div><button class="btn-view" onclick="window.open(\'#\')">📁 Abrir Drive</button>';
-  pending = Math.max(0, pending - 1); approved++; updAprov();
+  c.classList.remove('ajuste');c.classList.add('approved');
+  c.querySelector('.pc-si').textContent='✅';
+  a.innerHTML='<div class="st-ok">✓ Aprovado agora · você</div><button class="btn-view">📁 Drive</button>';
+  apPend=Math.max(0,apPend-1);apOk++;updAp();
 }
-function toggleCbox(i) {
-  document.getElementById('cb' + i).classList.toggle('open');
-}
-function sendAj(i) {
-  const c = document.getElementById('pc' + i);
-  const a = document.getElementById('pa' + i);
-  const t = document.getElementById('ct' + i).value.trim() || 'Ajuste solicitado';
+function toggleCb(i){document.getElementById('cb'+i).classList.toggle('open');}
+function sendAj(i){
+  const c=document.getElementById('pc'+i),a=document.getElementById('pa'+i);
+  const t=document.getElementById('ct'+i).value.trim()||'Ajuste solicitado';
   closeMedia(i);
-  c.classList.remove('approved'); c.classList.add('ajuste');
-  c.querySelector('.pc-si').textContent = '🔄';
-  a.innerHTML = '<div class="state-aj">↩ Ajuste: "' + t.substring(0, 60) + (t.length > 60 ? '…' : '') + '"</div>';
-  document.getElementById('cb' + i).classList.remove('open');
-  pending = Math.max(0, pending - 1); ajuste++; updAprov();
+  c.classList.remove('approved');c.classList.add('ajuste');
+  c.querySelector('.pc-si').textContent='🔄';
+  a.innerHTML='<div class="st-aj">↩ "'+t.substring(0,55)+(t.length>55?'…':'') +'"</div>';
+  document.getElementById('cb'+i).classList.remove('open');
+  apPend=Math.max(0,apPend-1);apAj++;updAp();
 }
-function toggleMedia(i, btnId) {
-  const m = document.getElementById('mv' + i);
-  const b = document.getElementById(btnId);
-  if (m.classList.contains('open')) {
-    m.classList.remove('open');
-    if (b) b.classList.remove('active');
-  } else {
-    m.classList.add('open');
-    if (b) b.classList.add('active');
+function toggleMedia(i,bid){
+  const m=document.getElementById('mv'+i),b=document.getElementById(bid);
+  if(m.classList.contains('open')){m.classList.remove('open');if(b)b.classList.remove('on');}
+  else{m.classList.add('open');if(b)b.classList.add('on');}
+}
+function closeMedia(i){
+  const m=document.getElementById('mv'+i);if(m)m.classList.remove('open');
+  const b=document.getElementById('vb'+i);if(b)b.classList.remove('on');
+}
+
+// SAC TABS
+function showSacTab(id,btn){
+  document.getElementById('sac-novo').style.display=id==='novo'?'block':'none';
+  document.getElementById('sac-pend').style.display=id==='pend'?'block':'none';
+  document.querySelectorAll('.sac-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// TOAST
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg||'✓ Copiado para o clipboard';
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',2200);
+}
+
+// COPY FUNCTIONS
+function copyCard(id,btn){
+  const text=document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const orig=btn.innerHTML;
+    btn.innerHTML='✓ Copiado!';btn.style.background='var(--brs-mid)';
+    showToast();
+    setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';},2000);
+  });
+}
+function copyResposta(){
+  const text=document.getElementById('sr-resp').textContent;
+  if(text==='Gerando...'||text==='')return;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById('btn-copy');
+    btn.innerHTML='✓ Copiado!';btn.classList.add('copied');
+    showToast();
+    setTimeout(()=>{btn.innerHTML='📋 Copiar resposta';btn.classList.remove('copied');},2200);
+  });
+}
+function encaminharSAC(){showToast('⚠️ Encaminhado — criar card no Trello manualmente');}
+function encaminharSACCard(btn){btn.innerHTML='✓ Encaminhado';btn.disabled=true;}
+function criarCardTrello(){showToast('🔗 Card criado no Trello · lista SAC / Pendências');}
+
+// SAC COPILOT — Claude API
+const TOM = `Você é o assistente de SAC do BarraShopping, um shopping center premium no Rio de Janeiro com 45 anos de história, gerenciado pela Multiplan.
+
+REGRAS DE RESPOSTA:
+- Tom: terceira pessoa, impessoal, solícito, resolutivo e prestativo
+- Sempre começar com "Olá [nome/XXX], tudo bem?"
+- Terminar com emoji simpático: 💚, 🥰, 😊, ☺️ ou 🙏
+- Linguagem madura e institucional — nunca usar gírias ou abreviações
+- Para reclamações graves/segurança: não responder publicamente, pedir contato por inbox
+- SAC: (21) 3089-1050 | sac@barrashopping.com.br | WhatsApp (21) 99992-0551
+- Para dúvidas sobre lojas: https://www.barrashopping.com.br/lojas
+- Para vagas: https://www.barrashopping.com.br/trabalhe-conosco
+- Para parcerias/marketing: marketing@barrashopping.com.br
+
+Responda APENAS com um JSON neste formato exato:
+{
+  "urgencia": "Alta|Média|Baixa",
+  "categoria": "Dúvida|Reclamação|Elogio|Segurança|Emprego|Parceria|Serviço|Outro",
+  "tags": ["tag1","tag2"],
+  "resposta": "texto da resposta humanizada",
+  "critico": false
+}`;
+
+async function gerarResposta(){
+  const comentario=document.getElementById('sac-comentario').value.trim();
+  if(!comentario){document.getElementById('sac-comentario').focus();return;}
+  const usuario=document.getElementById('sac-user').value.trim()||'cliente';
+  const canal=document.getElementById('sac-canal').value;
+  
+  // UI loading
+  const btn=document.getElementById('btn-gerar');
+  btn.disabled=true;
+  document.getElementById('gerar-icon').outerHTML='<span class="loading-spin" id="gerar-icon"></span>';
+  document.getElementById('gerar-txt').textContent='Gerando resposta...';
+  
+  const result=document.getElementById('sac-result');
+  result.classList.add('show');
+  document.getElementById('sr-comment').textContent='"'+comentario+'"';
+  document.getElementById('sr-resp').textContent='Analisando e gerando resposta...';
+  document.getElementById('sr-resp').classList.add('loading');
+  document.getElementById('sr-cats').innerHTML='';
+  document.getElementById('sr-actions').style.opacity='0.4';
+  document.getElementById('btn-crit').style.display='none';
+  
+  try {
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system:TOM,
+        messages:[{role:'user',content:`Usuário: @${usuario}\nCanal: ${canal}\nComentário: "${comentario}"\n\nResponda no JSON solicitado.`}]
+      })
+    });
+    const data=await res.json();
+    const raw=data.content?.[0]?.text||'{}';
+    const clean=raw.replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(clean);
+    
+    // Render result
+    const urgColors={
+      'Alta':'background:var(--red-l);color:var(--red)',
+      'Média':'background:var(--amber-l);color:var(--amber)',
+      'Baixa':'background:var(--brs-light);color:var(--brs)'
+    };
+    document.getElementById('sr-urg-badge').textContent=parsed.urgencia||'—';
+    document.getElementById('sr-urg-badge').style.cssText=urgColors[parsed.urgencia]||'';
+    document.getElementById('sr-cat-badge').textContent=parsed.categoria||'—';
+    
+    const tagsEl=document.getElementById('sr-cats');
+    tagsEl.innerHTML='';
+    (parsed.tags||[parsed.categoria]).forEach(t=>{
+      const s=document.createElement('span');s.className='sr-cat';s.textContent=t;tagsEl.appendChild(s);
+    });
+    
+    document.getElementById('sr-resp').textContent=parsed.resposta||'Não foi possível gerar resposta.';
+    document.getElementById('sr-resp').classList.remove('loading');
+    document.getElementById('sr-actions').style.opacity='1';
+    
+    if(parsed.critico||parsed.urgencia==='Alta'){
+      document.getElementById('btn-crit').style.display='inline-flex';
+    }
+  } catch(e){
+    document.getElementById('sr-resp').textContent='Erro ao conectar com a IA. Verifique a conexão e tente novamente.';
+    document.getElementById('sr-resp').classList.remove('loading');
+    document.getElementById('sr-actions').style.opacity='1';
   }
-}
-function closeMedia(i) {
-  const m = document.getElementById('mv' + i);
-  if (m) m.classList.remove('open');
-  const b = document.getElementById('vb' + i);
-  if (b) b.classList.remove('active');
-}
-function sacUsed(btn) {
-  btn.textContent = '✓ Enviado';
-  btn.style.background = '#E1F5EE';
-  btn.style.color = '#0F6E56';
-  btn.style.border = '1px solid #5DCAA5';
-  btn.disabled = true;
+  
+  // Reset btn
+  btn.disabled=false;
+  const spinEl=document.getElementById('gerar-icon');
+  if(spinEl){spinEl.outerHTML='<span id="gerar-icon">✨</span>';}
+  document.getElementById('gerar-txt').textContent='Gerar resposta com IA';
 }
 </script>
 </body>
