@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KBC — Kindle BarraShopping Control</title>
+<style>
+:root {
+  --brs-green: #00634A;
+  --brs-green-dark: #004d38;
+  --brs-green-light: #E1F5EE;
+  --brs-gold: #C4922A;
+  --brs-gold-light: #FDF4E4;
+  --gray-50: #F8F8F7;
+  --gray-100: #F0EFEC;
+  --gray-200: #E4E3DF;
+  --gray-400: #9A9890;
+  --gray-600: #5C5B57;
+  --gray-900: #1A1A18;
+  --blue: #185FA5;
+  --blue-light: #E6F1FB;
+  --red: #A32D2D;
+  --red-light: #FCEBEB;
+  --amber: #854F0B;
+  --amber-light: #FAEEDA;
+  --success: #0F6E56;
+  --success-light: #E1F5EE;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--gray-50); color: var(--gray-900); min-height: 100vh; }
+
+/* ===== LAYOUT ===== */
+.layout { display: flex; min-height: 100vh; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 220px; background: white; border-right: 1px solid var(--gray-200);
+  display: flex; flex-direction: column; flex-shrink: 0; position: fixed;
+  top: 0; left: 0; height: 100vh; z-index: 100; overflow-y: auto;
+}
+.sidebar-header { padding: 20px 16px 16px; border-bottom: 1px solid var(--gray-200); }
+.sidebar-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 4px; }
+.sidebar-logo-icon {
+  width: 32px; height: 32px; background: var(--brs-green); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.sidebar-logo-icon svg { width: 16px; height: 16px; }
+.sidebar-logo-name { font-size: 15px; font-weight: 600; color: var(--gray-900); letter-spacing: -0.02em; }
+.sidebar-client { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+.sidebar-nav { padding: 10px 8px; flex: 1; }
+.nav-section-label { font-size: 10px; letter-spacing: 0.06em; color: var(--gray-400); text-transform: uppercase; padding: 8px 8px 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+  border-radius: var(--radius-sm); cursor: pointer; margin-bottom: 1px;
+  font-size: 13px; color: var(--gray-600); transition: all 0.12s; text-decoration: none;
+}
+.nav-item:hover { background: var(--gray-100); color: var(--gray-900); }
+.nav-item.active { background: var(--brs-green-light); color: var(--brs-green); font-weight: 500; }
+.nav-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; }
+.nav-item.active svg { opacity: 1; }
+.nav-badge {
+  margin-left: auto; font-size: 10px; padding: 1px 7px;
+  border-radius: 20px; background: var(--amber-light); color: var(--amber);
+}
+.nav-badge.danger { background: var(--red-light); color: var(--red); }
+.nav-badge.ok { background: var(--success-light); color: var(--success); }
+.sidebar-footer { padding: 12px 16px; border-top: 1px solid var(--gray-200); }
+.user-row { display: flex; align-items: center; gap: 8px; }
+.user-avatar {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--brs-green-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600; color: var(--brs-green); flex-shrink: 0;
+}
+.user-name { font-size: 12px; font-weight: 500; color: var(--gray-900); }
+.user-role { font-size: 10px; color: var(--gray-400); }
+.trello-pill {
+  display: flex; align-items: center; gap: 4px; margin-top: 8px;
+  background: var(--blue-light); border-radius: 20px; padding: 4px 10px;
+  font-size: 10px; color: var(--blue);
+}
+.trello-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--blue); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ===== MAIN ===== */
+.main { margin-left: 220px; flex: 1; min-width: 0; }
+.topbar {
+  background: white; border-bottom: 1px solid var(--gray-200); padding: 0 28px;
+  height: 54px; display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-title { font-size: 15px; font-weight: 600; color: var(--gray-900); }
+.topbar-sub { font-size: 12px; color: var(--gray-400); margin-top: 1px; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.btn-primary {
+  background: var(--brs-green); color: white; border: none; border-radius: var(--radius-sm);
+  padding: 7px 14px; font-size: 12px; font-weight: 500; cursor: pointer;
+  display: flex; align-items: center; gap: 5px;
+}
+.btn-primary:hover { background: var(--brs-green-dark); }
+.btn-outline {
+  background: white; color: var(--gray-600); border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm); padding: 7px 12px; font-size: 12px; cursor: pointer;
+}
+.btn-outline:hover { border-color: var(--gray-400); color: var(--gray-900); }
+.content { padding: 24px 28px; }
+
+/* ===== PANELS ===== */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ===== DASHBOARD ===== */
+.metric-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-bottom: 24px; }
+.metric-card {
+  background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md);
+  padding: 14px 16px; cursor: pointer; transition: border-color 0.12s;
+}
+.metric-card:hover { border-color: var(--gray-400); }
+.metric-card.warn { border-color: #EF9F27; }
+.metric-card.danger { border-color: #E24B4A; }
+.metric-num { font-size: 26px; font-weight: 600; color: var(--gray-900); line-height: 1; }
+.metric-card.warn .metric-num { color: var(--amber); }
+.metric-card.danger .metric-num { color: var(--red); }
+.metric-lbl { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 16px; }
+.card-title { font-size: 12px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+
+/* campaign bars */
+.camp-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.camp-name { font-size: 12px; color: var(--gray-600); width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
+.camp-bar-wrap { flex: 1; height: 5px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
+.camp-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s; }
+.camp-pct { font-size: 11px; color: var(--gray-400); width: 30px; text-align: right; }
+
+/* sac preview items */
+.sac-mini-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--gray-100); }
+.sac-mini-item:last-child { border-bottom: none; }
+.sac-urg { font-size: 9px; padding: 2px 7px; border-radius: 20px; flex-shrink: 0; margin-top: 1px; white-space: nowrap; }
+.sac-text { font-size: 12px; color: var(--gray-600); line-height: 1.4; }
+
+/* activity */
+.act-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
+.act-item:last-child { border-bottom: none; }
+.act-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.act-text { font-size: 12px; color: var(--gray-900); line-height: 1.5; }
+.act-meta { font-size: 10px; color: var(--gray-400); margin-top: 2px; }
+.act-tag { font-size: 10px; padding: 1px 6px; border-radius: 20px; background: var(--gray-100); color: var(--gray-600); }
+
+/* module grid */
+.mod-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
+.mod-card {
+  background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md);
+  padding: 14px; cursor: pointer; transition: all 0.12s; position: relative;
+}
+.mod-card:hover { border-color: var(--brs-green); box-shadow: var(--shadow-sm); }
+.mod-icon { font-size: 20px; margin-bottom: 8px; }
+.mod-name { font-size: 13px; font-weight: 500; color: var(--gray-900); }
+.mod-desc { font-size: 11px; color: var(--gray-400); margin-top: 3px; line-height: 1.4; }
+.mod-badge {
+  position: absolute; top: 10px; right: 10px;
+  font-size: 9px; padding: 2px 7px; border-radius: 20px;
+}
+.mod-badge.warn { background: var(--amber-light); color: var(--amber); }
+.mod-badge.ok { background: var(--success-light); color: var(--success); }
+.mod-badge.info { background: var(--blue-light); color: var(--blue); }
+.mod-badge.purple { background: #EEEDFE; color: #534AB7; }
+
+/* ===== PLANEJAMENTO ===== */
+.month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.month-title { font-size: 16px; font-weight: 600; color: var(--gray-900); }
+.month-btns { display: flex; gap: 4px; }
+.month-btn { width: 28px; height: 28px; border: 1px solid var(--gray-200); background: white; border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; color: var(--gray-600); }
+.cal-legend { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--gray-600); }
+.leg-dot { width: 8px; height: 8px; border-radius: 2px; }
+.cal-header { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; margin-bottom: 4px; }
+.cal-day-lbl { font-size: 10px; color: var(--gray-400); text-align: center; padding: 4px 0; }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+.cal-cell { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 6px 5px; min-height: 80px; }
+.cal-num { font-size: 11px; font-weight: 500; color: var(--gray-400); margin-bottom: 4px; }
+.cal-piece { border-radius: 3px; padding: 2px 5px; font-size: 9px; color: var(--gray-600); margin-bottom: 2px; line-height: 1.3; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.piece-reel { border-left: 2px solid #1D9E75; background: #f0faf6; }
+.piece-car { border-left: 2px solid #378ADD; background: #f0f6fd; }
+.piece-story { border-left: 2px solid #EF9F27; background: #fdf7ee; }
+.piece-creator { border-left: 2px solid #D4537E; background: #fdf0f5; }
+
+/* ===== APROVAÇÃO ===== */
+.aprov-filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.aprov-filter {
+  font-size: 12px; padding: 5px 12px; border-radius: 20px;
+  border: 1px solid var(--gray-200); background: white; color: var(--gray-600); cursor: pointer;
+}
+.aprov-filter.active { background: var(--brs-green); color: white; border-color: var(--brs-green); }
+.aprov-progress { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 16px; }
+.ap-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.ap-label { font-size: 12px; color: var(--gray-600); }
+.ap-pct { font-size: 12px; font-weight: 600; color: var(--brs-green); }
+.ap-bar-outer { height: 6px; background: var(--gray-100); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+.ap-bar-inner { height: 100%; background: var(--brs-green); border-radius: 3px; transition: width 0.5s; }
+.ap-counts { display: flex; gap: 16px; }
+.ap-count { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--gray-400); }
+.ap-count-dot { width: 6px; height: 6px; border-radius: 50%; }
+.piece-card {
+  background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md);
+  margin-bottom: 10px; overflow: hidden; transition: border-color 0.2s;
+}
+.piece-card.approved { border-color: #5DCAA5; }
+.piece-card.ajuste { border-color: #F09595; }
+.pc-header { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px 0; }
+.pc-thumb { width: 50px; height: 50px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.pc-info { flex: 1; }
+.pc-name { font-size: 13px; font-weight: 500; color: var(--gray-900); margin-bottom: 4px; }
+.pc-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 3px; }
+.pc-tag { font-size: 10px; padding: 1px 7px; border-radius: 20px; background: var(--gray-100); color: var(--gray-600); }
+.pc-date-txt { font-size: 10px; color: var(--gray-400); }
+.pc-si { font-size: 20px; flex-shrink: 0; }
+.media-viewer { margin: 10px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); overflow: hidden; display: none; }
+.media-viewer.open { display: block; }
+.mv-header { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); }
+.mv-source { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--gray-600); }
+.mv-close { background: none; border: none; cursor: pointer; font-size: 14px; color: var(--gray-400); padding: 0; }
+.mv-body { background: #111; min-height: 180px; display: flex; align-items: center; justify-content: center; }
+.mv-img-sim { width: 100%; min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; position: relative; }
+.mv-vid-sim { width: 100%; min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.mv-play { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; font-size: 16px; color: white; }
+.mv-label { font-size: 11px; color: rgba(255,255,255,0.7); }
+.mv-sub { font-size: 10px; color: rgba(255,255,255,0.35); }
+.mv-overlay { position: absolute; bottom: 8px; left: 8px; right: 8px; display: flex; justify-content: space-between; }
+.mv-tag { font-size: 9px; padding: 2px 7px; border-radius: 20px; background: rgba(0,0,0,0.5); color: rgba(255,255,255,0.8); }
+.mv-drive-link { padding: 6px 10px; background: var(--gray-50); font-size: 10px; color: var(--blue); display: flex; align-items: center; gap: 4px; border-top: 1px solid var(--gray-200); }
+.mv-vid-bar { padding: 7px 10px; background: var(--gray-50); display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--gray-200); }
+.mv-prog { flex: 1; height: 3px; background: var(--gray-200); border-radius: 2px; }
+.mv-time { font-size: 10px; color: var(--gray-400); }
+.pc-legenda { margin: 8px 16px; font-size: 12px; color: var(--gray-600); background: var(--gray-50); border-radius: var(--radius-sm); padding: 9px 12px; line-height: 1.6; }
+.pc-actions { padding: 0 16px 14px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.btn-approve { background: var(--brs-green); color: white; border: none; border-radius: var(--radius-sm); padding: 7px 16px; font-size: 12px; font-weight: 500; cursor: pointer; }
+.btn-approve:hover { background: var(--brs-green-dark); }
+.btn-ajuste { background: white; color: var(--red); border: 1px solid #F09595; border-radius: var(--radius-sm); padding: 7px 14px; font-size: 12px; cursor: pointer; }
+.btn-view { background: var(--gray-100); color: var(--gray-600); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 7px 12px; font-size: 12px; cursor: pointer; }
+.btn-view.active { background: var(--blue-light); color: var(--blue); border-color: #85B7EB; }
+.state-ok { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--success); background: var(--success-light); padding: 7px 12px; border-radius: var(--radius-sm); }
+.state-aj { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--red); background: var(--red-light); padding: 7px 12px; border-radius: var(--radius-sm); }
+.comment-box { padding: 0 16px 14px; display: none; }
+.comment-box.open { display: block; }
+.comment-box textarea { width: 100%; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 12px; color: var(--gray-900); background: var(--gray-50); resize: none; height: 70px; font-family: inherit; line-height: 1.5; }
+.comment-box textarea:focus { outline: none; border-color: var(--brs-green); }
+.comment-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 6px; }
+.btn-send-aj { background: var(--red); color: white; border: none; border-radius: var(--radius-sm); padding: 6px 14px; font-size: 11px; cursor: pointer; }
+.btn-cancel { background: var(--gray-100); color: var(--gray-600); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 6px 12px; font-size: 11px; cursor: pointer; }
+
+/* ===== SAC ===== */
+.sac-filters { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.sac-filter-btn { font-size: 11px; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--gray-200); background: white; color: var(--gray-600); cursor: pointer; }
+.sac-filter-btn.active { background: var(--gray-900); color: white; border-color: var(--gray-900); }
+.sac-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 10px; }
+.sac-card.critical { border-color: #F09595; }
+.sac-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+.sac-user { font-size: 13px; font-weight: 500; color: var(--gray-900); }
+.sac-urg-badge { font-size: 10px; padding: 2px 9px; border-radius: 20px; }
+.urg-alta { background: var(--red-light); color: var(--red); }
+.urg-media { background: var(--amber-light); color: var(--amber); }
+.urg-baixa { background: var(--success-light); color: var(--success); }
+.sac-comment { font-size: 12px; color: var(--gray-600); font-style: italic; background: var(--gray-50); border-radius: var(--radius-sm); padding: 9px 12px; margin-bottom: 10px; line-height: 1.5; }
+.sac-cats { display: flex; gap: 5px; margin-bottom: 10px; flex-wrap: wrap; }
+.sac-cat { font-size: 10px; padding: 1px 8px; border-radius: 20px; background: var(--gray-100); color: var(--gray-600); }
+.sac-resp-label { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.sac-response { font-size: 12px; color: var(--gray-900); background: var(--gray-50); border-radius: var(--radius-sm); padding: 10px 12px; line-height: 1.6; margin-bottom: 10px; border-left: 2px solid var(--brs-green); }
+.sac-response.critical-resp { border-left-color: var(--red); background: var(--red-light); }
+.sac-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn-sac-use { background: var(--brs-green); color: white; border: none; border-radius: var(--radius-sm); padding: 6px 14px; font-size: 11px; cursor: pointer; }
+.btn-sac-edit { background: white; color: var(--gray-600); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 6px 12px; font-size: 11px; cursor: pointer; }
+.btn-sac-critical { background: var(--red-light); color: var(--red); border: 1px solid #F09595; border-radius: var(--radius-sm); padding: 6px 14px; font-size: 11px; cursor: pointer; }
+
+/* ===== TOM ===== */
+.tom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.tom-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 14px 16px; }
+.tom-title { font-size: 13px; font-weight: 600; color: var(--gray-900); margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+.tom-list { list-style: none; }
+.tom-list li { font-size: 12px; color: var(--gray-600); padding: 4px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; border-bottom: 1px solid var(--gray-100); }
+.tom-list li:last-child { border-bottom: none; }
+.tom-yes::before { content: "✓"; color: var(--success); flex-shrink: 0; font-weight: 600; }
+.tom-no::before { content: "✗"; color: var(--red); flex-shrink: 0; font-weight: 600; }
+.palette-row { display: flex; flex-direction: column; gap: 6px; }
+.palette-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--gray-600); }
+.palette-swatch { width: 24px; height: 24px; border-radius: 5px; flex-shrink: 0; }
+.emoji-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.emoji-chip { font-size: 16px; background: var(--gray-50); border-radius: 6px; padding: 6px 10px; }
+.calendar-table { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.cal-month { font-size: 11px; color: var(--gray-600); padding: 4px 6px; background: var(--gray-50); border-radius: 4px; }
+.cal-month strong { color: var(--gray-900); font-size: 10px; text-transform: uppercase; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .sidebar { width: 60px; }
+  .sidebar-logo-name, .sidebar-client, .nav-item span, .nav-badge, .user-name, .user-role, .trello-pill { display: none; }
+  .sidebar-logo-icon { margin: 0 auto; }
+  .nav-item { justify-content: center; padding: 10px; }
+  .main { margin-left: 60px; }
+  .metric-grid { grid-template-columns: repeat(3,1fr); }
+  .mod-grid { grid-template-columns: repeat(2,1fr); }
+  .tom-grid { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .metric-grid { grid-template-columns: repeat(2,1fr); }
+  .mod-grid { grid-template-columns: repeat(2,1fr); }
+  .cal-grid { grid-template-columns: repeat(7,1fr); }
+  .content { padding: 14px 14px; }
+  .topbar { padding: 0 14px; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1.5" fill="white"/><rect x="9" y="2" width="5" height="5" rx="1.5" fill="white"/><rect x="2" y="9" width="5" height="5" rx="1.5" fill="white"/><rect x="9" y="9" width="5" height="5" rx="1.5" fill="white"/></svg>
+      </div>
+      <span class="sidebar-logo-name">KBC</span>
+    </div>
+    <div class="sidebar-client">BarraShopping · Kindle</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a class="nav-item active" onclick="showPanel('dashboard',this)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+      <span>Dashboard</span>
+    </a>
+    <a class="nav-item" onclick="showPanel('plan',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M5 1v4M11 1v4M2 7h12"/></svg>
+      <span>Planejamento</span>
+      <span class="nav-badge info" style="background:var(--blue-light);color:var(--blue);">Jul</span>
+    </a>
+    <a class="nav-item" onclick="showPanel('aprov',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M5 8l2 2 4-4"/></svg>
+      <span>Aprovação</span>
+      <span class="nav-badge">28</span>
+    </a>
+    <div class="nav-section-label">Atendimento</div>
+    <a class="nav-item" onclick="showPanel('sac',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4a1 1 0 011-1h10a1 1 0 011 1v6a1 1 0 01-1 1H5l-3 2V4z"/></svg>
+      <span>SAC Copilot</span>
+      <span class="nav-badge danger">5</span>
+    </a>
+    <div class="nav-section-label">Configuração</div>
+    <a class="nav-item" onclick="showPanel('tom',this)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a6 6 0 100 12A6 6 0 008 2z"/><path d="M8 5v3l2 2"/></svg>
+      <span>Tom de Voz</span>
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="user-avatar">AG</div>
+      <div>
+        <div class="user-name">Alan Gabriel</div>
+        <div class="user-role">Admin Kindle</div>
+      </div>
+    </div>
+    <div class="trello-pill">
+      <div class="trello-dot"></div>
+      <span>Trello conectado</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-sub" id="topbar-sub">BarraShopping · Junho / Julho 2026</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-outline">↓ Exportar PPT</button>
+      <button class="btn-primary">+ Nova peça</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div id="panel-dashboard" class="panel active">
+      <div class="metric-grid">
+        <div class="metric-card" onclick="showPanel('aprov',null)">
+          <div class="metric-num">28</div>
+          <div class="metric-lbl">Aguardando cliente</div>
+        </div>
+        <div class="metric-card warn">
+          <div class="metric-num" style="color:var(--amber)">3</div>
+          <div class="metric-lbl">Com ajuste</div>
+        </div>
+        <div class="metric-card danger" onclick="showPanel('sac',null)">
+          <div class="metric-num" style="color:var(--red)">5</div>
+          <div class="metric-lbl">SAC pendente</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">29</div>
+          <div class="metric-lbl">Distribuídos</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">9</div>
+          <div class="metric-lbl">Em produção</div>
+        </div>
+      </div>
+
+      <div class="mod-grid">
+        <div class="mod-card" onclick="showPanel('plan',null)">
+          <div class="mod-icon">📅</div>
+          <span class="mod-badge info">Julho ativo</span>
+          <div class="mod-name">Planejamento</div>
+          <div class="mod-desc">Calendário e cronograma de peças</div>
+        </div>
+        <div class="mod-card" onclick="showPanel('aprov',null)">
+          <div class="mod-icon">🎨</div>
+          <span class="mod-badge warn">28 pendentes</span>
+          <div class="mod-name">Peças & Aprovação</div>
+          <div class="mod-desc">Artes e vídeos aguardando aprovação</div>
+        </div>
+        <div class="mod-card" onclick="showPanel('sac',null)">
+          <div class="mod-icon">💬</div>
+          <span class="mod-badge" style="background:var(--red-light);color:var(--red);">5 urgentes</span>
+          <div class="mod-name">SAC Copilot</div>
+          <div class="mod-desc">IA sugere respostas humanizadas</div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-icon">📊</div>
+          <span class="mod-badge ok">Pronto</span>
+          <div class="mod-name">PPT Automático</div>
+          <div class="mod-desc">Gera PPT no padrão BarraShopping</div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-icon">🔗</div>
+          <span class="mod-badge ok">Conectado</span>
+          <div class="mod-name">Trello Sync</div>
+          <div class="mod-desc">69 cards · 11 listas · ao vivo</div>
+        </div>
+        <div class="mod-card" onclick="showPanel('tom',null)">
+          <div class="mod-icon">📖</div>
+          <span class="mod-badge purple">Manual BRS</span>
+          <div class="mod-name">Tom de Voz</div>
+          <div class="mod-desc">Regras, cores e calendário 2026</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Campanhas — progresso</div>
+          <div class="camp-item"><div class="camp-name">Copa do Mundo</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:40%;background:var(--brs-green)"></div></div><div class="camp-pct">40%</div></div>
+          <div class="camp-item"><div class="camp-name">Minions 3 · UCI</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:60%;background:#378ADD"></div></div><div class="camp-pct">60%</div></div>
+          <div class="camp-item"><div class="camp-name">Teatro Infantil</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:100%;background:#1D9E75"></div></div><div class="camp-pct">100%</div></div>
+          <div class="camp-item"><div class="camp-name">Lápis Vermelho Jul</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:30%;background:#EF9F27"></div></div><div class="camp-pct">30%</div></div>
+          <div class="camp-item"><div class="camp-name">Moana · UCI</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:50%;background:#534AB7"></div></div><div class="camp-pct">50%</div></div>
+          <div class="camp-item"><div class="camp-name">Dia dos Pais · Ago</div><div class="camp-bar-wrap"><div class="camp-bar-fill" style="width:15%;background:#D4537E"></div></div><div class="camp-pct">15%</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">SAC · pendências</div>
+          <div class="sac-mini-item"><span class="sac-urg" style="background:var(--red-light);color:var(--red);">Alta</span><div class="sac-text">Problema de segurança relatado · aguardando</div></div>
+          <div class="sac-mini-item"><span class="sac-urg" style="background:var(--amber-light);color:var(--amber);">Média</span><div class="sac-text">Reclamação estacionamento · 2 dias</div></div>
+          <div class="sac-mini-item"><span class="sac-urg" style="background:var(--success-light);color:var(--success);">Baixa</span><div class="sac-text">Dúvida pet friendly · resposta gerada</div></div>
+          <div class="sac-mini-item"><span class="sac-urg" style="background:var(--success-light);color:var(--success);">Baixa</span><div class="sac-text">Horário Copa · resposta gerada</div></div>
+          <div class="sac-mini-item"><span class="sac-urg" style="background:var(--success-light);color:var(--success);">Baixa</span><div class="sac-text">Elogio Toy Story · curtida pendente</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Atividade recente</div>
+        <div class="act-item"><div class="act-dot" style="background:#1D9E75"></div><div><div class="act-text">Peça <strong>Benefícios Multi — Formas do Multi dizer te ama</strong> aprovada e publicada</div><div class="act-meta">16/06/2026 · 18h · IG Feed <span class="act-tag">Publicado</span></div></div></div>
+        <div class="act-item"><div class="act-dot" style="background:#EF9F27"></div><div><div class="act-text">Card <strong>Zona Sul — Estação Sabor (novo template)</strong> movido para Alterações</div><div class="act-meta">19/06/2026 · Trello sync <span class="act-tag">Ajuste</span></div></div></div>
+        <div class="act-item"><div class="act-dot" style="background:#378ADD"></div><div><div class="act-text">PPT <strong>Aprovações BarraShopping Junho 2026</strong> gerado e enviado</div><div class="act-meta">15/06/2026 · Kindle Atendimento</div></div></div>
+        <div class="act-item"><div class="act-dot" style="background:#D4537E"></div><div><div class="act-text">SAC: resposta para <strong>reclamação estacionamento</strong> aguarda aprovação da equipe</div><div class="act-meta">Hoje · SAC Copilot IA <span class="act-tag">Pendente</span></div></div></div>
+        <div class="act-item"><div class="act-dot" style="background:#1D9E75"></div><div><div class="act-text">Cronograma <strong>Julho 2026</strong> importado · 38 peças criadas no Trello</div><div class="act-meta">Hoje · Importação automática</div></div></div>
+      </div>
+    </div>
+
+    <!-- ===== PLANEJAMENTO ===== -->
+    <div id="panel-plan" class="panel">
+      <div class="month-nav">
+        <div class="month-title">Julho 2026</div>
+        <div class="month-btns">
+          <button class="month-btn">‹</button>
+          <button class="month-btn">›</button>
+        </div>
+      </div>
+      <div class="cal-legend">
+        <div class="leg"><div class="leg-dot" style="background:#1D9E75"></div>Reel</div>
+        <div class="leg"><div class="leg-dot" style="background:#378ADD"></div>Carrossel</div>
+        <div class="leg"><div class="leg-dot" style="background:#EF9F27"></div>Story</div>
+        <div class="leg"><div class="leg-dot" style="background:#D4537E"></div>Creator</div>
+      </div>
+      <div class="cal-header">
+        <div class="cal-day-lbl">Seg</div><div class="cal-day-lbl">Ter</div><div class="cal-day-lbl">Qua</div><div class="cal-day-lbl">Qui</div><div class="cal-day-lbl">Sex</div><div class="cal-day-lbl">Sáb</div><div class="cal-day-lbl">Dom</div>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-cell"><div class="cal-num">-</div></div>
+        <div class="cal-cell"><div class="cal-num">1</div></div>
+        <div class="cal-cell"><div class="cal-num">2</div><div class="cal-piece piece-reel">Minions 3 · IA</div><div class="cal-piece piece-car">Teatro · Prog.</div></div>
+        <div class="cal-cell"><div class="cal-num">3</div><div class="cal-piece piece-car">Copa Mouse Over</div><div class="cal-piece piece-creator">Bia Milagre</div></div>
+        <div class="cal-cell"><div class="cal-num">4</div><div class="cal-piece piece-car">Meme Caminhada</div><div class="cal-piece piece-car">Benefícios Multi</div></div>
+        <div class="cal-cell"><div class="cal-num">5</div><div class="cal-piece piece-reel">Aquece Brasil</div><div class="cal-piece piece-creator">Helena HotZone</div></div>
+        <div class="cal-cell"><div class="cal-num">6</div><div class="cal-piece piece-reel">Dia do Biquini</div><div class="cal-piece piece-car">Happy Hour</div></div>
+        <div class="cal-cell"><div class="cal-num">7</div><div class="cal-piece piece-car">Prediletos TikTok</div></div>
+        <div class="cal-cell"><div class="cal-num">8</div><div class="cal-piece piece-car">Dia Chocolate</div><div class="cal-piece piece-creator">Carol M.</div></div>
+        <div class="cal-cell"><div class="cal-num">9</div><div class="cal-piece piece-reel">Copa no BRS</div><div class="cal-piece piece-car">5 pratos Brasil</div></div>
+        <div class="cal-cell"><div class="cal-num">10</div><div class="cal-piece piece-reel">Copa no BRS</div><div class="cal-piece piece-car">Benefícios Multi</div></div>
+        <div class="cal-cell"><div class="cal-num">11</div><div class="cal-piece piece-reel">Moana · Estreia</div><div class="cal-piece piece-creator">Bia e Leo · Pizza</div></div>
+        <div class="cal-cell"><div class="cal-num">12</div><div class="cal-piece piece-reel">8ª Expansão</div><div class="cal-piece piece-reel">HotZone</div></div>
+        <div class="cal-cell"><div class="cal-num">13</div><div class="cal-piece piece-car">Viagem · BRS</div><div class="cal-piece piece-creator">Clara Gastr.</div></div>
+        <div class="cal-cell"><div class="cal-num">14</div><div class="cal-piece piece-car">O Jeans Perfeito</div></div>
+        <div class="cal-cell"><div class="cal-num">15</div><div class="cal-piece piece-creator">Carol M. Inverno</div></div>
+        <div class="cal-cell"><div class="cal-num">16</div><div class="cal-piece piece-car">Centro Médico</div></div>
+        <div class="cal-cell"><div class="cal-num">17</div><div class="cal-piece piece-story">Story Pixar</div></div>
+        <div class="cal-cell"><div class="cal-num">18</div><div class="cal-piece piece-creator">Jojo Toledo</div><div class="cal-piece piece-car">Achadinhos</div></div>
+        <div class="cal-cell"><div class="cal-num">19</div><div class="cal-piece piece-car">Sobremesas</div></div>
+        <div class="cal-cell"><div class="cal-num">20</div><div class="cal-piece piece-car">Passos Estilo</div><div class="cal-piece piece-creator">Mariana Alves</div></div>
+        <div class="cal-cell"><div class="cal-num">21</div></div>
+        <div class="cal-cell"><div class="cal-num">22</div><div class="cal-piece piece-reel">HotZone</div></div>
+        <div class="cal-cell"><div class="cal-num">23</div><div class="cal-piece piece-creator">Natalia V.</div></div>
+        <div class="cal-cell"><div class="cal-num">24</div></div>
+        <div class="cal-cell"><div class="cal-num">25</div><div class="cal-piece piece-creator">Vic Matos</div></div>
+        <div class="cal-cell"><div class="cal-num">26</div><div class="cal-piece piece-car">Benefícios Multi</div></div>
+        <div class="cal-cell"><div class="cal-num">27</div><div class="cal-piece piece-creator">João Ramalho</div></div>
+      </div>
+    </div>
+
+    <!-- ===== APROVAÇÃO ===== -->
+    <div id="panel-aprov" class="panel">
+      <div class="aprov-filters">
+        <button class="aprov-filter active">Todas</button>
+        <button class="aprov-filter">Copa do Mundo</button>
+        <button class="aprov-filter">Teatro</button>
+        <button class="aprov-filter">Minions 3</button>
+        <button class="aprov-filter">Multi</button>
+      </div>
+      <div class="aprov-progress">
+        <div class="ap-row">
+          <div class="ap-label">Progresso Copa do Mundo</div>
+          <div class="ap-pct" id="ap-pct">17% aprovado</div>
+        </div>
+        <div class="ap-bar-outer"><div class="ap-bar-inner" id="ap-bar" style="width:17%"></div></div>
+        <div class="ap-counts">
+          <div class="ap-count"><div class="ap-count-dot" style="background:var(--brs-green)"></div><span id="cnt-ok">1 aprovada</span></div>
+          <div class="ap-count"><div class="ap-count-dot" style="background:#EF9F27"></div><span id="cnt-pend">4 pendentes</span></div>
+          <div class="ap-count"><div class="ap-count-dot" style="background:#E24B4A"></div><span id="cnt-aj">1 com ajuste</span></div>
+        </div>
+      </div>
+
+      <!-- CARD 0 approved -->
+      <div class="piece-card approved" id="pc0">
+        <div class="pc-header">
+          <div class="pc-thumb" style="background:#E6F1FB">🗂️</div>
+          <div class="pc-info">
+            <div class="pc-name">Formas do Multi dizer te ama</div>
+            <div class="pc-tags"><span class="pc-tag">Carrossel</span><span class="pc-tag">Feed</span><span class="pc-tag">IG + FB</span></div>
+            <div class="pc-date-txt">Publicado · 16/06/2026 · 18h</div>
+          </div>
+          <div class="pc-si">✅</div>
+        </div>
+        <div class="media-viewer open" id="mv0">
+          <div class="mv-header">
+            <div class="mv-source">📁 Drive · Multi_Formas_v3 · 5 frames</div>
+            <button class="mv-close" onclick="closeMedia(0)">✕</button>
+          </div>
+          <div class="mv-img-sim" style="background:linear-gradient(135deg,#004d35,#00634A);min-height:160px;">
+            <div style="font-size:28px">💚</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.9);font-weight:500">Benefícios Multi · Arte aprovada</div>
+            <div class="mv-overlay"><span class="mv-tag">Carrossel · 5 frames</span><span class="mv-tag">Drive ✓</span></div>
+          </div>
+          <div class="mv-drive-link">📁 drive.google.com/…/Multi_Formas_v3 ↗</div>
+        </div>
+        <div class="pc-actions"><div class="state-ok">✓ Aprovado · 16/06 · você</div><button class="btn-view" onclick="window.open('#')">📁 Abrir Drive</button></div>
+      </div>
+
+      <!-- CARD 1 ajuste -->
+      <div class="piece-card ajuste" id="pc1">
+        <div class="pc-header">
+          <div class="pc-thumb" style="background:#E1F5EE">🎬</div>
+          <div class="pc-info">
+            <div class="pc-name">Aquece Brasil — Copa no BRS</div>
+            <div class="pc-tags"><span class="pc-tag">Reel</span><span class="pc-tag">Feed</span><span class="pc-tag">Vídeo 15s</span></div>
+            <div class="pc-date-txt">Prazo: 05/07 · ajuste solicitado</div>
+          </div>
+          <div class="pc-si">🔄</div>
+        </div>
+        <div class="media-viewer" id="mv1">
+          <div class="mv-header">
+            <div class="mv-source">📁 Drive · Aquece_Brasil_v1.mp4 · 15s</div>
+            <button class="mv-close" onclick="closeMedia(1)">✕</button>
+          </div>
+          <div class="mv-vid-sim" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);min-height:160px;">
+            <div class="mv-play">▶</div>
+            <div class="mv-label">Aquece Brasil — Reel 15s</div>
+            <div class="mv-sub">MP4 · 1080×1920 · 38MB · Drive</div>
+          </div>
+          <div class="mv-vid-bar"><span style="font-size:12px">▶</span><div class="mv-prog"></div><div class="mv-time">0:00 / 0:15</div></div>
+          <div class="mv-drive-link">📁 drive.google.com/…/Aquece_Brasil_v1.mp4 — abrir no Drive para reproduzir ↗</div>
+        </div>
+        <div class="pc-legenda">🇧🇷 Muda o jogo quando entra em campo. Animação IA · trilha a definir.</div>
+        <div class="pc-actions" id="pa1">
+          <div class="state-aj">↩ Ajuste: "Incluir data do jogo e trocar trilha"</div>
+          <button class="btn-view" id="vb1" onclick="toggleMedia(1,'vb1')">🎬 Ver vídeo</button>
+        </div>
+      </div>
+
+      <!-- CARD 2 pending -->
+      <div class="piece-card" id="pc2">
+        <div class="pc-header">
+          <div class="pc-thumb" style="background:#E6F1FB">🗂️</div>
+          <div class="pc-info">
+            <div class="pc-name">Se a Copa fosse decidida na mesa…</div>
+            <div class="pc-tags"><span class="pc-tag">Carrossel</span><span class="pc-tag">Feed</span><span class="pc-tag">Mouse Over</span></div>
+            <div class="pc-date-txt">Publicação: 03/07 · aguardando aprovação</div>
+          </div>
+          <div class="pc-si">🕐</div>
+        </div>
+        <div class="media-viewer" id="mv2">
+          <div class="mv-header">
+            <div class="mv-source">📁 Drive · Copa_MouseOver_v2 · 3 frames</div>
+            <button class="mv-close" onclick="closeMedia(2)">✕</button>
+          </div>
+          <div class="mv-img-sim" style="background:linear-gradient(135deg,#004d35,#1a7a55);min-height:160px;">
+            <div style="font-size:28px">⚽🍽️</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.9);font-weight:500">Se a Copa fosse decidida na mesa…</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px">Mouse over para revelar · 3 frames</div>
+            <div class="mv-overlay"><span class="mv-tag">PNG · 1080×1080</span><span class="mv-tag">Frame 1 de 3</span></div>
+          </div>
+          <div class="mv-drive-link">📁 drive.google.com/…/Copa_MouseOver_v2 ↗</div>
+        </div>
+        <div class="pc-legenda">Gastronomia no BarraShopping 🍽️⚽ — Mouse over para revelar o campeão na mesa.</div>
+        <div class="pc-actions" id="pa2">
+          <button class="btn-approve" onclick="approve(2)">✓ Aprovar</button>
+          <button class="btn-ajuste" onclick="toggleCbox(2)">↩ Pedir ajuste</button>
+          <button class="btn-view" id="vb2" onclick="toggleMedia(2,'vb2')">🖼 Ver arte</button>
+        </div>
+        <div class="comment-box" id="cb2">
+          <textarea placeholder="Ex: 'Incluir logo da campanha copa no canto inferior'" id="ct2"></textarea>
+          <div class="comment-actions"><button class="btn-cancel" onclick="toggleCbox(2)">Cancelar</button><button class="btn-send-aj" onclick="sendAj(2)">Enviar ajuste</button></div>
+        </div>
+      </div>
+
+      <!-- CARD 3 pending -->
+      <div class="piece-card" id="pc3">
+        <div class="pc-header">
+          <div class="pc-thumb" style="background:#FAEEDA">📱</div>
+          <div class="pc-info">
+            <div class="pc-name">HotZone — Copa na Pista</div>
+            <div class="pc-tags"><span class="pc-tag">Story</span><span class="pc-tag">9:16</span><span class="pc-tag">IG</span></div>
+            <div class="pc-date-txt">Publicação: 07/07</div>
+          </div>
+          <div class="pc-si">🕐</div>
+        </div>
+        <div class="media-viewer" id="mv3">
+          <div class="mv-header">
+            <div class="mv-source">📁 Drive · HotZone_Copa_Story_v1.png</div>
+            <button class="mv-close" onclick="closeMedia(3)">✕</button>
+          </div>
+          <div class="mv-img-sim" style="background:linear-gradient(135deg,#1a1a2e,#c0392b);min-height:160px;">
+            <div style="font-size:28px">🎳⚽</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.9);font-weight:500">HotZone · Copa na Pista</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5)">Arte enviada pelo BarraShopping</div>
+            <div class="mv-overlay"><span class="mv-tag">PNG · 1080×1920</span><span class="mv-tag">Story 9:16</span></div>
+          </div>
+          <div class="mv-drive-link">📁 drive.google.com/…/HotZone_Copa_Story_v1.png ↗</div>
+        </div>
+        <div class="pc-legenda">Ativação Copa no HotZone — bowling e pista temática Brasil 🎳🇧🇷</div>
+        <div class="pc-actions" id="pa3">
+          <button class="btn-approve" onclick="approve(3)">✓ Aprovar</button>
+          <button class="btn-ajuste" onclick="toggleCbox(3)">↩ Pedir ajuste</button>
+          <button class="btn-view" id="vb3" onclick="toggleMedia(3,'vb3')">🖼 Ver arte</button>
+        </div>
+        <div class="comment-box" id="cb3">
+          <textarea placeholder="Descreva o ajuste necessário..." id="ct3"></textarea>
+          <div class="comment-actions"><button class="btn-cancel" onclick="toggleCbox(3)">Cancelar</button><button class="btn-send-aj" onclick="sendAj(3)">Enviar ajuste</button></div>
+        </div>
+      </div>
+
+      <!-- CARD 4 pending -->
+      <div class="piece-card" id="pc4">
+        <div class="pc-header">
+          <div class="pc-thumb" style="background:#E1F5EE">🎬</div>
+          <div class="pc-info">
+            <div class="pc-name">Programação UCI — Semana Copa</div>
+            <div class="pc-tags"><span class="pc-tag">Story</span><span class="pc-tag">Comercial</span><span class="pc-tag">IG</span></div>
+            <div class="pc-date-txt">Publicação: 04/07 · 10h</div>
+          </div>
+          <div class="pc-si">🕐</div>
+        </div>
+        <div class="media-viewer" id="mv4">
+          <div class="mv-header">
+            <div class="mv-source">📁 Drive · UCI_Copa_Story_v1.png</div>
+            <button class="mv-close" onclick="closeMedia(4)">✕</button>
+          </div>
+          <div class="mv-img-sim" style="background:linear-gradient(135deg,#0d0d0d,#1a1a2e);min-height:160px;">
+            <div style="font-size:28px">🎬🍿</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.9);font-weight:500">UCI · Programação Copa</div>
+            <div class="mv-overlay"><span class="mv-tag">Story 9:16</span><span class="mv-tag">Drive ✓</span></div>
+          </div>
+          <div class="mv-drive-link">📁 drive.google.com/…/UCI_Copa_Story_v1.png ↗</div>
+        </div>
+        <div class="pc-legenda">Programação completa do UCI durante a Copa. CTA para ingresso online.</div>
+        <div class="pc-actions" id="pa4">
+          <button class="btn-approve" onclick="approve(4)">✓ Aprovar</button>
+          <button class="btn-ajuste" onclick="toggleCbox(4)">↩ Pedir ajuste</button>
+          <button class="btn-view" id="vb4" onclick="toggleMedia(4,'vb4')">🖼 Ver arte</button>
+        </div>
+        <div class="comment-box" id="cb4">
+          <textarea placeholder="Descreva o ajuste necessário..." id="ct4"></textarea>
+          <div class="comment-actions"><button class="btn-cancel" onclick="toggleCbox(4)">Cancelar</button><button class="btn-send-aj" onclick="sendAj(4)">Enviar ajuste</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SAC ===== -->
+    <div id="panel-sac" class="panel">
+      <div class="sac-filters">
+        <button class="sac-filter-btn active">Todos</button>
+        <button class="sac-filter-btn">Urgente</button>
+        <button class="sac-filter-btn">Dúvidas</button>
+        <button class="sac-filter-btn">Reclamações</button>
+        <button class="sac-filter-btn">Elogios</button>
+      </div>
+
+      <div class="sac-card critical">
+        <div class="sac-header"><span class="sac-user">@usuario_anonimo</span><span class="sac-urg-badge urg-alta">Alta · Crítico</span></div>
+        <div class="sac-comment">"Tive um problema de segurança no shopping hoje."</div>
+        <div class="sac-cats"><span class="sac-cat" style="background:var(--red-light);color:var(--red)">Segurança</span><span class="sac-cat">Urgente</span></div>
+        <div class="sac-resp-label">Ação recomendada</div>
+        <div class="sac-response critical-resp">Não responder publicamente. Encaminhar ao SAC imediatamente via sac@barrashopping.com.br ou (21) 99992-0551. Responder no inbox com acolhimento breve.</div>
+        <div class="sac-actions">
+          <button class="btn-sac-critical">⚠ Encaminhar ao SAC BRS</button>
+          <button class="btn-sac-edit">Criar card Trello</button>
+        </div>
+      </div>
+
+      <div class="sac-card">
+        <div class="sac-header"><span class="sac-user">@marcelo_rj99</span><span class="sac-urg-badge urg-media">Média</span></div>
+        <div class="sac-comment">"Fui ontem e o estacionamento estava um caos. Esperei 35 minutos para sair."</div>
+        <div class="sac-cats"><span class="sac-cat">Reclamação</span><span class="sac-cat">Estacionamento</span><span class="sac-cat">Insatisfação</span></div>
+        <div class="sac-resp-label">Resposta sugerida pela IA</div>
+        <div class="sac-response">Olá, Marcelo! Lamentamos sua experiência. O BarraShopping preza sempre pelo conforto dos visitantes e encaminharemos seu relato para a equipe responsável. Poderia nos enviar por inbox o horário aproximado para entendermos melhor o ocorrido? 🙏💚</div>
+        <div class="sac-actions">
+          <button class="btn-sac-use" onclick="sacUsed(this)">✓ Usar resposta</button>
+          <button class="btn-sac-edit">Editar</button>
+          <button class="btn-sac-edit">Gerar outra</button>
+          <button class="btn-sac-edit">Card Trello</button>
+        </div>
+      </div>
+
+      <div class="sac-card">
+        <div class="sac-header"><span class="sac-user">@claudia_barra</span><span class="sac-urg-badge urg-baixa">Baixa</span></div>
+        <div class="sac-comment">"Que horas funciona o pet friendly no domingo?"</div>
+        <div class="sac-cats"><span class="sac-cat">Dúvida</span><span class="sac-cat">Pet Friendly</span><span class="sac-cat">Horário</span></div>
+        <div class="sac-resp-label">Resposta sugerida pela IA</div>
+        <div class="sac-response">Olá! Tudo bem? O BarraShopping é pet friendly todos os dias, incluindo domingos. Cães de raças como pitbull, doberman e rottweiler devem usar guia e focinheira, conforme legislação. Venha nos visitar! 💚</div>
+        <div class="sac-actions">
+          <button class="btn-sac-use" onclick="sacUsed(this)">✓ Usar resposta</button>
+          <button class="btn-sac-edit">Editar</button>
+          <button class="btn-sac-edit">Gerar outra</button>
+        </div>
+      </div>
+
+      <div class="sac-card">
+        <div class="sac-header"><span class="sac-user">@ana_copa2026</span><span class="sac-urg-badge urg-baixa">Baixa</span></div>
+        <div class="sac-comment">"O BarraShopping vai ter telão para assistir os jogos da Copa?"</div>
+        <div class="sac-cats"><span class="sac-cat">Dúvida</span><span class="sac-cat">Copa do Mundo</span><span class="sac-cat">Evento</span></div>
+        <div class="sac-resp-label">Resposta sugerida pela IA</div>
+        <div class="sac-response">Olá! Tudo bem? Fique atento às nossas redes sociais para conferir toda a programação especial da Copa do Mundo no BarraShopping. Tem muita novidade por aí! 🇧🇷⚽💚</div>
+        <div class="sac-actions">
+          <button class="btn-sac-use" onclick="sacUsed(this)">✓ Usar resposta</button>
+          <button class="btn-sac-edit">Editar</button>
+          <button class="btn-sac-edit">Gerar outra</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TOM DE VOZ ===== -->
+    <div id="panel-tom" class="panel">
+      <div class="tom-grid">
+        <div class="tom-card">
+          <div class="tom-title">📢 Tom de voz oficial</div>
+          <ul class="tom-list">
+            <li class="tom-yes">Terceira pessoa · impessoal · solícito · resolutivo</li>
+            <li class="tom-yes">Sempre: "Olá [nome], tudo bem?"</li>
+            <li class="tom-yes">Terminar com emoji simpático ou 💚</li>
+            <li class="tom-yes">Tom maduro — BRS tem 45 anos</li>
+            <li class="tom-yes">Curtir todos os comentários não negativos</li>
+            <li class="tom-no">Abreviações e gírias</li>
+            <li class="tom-no">"Isso não é conosco" / "procure a loja"</li>
+            <li class="tom-no">Apagar comentários (sempre restringir)</li>
+            <li class="tom-no">Responder crises publicamente</li>
+          </ul>
+        </div>
+        <div class="tom-card">
+          <div class="tom-title">🎨 Cores oficiais</div>
+          <div class="palette-row">
+            <div class="palette-item"><div class="palette-swatch" style="background:#00634A"></div><span>#00634A · Verde Pantone 342 C</span></div>
+            <div class="palette-item"><div class="palette-swatch" style="background:#000000;border:1px solid #eee"></div><span>#000000 · Preto Process Black</span></div>
+            <div class="palette-item"><div class="palette-swatch" style="background:#43494E"></div><span>#43494E · Pantone 432 C</span></div>
+            <div class="palette-item"><div class="palette-swatch" style="background:#C4922A"></div><span>#C4922A · Ouro 45 anos</span></div>
+          </div>
+          <div class="tom-title" style="margin-top:14px">💚 Emojis aprovados</div>
+          <div class="emoji-row"><span class="emoji-chip">💚</span><span class="emoji-chip">🥰</span><span class="emoji-chip">😊</span><span class="emoji-chip">☺️</span><span class="emoji-chip">😉</span><span class="emoji-chip">🙏</span></div>
+        </div>
+        <div class="tom-card" style="grid-column:1/-1">
+          <div class="tom-title">📅 Calendário de ações 2026</div>
+          <div class="calendar-table">
+            <div class="cal-month"><strong>Jan</strong> · Evento de Férias</div>
+            <div class="cal-month"><strong>Jul</strong> · Lápis Vermelho + Promoção Multi</div>
+            <div class="cal-month"><strong>Fev</strong> · Pré-Carnaval + Lápis Vermelho</div>
+            <div class="cal-month"><strong>Ago</strong> · Promoção Pais</div>
+            <div class="cal-month"><strong>Mar</strong> · Teatrinho Infantil</div>
+            <div class="cal-month"><strong>Set</strong> · Comida di Buteco + Dia das Crianças</div>
+            <div class="cal-month"><strong>Abr</strong> · Pixar 2.0 + Promoção Páscoa</div>
+            <div class="cal-month"><strong>Out</strong> · Aniversário 45 anos (promoção)</div>
+            <div class="cal-month"><strong>Mai</strong> · Promoção Mães</div>
+            <div class="cal-month"><strong>Nov</strong> · Natal (01/11) + Black Friday</div>
+            <div class="cal-month"><strong>Jun</strong> · Promoção Namorados + Copa</div>
+            <div class="cal-month"><strong>Dez</strong> · —</div>
+          </div>
+        </div>
+        <div class="tom-card" style="grid-column:1/-1">
+          <div class="tom-title">⏱ Regras de atendimento SAC</div>
+          <ul class="tom-list">
+            <li class="tom-yes">Verificar redes 3× ao dia · tempo máximo: 24h</li>
+            <li class="tom-yes">Fins de semana: mensagem automática ativa no Facebook Creator</li>
+            <li class="tom-yes">Feriado em dia útil: ativar mensagem manual e desativar depois</li>
+            <li class="tom-yes">Pós-feriado: priorizar comentários do período sem resposta</li>
+            <li class="tom-no">Nunca apagar comentários · sempre restringir se necessário</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+// NAVIGATION
+const titles = {
+  dashboard: ['Dashboard','BarraShopping · Junho / Julho 2026'],
+  plan: ['Planejamento Editorial','Julho 2026 · 38 peças'],
+  aprov: ['Aprovação de Peças','Copa do Mundo · aguardando BarraShopping'],
+  sac: ['SAC Copilot','5 interações pendentes'],
+  tom: ['Tom de Voz & Manual','BarraShopping · Multiplan']
+};
+function showPanel(id, navEl) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (navEl) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    navEl.classList.add('active');
+  }
+  const t = titles[id];
+  if (t) {
+    document.getElementById('topbar-title').textContent = t[0];
+    document.getElementById('topbar-sub').textContent = t[1];
+  }
+  window.scrollTo(0, 0);
+}
+
+// APPROVAL STATE
+let approved = 1, pending = 3, ajuste = 1, total = 5;
+function updAprov() {
+  const pct = Math.round(approved / total * 100);
+  document.getElementById('ap-bar').style.width = pct + '%';
+  document.getElementById('ap-pct').textContent = pct + '% aprovado';
+  document.getElementById('cnt-ok').textContent = approved + ' aprovada' + (approved !== 1 ? 's' : '');
+  document.getElementById('cnt-pend').textContent = pending + ' pendente' + (pending !== 1 ? 's' : '');
+  document.getElementById('cnt-aj').textContent = ajuste + ' com ajuste';
+}
+function approve(i) {
+  const c = document.getElementById('pc' + i);
+  const a = document.getElementById('pa' + i);
+  closeMedia(i);
+  c.classList.remove('ajuste'); c.classList.add('approved');
+  c.querySelector('.pc-si').textContent = '✅';
+  a.innerHTML = '<div class="state-ok">✓ Aprovado agora · você</div><button class="btn-view" onclick="window.open(\'#\')">📁 Abrir Drive</button>';
+  pending = Math.max(0, pending - 1); approved++; updAprov();
+}
+function toggleCbox(i) {
+  document.getElementById('cb' + i).classList.toggle('open');
+}
+function sendAj(i) {
+  const c = document.getElementById('pc' + i);
+  const a = document.getElementById('pa' + i);
+  const t = document.getElementById('ct' + i).value.trim() || 'Ajuste solicitado';
+  closeMedia(i);
+  c.classList.remove('approved'); c.classList.add('ajuste');
+  c.querySelector('.pc-si').textContent = '🔄';
+  a.innerHTML = '<div class="state-aj">↩ Ajuste: "' + t.substring(0, 60) + (t.length > 60 ? '…' : '') + '"</div>';
+  document.getElementById('cb' + i).classList.remove('open');
+  pending = Math.max(0, pending - 1); ajuste++; updAprov();
+}
+function toggleMedia(i, btnId) {
+  const m = document.getElementById('mv' + i);
+  const b = document.getElementById(btnId);
+  if (m.classList.contains('open')) {
+    m.classList.remove('open');
+    if (b) b.classList.remove('active');
+  } else {
+    m.classList.add('open');
+    if (b) b.classList.add('active');
+  }
+}
+function closeMedia(i) {
+  const m = document.getElementById('mv' + i);
+  if (m) m.classList.remove('open');
+  const b = document.getElementById('vb' + i);
+  if (b) b.classList.remove('active');
+}
+function sacUsed(btn) {
+  btn.textContent = '✓ Enviado';
+  btn.style.background = '#E1F5EE';
+  btn.style.color = '#0F6E56';
+  btn.style.border = '1px solid #5DCAA5';
+  btn.disabled = true;
+}
+</script>
+</body>
+</html>

@@ -1,3 +1,8 @@
+"routes": [
+  { "src": "/kbc", "dest": "/kbc/index.html" },
+  { "src": "/kbc/(.*)", "dest": "/kbc/index.html" },
+  { "src": "/api/(.*)", "dest": "/api/$1" },
+
 {
   "version": 2,
   "buildCommand": "",
