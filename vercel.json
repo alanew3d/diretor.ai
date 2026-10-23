@@ -3,21 +3,107 @@
   "buildCommand": "",
   "outputDirectory": ".",
   "functions": {
-    "api/*.js": { "maxDuration": 30 }
+    "api/*.js": {
+      "maxDuration": 30
+    }
   },
   "routes": [
-    { "src": "/kbc", "dest": "/kbc/index.html" },
-    { "src": "/kbc/(.*)", "dest": "/kbc/index.html" },
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/robots.txt", "dest": "/robots.txt" },
-    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
-    { "src": "/manifest.json", "dest": "/manifest.json" },
-    { "src": "/llms.txt", "dest": "/llms.txt" },
-    { "src": "/agent-manifest.json", "dest": "/agent-manifest.json" },
-    { "src": "/diretor_ai_simple_strategy_v2.html", "dest": "/diretor_ai_simple_strategy_v2.html" },
-    { "src": "/favicon.svg", "dest": "/favicon.svg" },
-    { "src": "/favicon-32.png", "dest": "/favicon-32.png" },
-    { "src": "/apple-touch-icon.png", "dest": "/apple-touch-icon.png" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "src": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio\\.diretor\\.ai"
+        }
+      ],
+      "dest": "/studio/studio.html"
+    },
+    {
+      "src": "/(index\\.html|studio\\.html|styles\\.css|studio\\.css|site\\.js|studio\\.js|icon\\.svg)",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio\\.diretor\\.ai"
+        }
+      ],
+      "dest": "/studio/$1"
+    },
+    {
+      "src": "/assets/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio\\.diretor\\.ai"
+        }
+      ],
+      "dest": "/studio/assets/$1"
+    },
+    {
+      "src": "/manager/manifest.json",
+      "dest": "/manager/manifest.json"
+    },
+    {
+      "src": "/manager(?:/.*)?",
+      "dest": "/manager/index.html"
+    },
+    {
+      "src": "/studio",
+      "dest": "/studio/studio.html"
+    },
+    {
+      "src": "/kbc",
+      "dest": "/kbc/index.html"
+    },
+    {
+      "src": "/kbc/(.*)",
+      "dest": "/kbc/index.html"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
+    },
+    {
+      "src": "/sitemap.xml",
+      "dest": "/sitemap.xml"
+    },
+    {
+      "src": "/llms.txt",
+      "dest": "/llms.txt"
+    },
+    {
+      "src": "/agent-manifest.json",
+      "dest": "/agent-manifest.json"
+    },
+    {
+      "src": "/diretor_ai_simple_strategy_v2.html",
+      "dest": "/diretor_ai_simple_strategy_v2.html"
+    },
+    {
+      "src": "/favicon.svg",
+      "dest": "/favicon.svg"
+    },
+    {
+      "src": "/favicon-32.png",
+      "dest": "/favicon-32.png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "dest": "/apple-touch-icon.png"
+    },
+    {
+      "src": "/manifest.json",
+      "dest": "/manifest.json"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }

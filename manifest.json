@@ -1,8 +1,8 @@
 {
-  "name": "diretor.ai",
-  "short_name": "diretor.ai",
+  "name": "diretor.ai Manager",
+  "short_name": "Manager",
   "description": "Sistema de decisão estratégica para empresários. Diagnóstico, cenários, adversário e plano de ação com IA.",
-  "start_url": "/",
+  "start_url": "/manager",
   "display": "standalone",
   "background_color": "#07070a",
   "theme_color": "#C8A84B",
@@ -21,6 +21,11 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["business", "productivity"],
-  "lang": "pt-BR"
+  "categories": [
+    "business",
+    "productivity"
+  ],
+  "lang": "pt-BR",
+  "scope": "/manager",
+  "id": "/manager"
 }
