@@ -1,0 +1,9 @@
+.git
+node_modules
+.env*
+DEPLOY.md
+MIGRATION.md
+supabase_setup.sql
+tests
+qa
+*.zip

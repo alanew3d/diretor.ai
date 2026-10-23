@@ -24,7 +24,7 @@ async function sendWelcomeEmail(email, planName) {
           <p style="color:#666;font-size:14px;margin-bottom:24px">Sistema de Decisão Estratégica</p>
           <h1 style="font-size:20px;color:#111">Plano ${planName} ativado! ✓</h1>
           <p style="color:#444;line-height:1.7">Seu acesso está liberado. Tome decisões melhores com perspectivas históricas, empresariais e criativas aplicadas ao seu desafio.</p>
-          <a href="https://diretor.ai" style="display:inline-block;background:#C8A84B;color:#000;font-weight:700;padding:14px 28px;border-radius:8px;text-decoration:none;margin:20px 0">Acessar diretor.ai →</a>
+          <a href="https://diretor.ai/manager" style="display:inline-block;background:#C8A84B;color:#000;font-weight:700;padding:14px 28px;border-radius:8px;text-decoration:none;margin:20px 0">Acessar diretor.ai →</a>
           <p style="color:#999;font-size:12px;margin-top:24px">Precisa de ajuda? Responda este email ou fale pelo WhatsApp.</p>
         </div>
       `,
