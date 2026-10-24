@@ -25,7 +25,7 @@ No Supabase Authentication → URL Configuration, autorizar os callbacks exatos:
 - `https://diretor.ai/studio/studio.html?view=cloud`
 - URL de callback do preview em teste, sem wildcard de todos os projetos Vercel.
 
-O SDK pode anexar identificador de fluxo ao redirect; confirmar no teste real e configurar correspondência apenas no caminho do Studio quando necessário. O verificador expira em dez minutos e o link precisa ser aberto no mesmo navegador/host que solicitou o login.
+A opção experimental que acrescenta identificador de fluxo ao redirect está explicitamente desativada; as URLs de retorno são exatas, sem curingas. O verificador expira em dez minutos e o link precisa ser aberto no mesmo navegador/host que solicitou o login. Um novo pedido no mesmo navegador substitui o verificador anterior.
 
 Conferir template de Magic Link, limites e SMTP do Supabase. Não trocar o template nem o Site URL do Manager sem avaliar o impacto. O provedor padrão pode limitar destinatários de teste; um SMTP próprio deve ser configurado antes de oferecer cadastro público.
 

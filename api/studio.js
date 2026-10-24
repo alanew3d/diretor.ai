@@ -3,7 +3,7 @@ import { studioConfig } from './_studio-config.js';
 import { StudioError, uuid, text, planning, sameOrigin, cookies } from './_studio-domain.js';
 
 const names={access:'__Host-studio_access',refresh:'__Host-studio_refresh',verifier:'__Host-studio_pkce'};
-const options={persistSession:false,autoRefreshToken:false,detectSessionInUrl:false};
+const options={persistSession:false,autoRefreshToken:false,detectSessionInUrl:false,experimental:{appendPkceFlowIdToRedirects:false}};
 function writeCookie(res,name,value,age){
   const list=res.getHeader('Set-Cookie')||[];
   res.setHeader('Set-Cookie',[...(Array.isArray(list)?list:[list]),`${name}=${encodeURIComponent(value)}; Path=/; Max-Age=${age}; HttpOnly; Secure; SameSite=Lax`]);

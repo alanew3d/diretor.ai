@@ -53,7 +53,7 @@ test('Email sign-in creates a PKCE challenge and HttpOnly verifier cookie withou
  try{
   const res=response();await createStudioHandler()(request('signin','POST',{email:'test@example.invalid'}),res);
   assert.equal(res.statusCode,200);assert.equal(sent.body.code_challenge_method,'s256');assert.ok(sent.body.code_challenge.length>30);
-  assert.match(sent.url,/redirect_to=/);assert.ok(res.headers['Set-Cookie'].some(c=>c.startsWith('__Host-studio_pkce=')&&c.includes('HttpOnly; Secure; SameSite=Lax')));
+  assert.equal(new URL(sent.url).searchParams.get('redirect_to'),'https://studio.diretor.ai/studio/studio.html?view=cloud');assert.ok(res.headers['Set-Cookie'].some(c=>c.startsWith('__Host-studio_pkce=')&&c.includes('HttpOnly; Secure; SameSite=Lax')));
   assert.deepEqual(res.body,{sent:true});
  }finally{globalThis.fetch=previous;}
 });
