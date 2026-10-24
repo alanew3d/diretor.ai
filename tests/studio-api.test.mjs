@@ -69,3 +69,12 @@ test('PKCE callback exchanges only the verifier created for this browser and sto
   assert.ok(res.headers['Set-Cookie'].some(c=>c.startsWith('__Host-studio_access=')&&c.includes('HttpOnly; Secure')));
  }finally{globalThis.fetch=previous;}
 });
+test('A rate-limited resend preserves the verifier for the previously sent link',async()=>{
+ const previous=globalThis.fetch;
+ globalThis.fetch=async()=>new Response(JSON.stringify({msg:'Email rate limit exceeded',code:'over_email_send_rate_limit'}),{status:429,headers:{'Content-Type':'application/json'}});
+ try{
+  const req=request('signin','POST',{email:'test@example.invalid'});req.headers.cookie='__Host-studio_pkce=previous-verifier';
+  const res=response();await createStudioHandler()(req,res);
+  assert.equal(res.statusCode,429);assert.equal(res.headers['Set-Cookie'],undefined);
+ }finally{globalThis.fetch=previous;}
+});

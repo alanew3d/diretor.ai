@@ -29,6 +29,8 @@ A opção experimental que acrescenta identificador de fluxo ao redirect está e
 
 Conferir template de Magic Link, limites e SMTP do Supabase. Não trocar o template nem o Site URL do Manager sem avaliar o impacto. O provedor padrão pode limitar destinatários de teste; um SMTP próprio deve ser configurado antes de oferecer cadastro público.
 
+Inspeção do painel autenticado: Site URL atual `http://localhost:3000`, sem redirects cadastrados; SMTP próprio desativado e templates padrão. Após autorização do proprietário, o painel confirmou três callbacks exatos cadastrados (Total URLs: 3). Não usar curingas na configuração desta entrega.
+
 ## Validação feita
 
 - 19 testes automatizados: rotas legadas, isolamento na API, controle de versão, validação de dados, origem HTTPS, desafio PKCE, cookies e ausência de tokens na resposta.

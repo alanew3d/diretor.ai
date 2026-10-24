@@ -2,16 +2,26 @@
   const byId=id=>document.getElementById(id);
   const state={user:null,active:null,request:0,pendingMessage:null,before:null};
   const status=message=>{byId('cloud-status').textContent=message;};
+  let resendUntil=0,resendTimer;
+  try{resendUntil=Number(sessionStorage.getItem('studio-resend-until'))||0;}catch{}
+  function updateResend(){
+    const button=byId('cloud-send-link');const seconds=Math.max(0,Math.ceil((resendUntil-Date.now())/1000));
+    button.disabled=seconds>0||button.getAttribute('aria-busy')==='true';
+    button.textContent=seconds?`Aguarde ${seconds}s para reenviar`:'Receber link de acesso ↗';
+    if(!seconds){clearInterval(resendTimer);resendTimer=null;}
+  }
+  function cooldown(){resendUntil=Date.now()+60000;try{sessionStorage.setItem('studio-resend-until',String(resendUntil));}catch{}updateResend();if(!resendTimer)resendTimer=setInterval(updateResend,1000);}
+  updateResend();if(resendUntil>Date.now())resendTimer=setInterval(updateResend,1000);
   async function api(action,{method='GET',id,body,before}={}){
     const query=new URLSearchParams({action});if(id)query.set('id',id);if(before)query.set('before',before);
     const response=await fetch('/api/studio?'+query,{method,credentials:'same-origin',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined});
     const data=await response.json().catch(()=>({error:'Resposta indisponível. Tente novamente.'}));
-    if(!response.ok){if(response.status===401)accountView(null);throw new Error(data.error||'Não foi possível concluir.');}
+    if(!response.ok){if(response.status===401)accountView(null);const error=new Error(data.error||'Não foi possível concluir.');error.status=response.status;throw error;}
     return data;
   }
   async function busy(button,action){
     if(button.disabled)return;button.disabled=true;button.setAttribute('aria-busy','true');
-    try{await action();}catch(error){status(error.message);}finally{button.disabled=false;button.removeAttribute('aria-busy');}
+    try{await action();}catch(error){status(error.message);}finally{button.disabled=false;button.removeAttribute('aria-busy');if(button.id==='cloud-send-link')updateResend();}
   }
   function node(tag,value,cls){const el=document.createElement(tag);if(value!==undefined)el.textContent=value;if(cls)el.className=cls;return el;}
   function accountView(user){
@@ -52,7 +62,8 @@
   }
   byId('cloud-signin-form').addEventListener('submit',event=>{
     event.preventDefault();busy(byId('cloud-send-link'),async()=>{
-      await api('signin',{method:'POST',body:{email:byId('cloud-email').value.trim()}});
+      try{await api('signin',{method:'POST',body:{email:byId('cloud-email').value.trim()}});}catch(error){if(error.status===429)cooldown();throw error;}
+      cooldown();
       status('Link solicitado. Confira seu e-mail e abra o link neste mesmo navegador. Se não chegar, aguarde antes de tentar novamente.');
     });
   });
@@ -100,7 +111,9 @@
   (async()=>{
     try{
       const url=new URL(location.href);const code=url.searchParams.get('code');
-      if(code||url.searchParams.get('view')==='cloud')window.directorPlanning.showCloud();
+      const hash=new URLSearchParams(url.hash.slice(1));const failed=url.searchParams.has('error')||hash.has('error');
+      if(code||failed||url.searchParams.get('view')==='cloud')window.directorPlanning.showCloud();
+      if(failed){for(const key of ['error','error_code','error_description']){url.searchParams.delete(key);hash.delete(key);}url.hash=hash.toString();history.replaceState(null,'',url);throw new Error('O link foi recusado, expirou ou já foi utilizado. Se você já entrou em outra aba, recarregue esta página.');}
       if(code){url.searchParams.delete('code');history.replaceState(null,'',url);await api('callback',{method:'POST',body:{code}});}
       const {user}=await api('session');accountView(user);
       if(user){await listProjects();status('Sua conta está conectada. Escolha ou crie um projeto.');}

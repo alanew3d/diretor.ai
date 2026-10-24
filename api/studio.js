@@ -46,14 +46,17 @@ export function createStudioHandler({identify=identity,client=authClient}={}){
         const email=text(body.email,254,true);
         if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new StudioError(400,'Informe um e-mail válido.');
         const jar=cookies(req);
+        let pendingVerifier;
         const storage={
           getItem:key=>key==='studio-login-code-verifier'?jar[names.verifier]||null:null,
-          setItem:(key,value)=>{if(key==='studio-login-code-verifier')writeCookie(res,names.verifier,value,600);},
-          removeItem:key=>{if(key==='studio-login-code-verifier')writeCookie(res,names.verifier,'',0);},
+          setItem:(key,value)=>{if(key==='studio-login-code-verifier')pendingVerifier=value;},
+          removeItem:()=>{},
         };
         const auth=createClient(studioConfig.url,studioConfig.key,{auth:{...options,persistSession:true,flowType:'pkce',storageKey:'studio-login',storage}});
         const {error}=await auth.auth.signInWithOtp({email,options:{shouldCreateUser:true,emailRedirectTo:`${sameOrigin(req)}/studio/studio.html?view=cloud`}});
         if(error)throw new StudioError(error.status===429?429:503,error.status===429?'Aguarde antes de pedir outro link.':'Não foi possível enviar o link. Confira o e-mail e tente novamente.');
+        if(!pendingVerifier)throw new StudioError(503,'Não foi possível preparar o acesso. Tente novamente.');
+        writeCookie(res,names.verifier,pendingVerifier,600);
         return res.status(200).json({sent:true});
       }
       if(action==='callback'&&req.method==='POST'){
