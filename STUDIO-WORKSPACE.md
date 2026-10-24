@@ -33,7 +33,7 @@ Inspeção do painel autenticado: Site URL atual `http://localhost:3000`, sem re
 
 ## Validação feita
 
-- 19 testes automatizados: rotas legadas, isolamento na API, controle de versão, validação de dados, origem HTTPS, desafio PKCE, cookies e ausência de tokens na resposta.
+- 20 testes automatizados: rotas legadas, isolamento na API, controle de versão, validação de dados, origem HTTPS, desafio PKCE, cookies e ausência de tokens na resposta.
 - Teste transacional no banco: usuário A só lê A, não escreve mensagem de B, não transfere proprietário; mensagens próprias e incremento de revisão funcionam. Fixtures revertidas com rollback.
 - Advisor de segurança Supabase sem alertas nesta etapa.
 - Auditoria npm após correções compatíveis: zero vulnerabilidades reportadas.
@@ -43,3 +43,7 @@ Inspeção do painel autenticado: Site URL atual `http://localhost:3000`, sem re
 O preview foi conferido em desktop e celular, sem rolagem horizontal. API publicada: sessão anônima retorna usuário nulo, projetos sem login retornam 401 e escrita de origem externa retorna 403. A chave publicável sozinha recebe 401/42501 ao acessar as duas tabelas. Com o proprietário, ainda falta validar envio de e-mail → callback → sessão → criar projeto → enviar mensagem → recarregar → sair/entrar → recuperar histórico. Conferir em outro dispositivo usando seu próprio login. Não considerar a entrega operacional só por passar testes simulados.
 
 IA, arquivos anexados, geração, créditos e conectores externos não fazem parte desta entrega. Não há resposta simulada apresentada como resposta de IA.
+
+## Teste autenticado no Chrome
+
+Após o login de Alan, a criação de Teste de acesso — Alan e a mensagem Primeiro teste de histórico foram verificadas pela interface e por consulta ao banco. Recarregar e reabrir o projeto recuperou o histórico. A aba integrada tinha outra sessão; o usuário estava autenticado no Chrome. O planejamento de exemplo anterior estava salvo apenas no navegador, o que motivou o rótulo mais explícito Salvar rascunho local.
