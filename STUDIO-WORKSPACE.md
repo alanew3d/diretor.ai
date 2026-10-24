@@ -13,7 +13,7 @@
 Projeto Supabase existente: `ogvuxjtipnxodbhqvlrd` (diretor.ai).
 Migração aditiva `studio_workspace` aplicada remotamente. Tabelas `studio_projects` e `studio_messages`, RLS por proprietário, FK composta para impedir mensagens em projeto de outro usuário. Não executar `supabase_setup.sql` para esta entrega: ele pertence ao Manager e não foi aplicado.
 
-O arquivo em `supabase/migrations/` foi criado pelo CLI oficial e contém o SQL aplicado. A migração remota recebeu a versão gerada pelo serviço; consultar o histórico remoto antes de sincronizar versões locais ou reaplicar.
+O arquivo em `supabase/migrations/` foi criado pelo CLI oficial e contém o SQL aplicado. A versão local foi sincronizada com o histórico remoto: `20261024012832`. Não reaplicar em produção.
 
 `api/_studio-config.js` contém URL e chave **publicável** do projeto, sem privilégio elevado. Podem ser substituídas por `STUDIO_SUPABASE_URL` e `STUDIO_SUPABASE_PUBLISHABLE_KEY`. Nenhuma chave service-role é utilizada no Studio. Isolamento é aplicado pelo banco com o token do usuário, além dos filtros de proprietário no servidor.
 
@@ -38,6 +38,6 @@ Conferir template de Magic Link, limites e SMTP do Supabase. Não trocar o templ
 
 ## Validação ainda necessária
 
-No preview, conferir formulário e navegação em desktop/celular. Com o proprietário, validar envio de e-mail → callback → sessão → criar projeto → enviar mensagem → recarregar → sair/entrar → recuperar histórico. Conferir em outro dispositivo usando seu próprio login. Não considerar a entrega operacional só por passar testes simulados.
+O preview foi conferido em desktop e celular, sem rolagem horizontal. API publicada: sessão anônima retorna usuário nulo, projetos sem login retornam 401 e escrita de origem externa retorna 403. A chave publicável sozinha recebe 401/42501 ao acessar as duas tabelas. Com o proprietário, ainda falta validar envio de e-mail → callback → sessão → criar projeto → enviar mensagem → recarregar → sair/entrar → recuperar histórico. Conferir em outro dispositivo usando seu próprio login. Não considerar a entrega operacional só por passar testes simulados.
 
 IA, arquivos anexados, geração, créditos e conectores externos não fazem parte desta entrega. Não há resposta simulada apresentada como resposta de IA.
