@@ -3,7 +3,9 @@ node_modules
 .env*
 DEPLOY.md
 MIGRATION.md
+STUDIO-WORKSPACE.md
 supabase_setup.sql
 tests
+supabase
 qa
 *.zip
